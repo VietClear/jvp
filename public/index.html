@@ -15,32 +15,45 @@
 </head>
 
 <body>
-    <header class="app-header">
-        <h1>John’s Vietnamese Phrases</h1>
-        <button id="infoBtn" class="icon-btn" aria-label="Open tone legend">ℹ️</button>
+    <header class="header">
+        <div class="header-inner container">
+            <div class="app-title">
+                <span>John’s Vietnamese Phrases</span>
+                <span class="badge">MVP</span>
+            </div>
+            <button id="infoBtn" class="btn ghost" aria-label="Open tone legend">Info</button>
+        </div>
     </header>
 
-    <main id="app" class="container">
-        <!-- Category view (default) -->
-        <section id="categories" class="card-list" aria-label="Categories">
-            <!-- We’ll render these dynamically from data later; for now show the five buckets -->
-            <a href="#/category/Essentials" class="card">Essentials</a>
-            <a href="#/category/Food%20%26%20Drink" class="card">Food &amp; Drink</a>
-            <a href="#/category/Travel" class="card">Travel</a>
-            <a href="#/category/Social" class="card">Social</a>
-            <a href="#/category/Shopping%20%26%20Money" class="card">Shopping &amp; Money</a>
+    <main id="app" class="container mt-16">
+        <!-- Category cards -->
+        <section id="categories" class="grid cols-2" aria-label="Categories">
+            <a href="#" class="card cat-link" data-target="screen-essentials">
+                <div class="card-title">Essentials</div>
+            </a>
+            <a href="#" class="card cat-link" data-target="screen-food">
+                <div class="card-title">Food &amp; Drink</div>
+            </a>
+            <a href="#" class="card cat-link" data-target="screen-travel">
+                <div class="card-title">Travel</div>
+            </a>
+            <a href="#" class="card cat-link" data-target="screen-social">
+                <div class="card-title">Social</div>
+            </a>
+            <a href="#" class="card cat-link" data-target="screen-shopping">
+                <div class="card-title">Shopping &amp; Money</div>
+            </a>
         </section>
 
-        <!-- Phrase list view (filled by JS) -->
-        <section id="phraseList" class="list hidden" aria-label="Phrases"></section>
+        <!-- Placeholder screens (only one visible at a time) -->
         <div id="screen-essentials" class="screen card mt-16">
             <h2 class="card-title">Essentials</h2>
             <p class="card-subtitle">Placeholder for essential phrases.</p>
         </div>
 
         <div id="screen-food" class="screen card mt-16 hidden">
-            <h2 class="card-title">Food & Drink</h2>
-            <p class="card-subtitle">Placeholder for food & drink phrases.</p>
+            <h2 class="card-title">Food &amp; Drink</h2>
+            <p class="card-subtitle">Placeholder for food &amp; drink phrases.</p>
         </div>
 
         <div id="screen-travel" class="screen card mt-16 hidden">
@@ -54,31 +67,62 @@
         </div>
 
         <div id="screen-shopping" class="screen card mt-16 hidden">
-            <h2 class="card-title">Shopping & Money</h2>
-            <p class="card-subtitle">Placeholder for shopping & money phrases.</p>
+            <h2 class="card-title">Shopping &amp; Money</h2>
+            <p class="card-subtitle">Placeholder for shopping &amp; money phrases.</p>
         </div>
-
     </main>
 
     <!-- Southern tone legend / info modal -->
-    <dialog id="infoModal">
-        <h2>Southern Tone Legend</h2>
-        <ul class="legend">
-            <li><span class="chip chip-khong">không</span> mid level</li>
-            <li><span class="chip chip-sac">sắc</span> high rising ˊ</li>
-            <li><span class="chip chip-huyen">huyền</span> low falling ˋ</li>
-            <li><span class="chip chip-hoi">hỏi</span> dipping ˇ</li>
-            <li><span class="chip chip-nang">nặng</span> creaky/low ˍ</li>
+    <dialog id="infoModal" class="card">
+        <h2 class="card-title">Southern Tone Legend</h2>
+        <ul class="list mt-12">
+            <li><span class="badge">không</span> mid level</li>
+            <li><span class="badge">sắc</span> high rising ˊ</li>
+            <li><span class="badge">huyền</span> low falling ˋ</li>
+            <li><span class="badge">hỏi</span> dipping ˇ</li>
+            <li><span class="badge">nặng</span> creaky/low ˍ</li>
         </ul>
-        <button id="closeInfo" class="btn">Close</button>
+        <button id="closeInfo" class="btn mt-16">Close</button>
     </dialog>
 
-    <noscript>
-        This app needs JavaScript to load phrases and audio.
-    </noscript>
+    <noscript>This app needs JavaScript to load phrases and audio.</noscript>
 
-    <!-- App logic -->
+    <!-- (Optional) External app file; ok if this file doesn’t exist yet -->
     <script defer src="./assets/js/app.js"></script>
+
+    <!-- Category card → screen switching -->
+    <script>
+        const links = document.querySelectorAll(".cat-link");
+        const screens = document.querySelectorAll(".screen");
+
+        function showScreen(id) {
+            screens.forEach(s => s.classList.add("hidden"));
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.remove("hidden");
+                el.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }
+
+        links.forEach(link => {
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute("data-target");
+                showScreen(targetId);
+            });
+        });
+
+        // Info modal wiring (works even without styles)
+        const infoBtn = document.getElementById("infoBtn");
+        const infoModal = document.getElementById("infoModal");
+        const closeInfo = document.getElementById("closeInfo");
+        if (infoBtn && infoModal) {
+            infoBtn.addEventListener("click", () => infoModal.showModal());
+        }
+        if (closeInfo && infoModal) {
+            closeInfo.addEventListener("click", () => infoModal.close());
+        }
+    </script>
 </body>
 
 </html>
