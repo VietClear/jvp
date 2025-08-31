@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>John’s Vietnamese Phrases</title>
+
+    <!-- PWA basics -->
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="theme-color" content="#0ea5a8" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+
+<body>
+    <header class="app-header">
+        <h1>John’s Vietnamese Phrases</h1>
+        <button id="infoBtn" class="icon-btn" aria-label="Open tone legend">ℹ️</button>
+    </header>
+
+    <main id="app" class="container">
+        <!-- Category view (default) -->
+        <section id="categories" class="card-list" aria-label="Categories">
+            <!-- We’ll render these dynamically from data later; for now show the five buckets -->
+            <a href="#/category/Essentials" class="card">Essentials</a>
+            <a href="#/category/Food%20%26%20Drink" class="card">Food &amp; Drink</a>
+            <a href="#/category/Travel" class="card">Travel</a>
+            <a href="#/category/Social" class="card">Social</a>
+            <a href="#/category/Shopping%20%26%20Money" class="card">Shopping &amp; Money</a>
+        </section>
+
+        <!-- Phrase list view (filled by JS) -->
+        <section id="phraseList" class="list hidden" aria-label="Phrases"></section>
+    </main>
+
+    <!-- Southern tone legend / info modal -->
+    <dialog id="infoModal">
+        <h2>Southern Tone Legend</h2>
+        <ul class="legend">
+            <li><span class="chip chip-khong">không</span> mid level</li>
+            <li><span class="chip chip-sac">sắc</span> high rising ˊ</li>
+            <li><span class="chip chip-huyen">huyền</span> low falling ˋ</li>
+            <li><span class="chip chip-hoi">hỏi</span> dipping ˇ</li>
+            <li><span class="chip chip-nang">nặng</span> creaky/low ˍ</li>
+        </ul>
+        <button id="closeInfo" class="btn">Close</button>
+    </dialog>
+
+    <noscript>
+        This app needs JavaScript to load phrases and audio.
+    </noscript>
+
+    <!-- App logic -->
+    <script defer src="./assets/js/app.js"></script>
+</body>
+
+</html>
