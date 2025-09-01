@@ -62,7 +62,9 @@
                         <td>Xin chào</td>
                         <td>Hello</td>
                         <td>sắc, huyền</td>
-                        <td><button class="btn primary">▶︎</button></td>
+                        <td><button class="btn primary" data-audio="assets/audio/essentials_xin-chao.mp3">▶︎</button>
+                        </td>
+
                     </tr>
                     <tr>
                         <td>Tạm biệt</td>
@@ -88,6 +90,13 @@
                         <td>hỏi, không</td>
                         <td><button class="btn primary">▶︎</button></td>
                     </tr>
+                    <tr>
+                        <td>Tôi chỉ nói được một chút tiếng Việt</td>
+                        <td>I only speak a little Vietnamese</td>
+                        <td>không, hỏi, sắc, nặng, nặng, sắc, sắc, nặng</td>
+                        <td><button class="btn primary">▶︎</button></td>
+                    </tr>
+
                     <tr>
                         <td>Không có gì</td>
                         <td>You’re welcome / no problem</td>
@@ -182,12 +191,7 @@
                         <td>không, sắc, không</td>
                         <td><button class="btn primary">▶︎</button></td>
                     </tr>
-                    <tr>
-                        <td>Quá mắc!</td>
-                        <td>Too expensive!</td>
-                        <td>sắc, sắc</td>
-                        <td><button class="btn primary">▶︎</button></td>
-                    </tr>
+
                     <tr>
                         <td>Cho tôi xuống đây</td>
                         <td>Let me get off here</td>
@@ -382,6 +386,25 @@
             closeInfo.addEventListener("click", () => infoModal.close());
         }
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const buttons = document.querySelectorAll("button[data-audio]");
+            let player = new Audio();
+
+            buttons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const src = btn.getAttribute("data-audio");
+                    if (src) {
+                        player.src = src;
+                        player.play();
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
 </body>
 
 </html>
