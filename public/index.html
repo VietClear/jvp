@@ -1,27 +1,25 @@
 <!doctype html>
 <html lang="en">
 
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>John’s Vietnamese Phrases</title>
-    <link rel="manifest" href="/manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="John’s Vietnamese Phrases">
-    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-
 
     <!-- PWA basics -->
     <link rel="manifest" href="./manifest.webmanifest" />
     <meta name="theme-color" content="#0ea5a8" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="John’s Vietnamese Phrases">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
 
     <!-- Styles -->
     <link rel="stylesheet" href="./assets/css/styles.css" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
 
+        /* Title (handwritten, centered, red) */
         h1:first-of-type {
             font-family: "Caveat", cursive, sans-serif;
             font-weight: 600;
@@ -31,7 +29,6 @@
             margin-bottom: 10px;
             font-size: 3.6em;
             color: red;
-            /* temp test colour */
         }
 
         @media (max-width: 480px) {
@@ -50,20 +47,59 @@
             margin: 0 auto;
             display: inline-block;
         }
+
+        /* === Button Feedback (press/hover) === */
+        .btn {
+            transition: background-color .15s ease, border-color .15s ease, filter .12s ease, transform .02s ease;
+        }
+
+        @media (hover:hover) {
+            .btn:hover {
+                filter: brightness(1.05);
+            }
+        }
+
+        .btn:active {
+            filter: brightness(0.92);
+            transform: translateY(1px);
+            box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.08);
+        }
+
+        .btn:focus-visible {
+            outline: 2px solid rgba(0, 0, 0, .25);
+            outline-offset: 2px;
+        }
+
+        /* === Phrase button: playing state (red while audio plays) === */
+        .btn.playing {
+            background-color: #dc2626;
+            /* red */
+            border-color: #b91c1c;
+            /* darker red */
+            color: #fff;
+        }
+
+        /* === Category card: selected state === */
+        .cat-link.selected {
+            /* works for your <a class="card cat-link"> tiles */
+            border-color: #dc2626 !important;
+            outline: 3px solid #fecaca;
+            /* soft red outline */
+            background: #fff5f5;
+            /* very light red fill */
+        }
+
+        /* If .card uses its own text color, keep it readable */
+        .cat-link.selected .card-title {
+            color: #b91c1c;
+        }
     </style>
-
-
-
-
 </head>
 
 <body>
     <header class="header">
         <div class="header-inner container">
             <h1>John's Vietnamese Phrases</h1>
-
-
-
         </div>
     </header>
 
@@ -403,7 +439,7 @@
         </div>
     </main>
 
-    <!-- Southern tone legend / info modal -->
+    <!-- Southern tone legend / info modal (kept, but button removed per polish) -->
     <dialog id="infoModal" class="card">
         <h2 class="card-title">Southern Tone Legend</h2>
         <ul class="list mt-12">
@@ -421,7 +457,7 @@
     <!-- (Optional) External app file; ok if this file doesn’t exist yet -->
     <script defer src="./assets/js/app.js"></script>
 
-    <!-- Category card → screen switching -->
+    <!-- Category card → screen switching + selected highlight -->
     <script>
         const links = document.querySelectorAll(".cat-link");
         const screens = document.querySelectorAll(".screen");
@@ -438,38 +474,60 @@
         links.forEach(link => {
             link.addEventListener("click", (e) => {
                 e.preventDefault();
+                // visual selected state on category tiles
+                links.forEach(l => l.classList.remove("selected"));
+                link.classList.add("selected");
+                // show target screen
                 const targetId = link.getAttribute("data-target");
                 showScreen(targetId);
             });
         });
 
-        // Info modal wiring
-        const infoBtn = document.getElementById("infoBtn");
-        const infoModal = document.getElementById("infoModal");
-        const closeInfo = document.getElementById("closeInfo");
-        if (infoBtn && infoModal) {
-            infoBtn.addEventListener("click", () => infoModal.showModal());
-        }
-        if (closeInfo && infoModal) {
-            closeInfo.addEventListener("click", () => infoModal.close());
-        }
+        // If you want a default selected category on first load, uncomment:
+        // const first = document.querySelector(".cat-link");
+        // if (first) first.classList.add("selected");
     </script>
 
-    <!-- Audio playback -->
+    <!-- Audio playback with 'playing' state on phrase buttons -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const buttons = document.querySelectorAll("button[data-audio]");
-            let player = new Audio();
+            const player = new Audio();
+            let currentBtn = null;
+
+            function clearPlaying() {
+                if (currentBtn) currentBtn.classList.remove("playing");
+                currentBtn = null;
+            }
 
             buttons.forEach(btn => {
                 btn.addEventListener("click", () => {
                     const src = btn.getAttribute("data-audio");
-                    if (src) {
-                        player.src = src;
-                        player.play();
-                    }
+                    if (!src) return;
+
+                    // reset previous playing state
+                    clearPlaying();
+
+                    // set this button as playing
+                    currentBtn = btn;
+                    btn.classList.add("playing");
+
+                    // play audio
+                    player.src = src;
+                    player.play().catch(() => {
+                        // if play fails (e.g., user gesture), clear state
+                        clearPlaying();
+                    });
                 });
             });
+
+            player.addEventListener("ended", clearPlaying);
+            player.addEventListener("pause", () => {
+                // If user pauses via OS controls, also clear
+                if (player.currentTime > 0 && player.currentTime < player.duration) return;
+                clearPlaying();
+            });
+            player.addEventListener("error", clearPlaying);
         });
     </script>
 </body>
