@@ -22,20 +22,37 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
 
-        /* Targets the first H1 on the page (your title) */
         h1:first-of-type {
-            font-family: "Caveat", cursive;
+            font-family: "Caveat", cursive, sans-serif;
             font-weight: 600;
             letter-spacing: 0.4px;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+            color: red;
+            /* temp test colour */
+        }
+
+        @media (max-width: 480px) {
+            h1:first-of-type {
+                font-size: 1.6em;
+                margin-top: 15px;
+                margin-bottom: 8px;
+            }
         }
     </style>
+
+
+
 
 </head>
 
 <body>
     <header class="header">
         <div class="header-inner container">
-            <h1 style="text-align: center;">John’s Vietnamese Phrases</h1>
+            <h1>John's Vietnamese Phrases</h1>
+
 
 
         </div>
