@@ -42,6 +42,11 @@
             color: #fff;
         }
 
+        .btn[disabled] {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
         .cat-link.selected {
             border-color: #dc2626 !important;
             outline: 3px solid #fecaca;
@@ -54,11 +59,17 @@
 
         .phrase {
             margin-bottom: 1.5em;
-            padding: 1em;
+            padding: 1em 0;
             border-bottom: 1px solid #ddd;
+            display: grid;
+            grid-template-columns: 1fr minmax(220px, 32%);
+            grid-auto-rows: auto;
+            gap: .75rem 1rem;
+            align-items: start;
         }
 
         .syllables {
+            grid-column: 1;
             display: flex;
             flex-wrap: wrap;
             gap: .5em;
@@ -66,6 +77,7 @@
 
         .syllable {
             text-align: center;
+            min-width: 84px;
         }
 
         .syllable-text {
@@ -79,10 +91,48 @@
         }
 
         .controls {
-            margin-top: .5em;
+            grid-column: 1;
+            margin-top: .25rem;
             display: flex;
             gap: .5em;
             flex-wrap: wrap;
+        }
+
+        .english {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+            font-size: 1.05rem;
+            line-height: 1.35;
+            color: #222;
+            align-self: start;
+        }
+
+        @media (max-width: 720px) {
+            .phrase {
+                grid-template-columns: 1fr;
+            }
+
+            .english {
+                grid-column: 1;
+                grid-row: auto;
+                font-size: 1rem;
+            }
+        }
+
+        .screen {
+            margin-top: 1.25rem;
+        }
+
+        .screen .screen-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            margin: .5rem 0 1rem;
+        }
+
+        .screen .back-home {
+            padding: .5rem .75rem;
         }
     </style>
 </head>
@@ -117,19 +167,21 @@
         <!-- Essentials -->
         <section id="essentials" class="screen hidden">
             <h2>Essentials</h2>
+            <div class="screen-head">
+                <div></div>
+                <button class="btn back-home">← Back to Categories</button>
+            </div>
 
             <!-- Xin chào — Hello -->
             <div class="phrase">
                 <div class="syllables">
                     <div class="syllable">
                         <button class="btn primary" data-audio="assets/audio/xin.mp3">▶︎</button>
-                        <span class="syllable-text">Xin</span>
-                        <span class="tone">sắc</span>
+                        <span class="syllable-text">Xin</span><span class="tone">sắc</span>
                     </div>
                     <div class="syllable">
                         <button class="btn primary" data-audio="assets/audio/chào.mp3">▶︎</button>
-                        <span class="syllable-text">chào</span>
-                        <span class="tone">huyền</span>
+                        <span class="syllable-text">chào</span><span class="tone">huyền</span>
                     </div>
                 </div>
                 <div class="controls">
@@ -147,13 +199,11 @@
                 <div class="syllables">
                     <div class="syllable">
                         <button class="btn primary" data-audio="assets/audio/tạm.mp3">▶︎</button>
-                        <span class="syllable-text">Tạm</span>
-                        <span class="tone">nặng</span>
+                        <span class="syllable-text">Tạm</span><span class="tone">nặng</span>
                     </div>
                     <div class="syllable">
                         <button class="btn primary" data-audio="assets/audio/biệt.mp3">▶︎</button>
-                        <span class="syllable-text">biệt</span>
-                        <span class="tone">sắc</span>
+                        <span class="syllable-text">biệt</span><span class="tone">sắc</span>
                     </div>
                 </div>
                 <div class="controls">
@@ -171,13 +221,11 @@
                 <div class="syllables">
                     <div class="syllable">
                         <button class="btn primary" data-audio="assets/audio/khỏe.mp3">▶︎</button>
-                        <span class="syllable-text">Khỏe</span>
-                        <span class="tone">hỏi</span>
+                        <span class="syllable-text">Khỏe</span><span class="tone">hỏi</span>
                     </div>
                     <div class="syllable">
                         <button class="btn primary" data-audio="assets/audio/không.mp3">▶︎</button>
-                        <span class="syllable-text">không</span>
-                        <span class="tone">không</span>
+                        <span class="syllable-text">không</span><span class="tone">không</span>
                     </div>
                 </div>
                 <div class="controls">
@@ -195,13 +243,11 @@
                 <div class="syllables">
                     <div class="syllable">
                         <button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button>
-                        <span class="syllable-text">Tôi</span>
-                        <span class="tone">không</span>
+                        <span class="syllable-text">Tôi</span><span class="tone">không</span>
                     </div>
                     <div class="syllable">
                         <button class="btn primary" data-audio="assets/audio/khỏe.mp3">▶︎</button>
-                        <span class="syllable-text">khỏe</span>
-                        <span class="tone">hỏi</span>
+                        <span class="syllable-text">khỏe</span><span class="tone">hỏi</span>
                     </div>
                 </div>
                 <div class="controls">
@@ -219,13 +265,11 @@
                 <div class="syllables">
                     <div class="syllable">
                         <button class="btn primary" data-audio="assets/audio/cảm.mp3">▶︎</button>
-                        <span class="syllable-text">Cảm</span>
-                        <span class="tone">hỏi</span>
+                        <span class="syllable-text">Cảm</span><span class="tone">hỏi</span>
                     </div>
                     <div class="syllable">
                         <button class="btn primary" data-audio="assets/audio/ơn.mp3">▶︎</button>
-                        <span class="syllable-text">ơn</span>
-                        <span class="tone">không</span>
+                        <span class="syllable-text">ơn</span><span class="tone">không</span>
                     </div>
                 </div>
                 <div class="controls">
@@ -241,46 +285,26 @@
             <!-- Tôi chỉ nói được một chút tiếng Việt — I only speak a little Vietnamese -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button>
-                        <span class="syllable-text">Tôi</span>
-                        <span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/chỉ.mp3">▶︎</button>
-                        <span class="syllable-text">chỉ</span>
-                        <span class="tone">hỏi</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/nói.mp3">▶︎</button>
-                        <span class="syllable-text">nói</span>
-                        <span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/được.mp3">▶︎</button>
-                        <span class="syllable-text">được</span>
-                        <span class="tone">nặng</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/một.mp3">▶︎</button>
-                        <span class="syllable-text">một</span>
-                        <span class="tone">nặng</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/chút.mp3">▶︎</button>
-                        <span class="syllable-text">chút</span>
-                        <span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tiếng.mp3">▶︎</button>
-                        <span class="syllable-text">tiếng</span>
-                        <span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/việt.mp3">▶︎</button>
-                        <span class="syllable-text">Việt</span>
-                        <span class="tone">nặng</span>
-                    </div>
+                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button><span
+                            class="syllable-text">Tôi</span><span class="tone">không</span></div>
+                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/chỉ.mp3">▶︎</button><span
+                            class="syllable-text">chỉ</span><span class="tone">hỏi</span></div>
+                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/nói.mp3">▶︎</button><span
+                            class="syllable-text">nói</span><span class="tone">sắc</span></div>
+                    <div class="syllable"><button class="btn primary"
+                            data-audio="assets/audio/được.mp3">▶︎</button><span class="syllable-text">được</span><span
+                            class="tone">nặng</span></div>
+                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/một.mp3">▶︎</button><span
+                            class="syllable-text">một</span><span class="tone">nặng</span></div>
+                    <div class="syllable"><button class="btn primary"
+                            data-audio="assets/audio/chút.mp3">▶︎</button><span class="syllable-text">chút</span><span
+                            class="tone">sắc</span></div>
+                    <div class="syllable"><button class="btn primary"
+                            data-audio="assets/audio/tiếng.mp3">▶︎</button><span class="syllable-text">tiếng</span><span
+                            class="tone">sắc</span></div>
+                    <div class="syllable"><button class="btn primary"
+                            data-audio="assets/audio/việt.mp3">▶︎</button><span class="syllable-text">Việt</span><span
+                            class="tone">nặng</span></div>
                 </div>
                 <div class="controls">
                     <button class="btn primary"
@@ -299,21 +323,13 @@
             <!-- Không có gì — You’re welcome / no problem -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/không.mp3">▶︎</button>
-                        <span class="syllable-text">Không</span>
-                        <span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/có.mp3">▶︎</button>
-                        <span class="syllable-text">có</span>
-                        <span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/gì.mp3">▶︎</button>
-                        <span class="syllable-text">gì</span>
-                        <span class="tone">không</span>
-                    </div>
+                    <div class="syllable"><button class="btn primary"
+                            data-audio="assets/audio/không.mp3">▶︎</button><span class="syllable-text">Không</span><span
+                            class="tone">không</span></div>
+                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/có.mp3">▶︎</button><span
+                            class="syllable-text">có</span><span class="tone">sắc</span></div>
+                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/gì.mp3">▶︎</button><span
+                            class="syllable-text">gì</span><span class="tone">không</span></div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/essentials_khong-co-gi.mp3">▶︎ Phrase</button>
@@ -328,31 +344,17 @@
             <!-- Rất vui được gặp bạn — Nice to meet you -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/rất.mp3">▶︎</button>
-                        <span class="syllable-text">Rất</span>
-                        <span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/vui.mp3">▶︎</button>
-                        <span class="syllable-text">vui</span>
-                        <span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/được.mp3">▶︎</button>
-                        <span class="syllable-text">được</span>
-                        <span class="tone">nặng</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/gặp.mp3">▶︎</button>
-                        <span class="syllable-text">gặp</span>
-                        <span class="tone">nặng</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/bạn.mp3">▶︎</button>
-                        <span class="syllable-text">bạn</span>
-                        <span class="tone">nặng</span>
-                    </div>
+                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/rất.mp3">▶︎</button><span
+                            class="syllable-text">Rất</span><span class="tone">sắc</span></div>
+                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/vui.mp3">▶︎</button><span
+                            class="syllable-text">vui</span><span class="tone">không</span></div>
+                    <div class="syllable"><button class="btn primary"
+                            data-audio="assets/audio/được.mp3">▶︎</button><span class="syllable-text">được</span><span
+                            class="tone">nặng</span></div>
+                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/gặp.mp3">▶︎</button><span
+                            class="syllable-text">gặp</span><span class="tone">nặng</span></div>
+                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/bạn.mp3">▶︎</button><span
+                            class="syllable-text">bạn</span><span class="tone">nặng</span></div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/essentials_rat-vui-duoc-gap-ban.mp3">▶︎
@@ -371,18 +373,30 @@
         <!-- Food & Drink -->
         <section id="food" class="screen hidden">
             <h2>Food &amp; Drink</h2>
+            <div class="screen-head">
+                <div></div>
+                <button class="btn back-home">← Back to Categories</button>
+            </div>
 
             <!-- Cà phê sữa đá — Iced coffee with milk -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/cà.mp3">▶︎</button><span
-                            class="syllable-text">Cà</span><span class="tone">huyền</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/phê.mp3">▶︎</button><span
-                            class="syllable-text">phê</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/sữa.mp3">▶︎</button><span
-                            class="syllable-text">sữa</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/đá.mp3">▶︎</button><span
-                            class="syllable-text">đá</span><span class="tone">sắc</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/cà.mp3">▶︎</button>
+                        <span class="syllable-text">Cà</span><span class="tone">huyền</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/phê.mp3">▶︎</button>
+                        <span class="syllable-text">phê</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/sữa.mp3">▶︎</button>
+                        <span class="syllable-text">sữa</span><span class="tone">sắc</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/đá.mp3">▶︎</button>
+                        <span class="syllable-text">đá</span><span class="tone">sắc</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/food_ca-phe-sua-da.mp3">▶︎ Phrase</button>
@@ -398,16 +412,26 @@
             <!-- Cho tôi một ly bia — Give me a beer -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/cho.mp3">▶︎</button><span
-                            class="syllable-text">Cho</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button><span
-                            class="syllable-text">tôi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/một.mp3">▶︎</button><span
-                            class="syllable-text">một</span><span class="tone">nặng</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/ly.mp3">▶︎</button><span
-                            class="syllable-text">ly</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/bia.mp3">▶︎</button><span
-                            class="syllable-text">bia</span><span class="tone">không</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/cho.mp3">▶︎</button>
+                        <span class="syllable-text">Cho</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button>
+                        <span class="syllable-text">tôi</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/một.mp3">▶︎</button>
+                        <span class="syllable-text">một</span><span class="tone">nặng</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/ly.mp3">▶︎</button>
+                        <span class="syllable-text">ly</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/bia.mp3">▶︎</button>
+                        <span class="syllable-text">bia</span><span class="tone">không</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/food_cho-toi-mot-ly-bia.mp3">▶︎ Phrase</button>
@@ -421,14 +445,17 @@
                 <div class="english">Give me a beer</div>
             </div>
 
-            <!-- Nước lọc — Water -->
+            <!-- Nước lọc — Water (plain) -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/nước.mp3">▶︎</button><span class="syllable-text">Nước</span><span
-                            class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/lọc.mp3">▶︎</button><span
-                            class="syllable-text">lọc</span><span class="tone">nặng</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/nước.mp3">▶︎</button>
+                        <span class="syllable-text">Nước</span><span class="tone">sắc</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/lọc.mp3">▶︎</button>
+                        <span class="syllable-text">lọc</span><span class="tone">nặng</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/food_nuoc-loc.mp3">▶︎ Phrase</button>
@@ -437,16 +464,20 @@
                     <button class="btn" data-action="play-mine" data-phrase-id="nuoc-loc">Play My Recording</button>
                     <button class="btn" data-action="play-app" data-phrase-id="nuoc-loc">Play App Audio</button>
                 </div>
-                <div class="english">Water</div>
+                <div class="english">Water (plain)</div>
             </div>
 
             <!-- Tô phở — A bowl of phở -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tô.mp3">▶︎</button><span
-                            class="syllable-text">Tô</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/phở.mp3">▶︎</button><span
-                            class="syllable-text">phở</span><span class="tone">hỏi</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/tô.mp3">▶︎</button>
+                        <span class="syllable-text">Tô</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/phở.mp3">▶︎</button>
+                        <span class="syllable-text">phở</span><span class="tone">hỏi</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/food_to-pho.mp3">▶︎ Phrase</button>
@@ -461,11 +492,14 @@
             <!-- Ngon quá! — So delicious! -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/ngon.mp3">▶︎</button><span class="syllable-text">Ngon</span><span
-                            class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/quá.mp3">▶︎</button><span
-                            class="syllable-text">quá</span><span class="tone">sắc</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/ngon.mp3">▶︎</button>
+                        <span class="syllable-text">Ngon</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/quá.mp3">▶︎</button>
+                        <span class="syllable-text">quá</span><span class="tone">sắc</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/food_ngon-qua.mp3">▶︎ Phrase</button>
@@ -480,14 +514,18 @@
             <!-- Tính tiền, ơi! — The bill, please -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/tính.mp3">▶︎</button><span class="syllable-text">Tính</span><span
-                            class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/tiền.mp3">▶︎</button><span class="syllable-text">tiền</span><span
-                            class="tone">huyền</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/ơi.mp3">▶︎</button><span
-                            class="syllable-text">ơi</span><span class="tone">không</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/tính.mp3">▶︎</button>
+                        <span class="syllable-text">Tính</span><span class="tone">sắc</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/tiền.mp3">▶︎</button>
+                        <span class="syllable-text">tiền</span><span class="tone">huyền</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/ơi.mp3">▶︎</button>
+                        <span class="syllable-text">ơi</span><span class="tone">không</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/food_tinh-tien-oi.mp3">▶︎ Phrase</button>
@@ -503,16 +541,26 @@
         <!-- Travel -->
         <section id="travel" class="screen hidden">
             <h2>Travel</h2>
+            <div class="screen-head">
+                <div></div>
+                <button class="btn back-home">← Back to Categories</button>
+            </div>
 
             <!-- Đi đâu vậy? — Where are you going? -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/đi.mp3">▶︎</button><span
-                            class="syllable-text">Đi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/đâu.mp3">▶︎</button><span
-                            class="syllable-text">đâu</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/vậy.mp3">▶︎</button><span
-                            class="syllable-text">vậy</span><span class="tone">nặng</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/đi.mp3">▶︎</button>
+                        <span class="syllable-text">Đi</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/đâu.mp3">▶︎</button>
+                        <span class="syllable-text">đâu</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/vậy.mp3">▶︎</button>
+                        <span class="syllable-text">vậy</span><span class="tone">nặng</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/travel_di-dau-vay.mp3">▶︎ Phrase</button>
@@ -527,14 +575,18 @@
             <!-- Bao nhiêu tiền? — How much? -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/bao.mp3">▶︎</button><span
-                            class="syllable-text">Bao</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/nhiêu.mp3">▶︎</button><span class="syllable-text">nhiêu</span><span
-                            class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/tiền.mp3">▶︎</button><span class="syllable-text">tiền</span><span
-                            class="tone">không</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/bao.mp3">▶︎</button>
+                        <span class="syllable-text">Bao</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/nhiêu.mp3">▶︎</button>
+                        <span class="syllable-text">nhiêu</span><span class="tone">sắc</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/tiền.mp3">▶︎</button>
+                        <span class="syllable-text">tiền</span><span class="tone">không</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/travel_bao-nhieu-tien.mp3">▶︎ Phrase</button>
@@ -550,10 +602,14 @@
             <!-- Quá mắc! — Too expensive! -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/quá.mp3">▶︎</button><span
-                            class="syllable-text">Quá</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/mắc.mp3">▶︎</button><span
-                            class="syllable-text">mắc</span><span class="tone">sắc</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/quá.mp3">▶︎</button>
+                        <span class="syllable-text">Quá</span><span class="tone">sắc</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/mắc.mp3">▶︎</button>
+                        <span class="syllable-text">mắc</span><span class="tone">sắc</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/travel_qua-mac.mp3">▶︎ Phrase</button>
@@ -568,15 +624,22 @@
             <!-- Cho tôi xuống đây — Let me get off here -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/cho.mp3">▶︎</button><span
-                            class="syllable-text">Cho</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button><span
-                            class="syllable-text">tôi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/xuống.mp3">▶︎</button><span class="syllable-text">xuống</span><span
-                            class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/đây.mp3">▶︎</button><span
-                            class="syllable-text">đây</span><span class="tone">không</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/cho.mp3">▶︎</button>
+                        <span class="syllable-text">Cho</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button>
+                        <span class="syllable-text">tôi</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/xuống.mp3">▶︎</button>
+                        <span class="syllable-text">xuống</span><span class="tone">sắc</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/đây.mp3">▶︎</button>
+                        <span class="syllable-text">đây</span><span class="tone">không</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/travel_cho-toi-xuong-day.mp3">▶︎
@@ -594,15 +657,22 @@
             <!-- Xe buýt ở đâu? — Where is the bus? -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/xe.mp3">▶︎</button><span
-                            class="syllable-text">Xe</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/buýt.mp3">▶︎</button><span class="syllable-text">buýt</span><span
-                            class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/ở.mp3">▶︎</button><span
-                            class="syllable-text">ở</span><span class="tone">hỏi</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/đâu.mp3">▶︎</button><span
-                            class="syllable-text">đâu</span><span class="tone">không</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/xe.mp3">▶︎</button>
+                        <span class="syllable-text">Xe</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/buýt.mp3">▶︎</button>
+                        <span class="syllable-text">buýt</span><span class="tone">sắc</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/ở.mp3">▶︎</button>
+                        <span class="syllable-text">ở</span><span class="tone">hỏi</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/đâu.mp3">▶︎</button>
+                        <span class="syllable-text">đâu</span><span class="tone">không</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/travel_xe-buyt-o-dau.mp3">▶︎ Phrase</button>
@@ -618,15 +688,22 @@
             <!-- Tôi muốn đi tới… — I want to go to… -->
             <div class="phrase">
                 <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button><span
-                            class="syllable-text">Tôi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/muốn.mp3">▶︎</button><span class="syllable-text">muốn</span><span
-                            class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/đi.mp3">▶︎</button><span
-                            class="syllable-text">đi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tới.mp3">▶︎</button><span
-                            class="syllable-text">tới</span><span class="tone">sắc</span></div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button>
+                        <span class="syllable-text">Tôi</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/muốn.mp3">▶︎</button>
+                        <span class="syllable-text">muốn</span><span class="tone">sắc</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/đi.mp3">▶︎</button>
+                        <span class="syllable-text">đi</span><span class="tone">không</span>
+                    </div>
+                    <div class="syllable">
+                        <button class="btn primary" data-audio="assets/audio/tới.mp3">▶︎</button>
+                        <span class="syllable-text">tới</span><span class="tone">sắc</span>
+                    </div>
                 </div>
                 <div class="controls">
                     <button class="btn primary" data-audio="assets/audio/travel_toi-muon-di-toi.mp3">▶︎ Phrase</button>
@@ -639,10 +716,13 @@
                 <div class="english">I want to go to…</div>
             </div>
         </section>
-
         <!-- Social -->
         <section id="social" class="screen hidden">
             <h2>Social</h2>
+            <div class="screen-head">
+                <div></div>
+                <button class="btn back-home">← Back to Categories</button>
+            </div>
 
             <!-- Bạn tên gì? — What’s your name? -->
             <div class="phrase">
@@ -805,6 +885,10 @@
         <!-- Shopping & Money -->
         <section id="shopping" class="screen hidden">
             <h2>Shopping &amp; Money</h2>
+            <div class="screen-head">
+                <div></div>
+                <button class="btn back-home">← Back to Categories</button>
+            </div>
 
             <!-- Bao nhiêu tiền? — How much? -->
             <div class="phrase">
@@ -1001,32 +1085,56 @@
     <noscript>This app needs JavaScript to load phrases and audio.</noscript>
     <script defer src="./assets/js/app.js"></script>
 
+    <!-- Category navigation -->
     <script>
+        const categories = document.getElementById("categories");
         const links = document.querySelectorAll(".cat-link");
         const screens = document.querySelectorAll(".screen");
-        function showScreen(id) {
+
+        function showOnly(el) {
             screens.forEach(s => s.classList.add("hidden"));
-            const el = document.getElementById(id);
             if (el) el.classList.remove("hidden");
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        function showHome() {
+            categories.classList.remove("hidden");
+            showOnly(null);
+            links.forEach(l => l.classList.remove("selected"));
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+        function showScreenById(id, linkEl) {
+            categories.classList.add("hidden");
+            const el = document.getElementById(id);
+            showOnly(el);
+            links.forEach(l => l.classList.remove("selected"));
+            if (linkEl) linkEl.classList.add("selected");
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+
         links.forEach(link => {
-            link.addEventListener("click", e => {
+            link.addEventListener("click", (e) => {
                 e.preventDefault();
-                links.forEach(l => l.classList.remove("selected"));
-                link.classList.add("selected");
-                showScreen(link.getAttribute("data-target"));
+                const targetId = link.getAttribute("data-target");
+                showScreenById(targetId, link);
             });
         });
+        document.querySelectorAll(".back-home").forEach(btn => {
+            btn.addEventListener("click", () => showHome());
+        });
+        showHome();
+    </script>
 
-        document.addEventListener("DOMContentLoaded", () => {
+    <!-- Audio playback -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
             const buttons = document.querySelectorAll("button[data-audio]");
             const player = new Audio();
             let currentBtn = null;
+
             function clearPlaying() {
                 if (currentBtn) currentBtn.classList.remove("playing");
                 currentBtn = null;
             }
+
             buttons.forEach(btn => {
                 btn.addEventListener("click", () => {
                     const src = btn.getAttribute("data-audio");
@@ -1038,12 +1146,89 @@
                     player.play().catch(() => clearPlaying());
                 });
             });
+
             player.addEventListener("ended", clearPlaying);
             player.addEventListener("pause", () => {
                 if (player.currentTime === 0 || player.currentTime === player.duration) clearPlaying();
             });
             player.addEventListener("error", clearPlaying);
         });
+    </script>
+
+    <!-- Record & Compare -->
+    <script>
+        (() => {
+            const recordBtns = document.querySelectorAll('button[data-action="record"]');
+            const playAppBtns = document.querySelectorAll('button[data-action="play-app"]');
+            const playMineBtns = document.querySelectorAll('button[data-action="play-mine"]');
+            const myClips = new Map();
+            let mediaStream = null, mediaRecorder = null, chunks = [];
+
+            async function ensureRecorder() {
+                if (mediaRecorder && mediaRecorder.state !== 'inactive') return mediaRecorder;
+                if (!mediaStream) {
+                    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                }
+                const mime = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : '';
+                mediaRecorder = new MediaRecorder(mediaStream, mime ? { mimeType: mime } : undefined);
+                mediaRecorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+                mediaRecorder.onstop = () => { };
+                return mediaRecorder;
+            }
+
+            recordBtns.forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const id = btn.getAttribute('data-phrase-id');
+                    try {
+                        const mr = await ensureRecorder();
+                        chunks = [];
+                        mr.onstop = () => {
+                            const blob = new Blob(chunks, { type: chunks[0]?.type || 'audio/webm' });
+                            const url = URL.createObjectURL(blob);
+                            const prev = myClips.get(id);
+                            if (prev) URL.revokeObjectURL(prev);
+                            myClips.set(id, url);
+                        };
+                        mr.start();
+                        btn.disabled = true;
+                        const prevText = btn.textContent;
+                        btn.textContent = 'Recording…';
+                        setTimeout(() => {
+                            if (mr.state === 'recording') mr.stop();
+                            btn.disabled = false;
+                            btn.textContent = prevText || 'Record';
+                        }, 5000);
+                    } catch (e) {
+                        console.warn('Recording failed', e);
+                        btn.textContent = 'Record';
+                        btn.disabled = false;
+                    }
+                });
+            });
+
+            const player = new Audio();
+
+            playAppBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const row = btn.closest('.phrase');
+                    const phraseBtn = row?.querySelector('button[data-audio].primary');
+                    const src = phraseBtn?.getAttribute('data-audio');
+                    if (!src) return;
+                    player.src = src;
+                    player.play().catch(() => { });
+                });
+            });
+
+            playMineBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-phrase-id');
+                    const url = myClips.get(id);
+                    if (!url) return;
+                    player.src = url;
+                    player.play().catch(() => { });
+                });
+            });
+        })();
     </script>
 </body>
 
