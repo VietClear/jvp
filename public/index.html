@@ -1,1234 +1,701 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
+    <title>John’s Vietnamese Phrases (JVP)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>John’s Vietnamese Phrases</title>
-
-    <link rel="manifest" href="./manifest.webmanifest" />
-    <meta name="theme-color" content="#0ea5a8" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="John’s Vietnamese Phrases">
-    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-
-    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <meta name="color-scheme" content="light dark" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
+        :root {
+            --bg: #0b0c0f;
+            --panel: #11141a;
+            --muted: #8b93a7;
+            --text: #e8ecf2;
+            --accent: #27c3a6;
+            --accent2: #ffb74a;
+            --danger: #ff6b6b;
+            --border: #1f2634;
+            --card: #0e1218;
+            --shadow: rgba(0, 0, 0, .35)
+        }
 
-        h1:first-of-type {
-            font-family: "Caveat", cursive, sans-serif;
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        button {
+            appearance: none;
+            border: 1px solid var(--border);
+            background: #121826;
+            color: var(--text);
+            padding: 10px 14px;
+            border-radius: 12px;
             font-weight: 600;
-            text-align: center;
-            margin: 20px 0 10px;
-            font-size: 3.6em;
-            color: red;
+            cursor: pointer;
+            transition: .15s border-color, .15s background, .02s transform
         }
 
-        @media (max-width: 480px) {
-            h1:first-of-type {
-                font-size: 1.6em;
-            }
+        button:hover {
+            border-color: #2a3245
         }
 
-        .btn {
-            transition: background-color .15s ease, border-color .15s ease, filter .12s ease, transform .02s ease;
+        button:active {
+            transform: translateY(1px)
         }
 
-        .btn.playing {
-            background-color: #dc2626;
-            border-color: #b91c1c;
-            color: #fff;
+        button[disabled] {
+            opacity: .6;
+            cursor: not-allowed
         }
 
-        .btn[disabled] {
-            opacity: .55;
-            cursor: not-allowed;
+        .primary {
+            background: #0f1918;
+            border-color: #1d3a37
         }
 
-        .cat-link.selected {
-            border-color: #dc2626 !important;
-            outline: 3px solid #fecaca;
-            background: #fff5f5;
+        .warn {
+            background: #191314;
+            border-color: #3a1d1f
         }
 
-        .cat-link.selected .card-title {
-            color: #b91c1c;
+        .ghost {
+            background: #0f141d
         }
 
-        .phrase {
-            margin-bottom: 1.5em;
-            padding: 1em 0;
-            border-bottom: 1px solid #ddd;
+        .linklike {
+            background: transparent;
+            border-color: transparent;
+            padding: 8px 10px;
+            opacity: .9
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid var(--border);
+            background: #0e1117;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px
+        }
+
+        .app {
             display: grid;
-            grid-template-columns: 1fr minmax(220px, 32%);
-            grid-auto-rows: auto;
-            gap: .75rem 1rem;
-            align-items: start;
+            grid-template-rows: auto 1fr auto;
+            height: 100vh
         }
 
-        .syllables {
-            grid-column: 1;
+        .topbar {
             display: flex;
-            flex-wrap: wrap;
-            gap: .5em;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            background: #0d1117;
+            position: sticky;
+            top: 0;
+            z-index: 3
         }
 
-        .syllable {
-            text-align: center;
-            min-width: 84px;
-        }
-
-        .syllable-text {
-            display: block;
-            font-size: 1.4em;
-        }
-
-        .tone {
-            font-size: .8em;
-            color: #555;
-        }
-
-        .controls {
-            grid-column: 1;
-            margin-top: .25rem;
+        .title {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: .2px;
+            margin: 0;
             display: flex;
-            gap: .5em;
-            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center
         }
 
-        .english {
-            grid-column: 2;
-            grid-row: 1 / span 2;
-            font-size: 1.05rem;
-            line-height: 1.35;
-            color: #222;
-            align-self: start;
+        .pill {
+            font-size: 12px;
+            color: var(--muted)
         }
 
-        @media (max-width: 720px) {
-            .phrase {
-                grid-template-columns: 1fr;
-            }
-
-            .english {
-                grid-column: 1;
-                grid-row: auto;
-                font-size: 1rem;
-            }
+        .container {
+            height: 100%;
+            overflow: auto
         }
 
         .screen {
-            margin-top: 1.25rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 18px;
+            display: none
         }
 
-        .screen .screen-head {
+        .screen.active {
+            display: block
+        }
+
+        .grid {
+            display: grid;
+            gap: 14px
+        }
+
+        .categories {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))
+        }
+
+        .card {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--card);
+            box-shadow: 0 6px 18px var(--shadow);
+            padding: 16px
+        }
+
+        .cat {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: .75rem;
-            margin: .5rem 0 1rem;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer
         }
 
-        .screen .back-home {
-            padding: .5rem .75rem;
+        .cat h3 {
+            margin: 0 0 4px 0
+        }
+
+        .phrases {
+            display: grid;
+            gap: 16px
+        }
+
+        .phrase-card h2 {
+            margin: 0 0 4px 0
+        }
+
+        .subtitle {
+            margin: 0;
+            color: var(--muted)
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 10px
+        }
+
+        .syllables {
+            border-top: 1px dashed var(--border);
+            margin-top: 12px;
+            padding-top: 12px;
+            display: grid;
+            gap: 10px
+        }
+
+        .syll-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 10px;
+            align-items: center
+        }
+
+        .syll-txt {
+            font-size: 18px;
+            font-weight: 700
+        }
+
+        .tone-chip {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        audio {
+            width: 100%
+        }
+
+        @media (max-width:720px) {
+            .syll-row {
+                grid-template-columns: auto 1fr
+            }
         }
     </style>
 </head>
 
 <body>
-    <header class="header">
-        <div class="header-inner container">
-            <h1>John's Vietnamese Phrases</h1>
+    <div class="app">
+        <header class="topbar">
+            <div class="title">
+                <span
+                    style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block"></span>
+                John’s Vietnamese Phrases
+            </div>
+            <div class="toolbar">
+                <button id="btnCategories" class="linklike" title="Back to Categories" style="display:none">◀
+                    Categories</button>
+                <button id="btnToneGuide" class="linklike" title="Tone Guide">Tone Guide</button>
+                <span class="pill" id="netStatus"></span>
+            </div>
+        </header>
+
+        <main class="container">
+            <!-- Screen: Categories -->
+            <section id="screenCategories" class="screen active">
+                <div class="grid categories" id="categoryGrid"></div>
+            </section>
+
+            <!-- Screen: Phrase List within a Category -->
+            <section id="screenPhrases" class="screen">
+                <div class="grid phrases" id="phrasesGrid"></div>
+            </section>
+
+            <!-- Screen: Tone Guide (no audio files required) -->
+            <section id="screenGuide" class="screen">
+                <div class="card">
+                    <h2>Tone Guide (Southern Vietnamese)</h2>
+                    <p class="subtitle">Names and rough pitch shapes.</p>
+                    <ul id="toneList" style="margin:10px 0 0 18px;line-height:1.6"></ul>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <span id="status">Ready.</span>
+            <span>Build: 2025-09-04 • BP2-complete subset (uses your exact filenames).</span>
+        </footer>
+    </div>
+    <script>
+        // Tones (labels only; no tone audio files required)
+        const TONES = [
+            { key: "khong", name: "không (level)", shape: "—" },
+            { key: "sac", name: "sắc (high rising)", shape: "↗" },
+            { key: "huyen", name: "huyền (low falling)", shape: "↘" },
+            { key: "hoi", name: "hỏi (dipping)", shape: "∨" },
+            { key: "nga", name: "ngã (creaky rising)", shape: "˷↗" },
+            { key: "nang", name: "nặng (glottal low)", shape: "•" },
+            { key: "loan", name: "loan/foreign", shape: "" }
+        ];
+
+        // Helper to build a syllable object with your exact audio filename
+        const A = (file, text, tone) => ({ text, tone, audio: `assets/audio/${file}` });
+
+        // CATEGORIES with phrases limited to the syllables you actually provided (fully playable)
+        const CATS = [
+            {
+                id: "essentials", name: "Essentials",
+                phrases: [
+                    {
+                        key: "xin-chao", vi: "Xin chào", en: "Hello",
+                        syllables: [A("xin.mp3", "Xin", "sac"), A("chào.mp3", "chào", "huyen")]
+                    },
+
+                    {
+                        key: "tam-biet", vi: "Tạm biệt", en: "Goodbye",
+                        syllables: [A("tạm.mp3", "Tạm", "nang"), A("biệt.mp3", "biệt", "sac")]
+                    },
+
+                    {
+                        key: "khoe-khong", vi: "Khỏe không?", en: "How are you?",
+                        syllables: [A("khỏe.mp3", "Khỏe", "hoi"), A("không.mp3", "không", "khong")]
+                    },
+
+                    {
+                        key: "toi-khoe", vi: "Tôi khỏe", en: "I’m fine",
+                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("khỏe.mp3", "khỏe", "hoi")]
+                    },
+
+                    {
+                        key: "toi-chi-noi-duoc-mot-chut-tieng-viet",
+                        vi: "Tôi chỉ nói được một chút tiếng Việt",
+                        en: "I only speak a little Vietnamese",
+                        syllables: [
+                            A("tôi.mp3", "Tôi", "khong"),
+                            A("chỉ.mp3", "chỉ", "hoi"),
+                            A("nói.mp3", "nói", "sac"),
+                            A("được.mp3", "được", "nang"),
+                            A("một.mp3", "một", "nang"),
+                            A("chút.mp3", "chút", "sac"),
+                            A("tiếng.mp3", "tiếng", "sac"),
+                            A("việt.mp3", "Việt", "nang")
+                        ]
+                    },
+
+                    {
+                        key: "khong-co-gi", vi: "Không có gì", en: "You’re welcome / no problem",
+                        syllables: [A("không.mp3", "Không", "khong"), A("có.mp3", "có", "sac"), A("gì.mp3", "gì", "khong")]
+                    },
+
+                    {
+                        key: "rat-vui-duoc-gap-ban", vi: "Rất vui được gặp bạn", en: "Nice to meet you",
+                        syllables: [
+                            A("rất.mp3", "Rất", "sac"),
+                            A("vui.mp3", "vui", "khong"),
+                            A("được.mp3", "được", "nang"),
+                            A("gặp.mp3", "gặp", "nang"),
+                            A("bạn.mp3", "bạn", "nang")
+                        ]
+                    },
+                ]
+            },
+            {
+                id: "food", name: "Food & Drink",
+                phrases: [
+                    {
+                        key: "ca-phe-sua-da", vi: "Cà phê sữa đá", en: "Iced coffee with milk",
+                        syllables: [A("cà.mp3", "Cà", "huyen"), A("phê.mp3", "phê", "khong"), A("sữa.mp3", "sữa", "sac"), A("đá.mp3", "đá", "sac")]
+                    },
+
+                    {
+                        key: "nuoc-loc", vi: "Nước lọc", en: "Water",
+                        syllables: [A("nước.mp3", "Nước", "sac"), A("lọc.mp3", "lọc", "nang")]
+                    },
+
+                    {
+                        key: "to-pho", vi: "Tô phở", en: "A bowl of phở",
+                        syllables: [A("tô.mp3", "Tô", "khong"), A("phở.mp3", "phở", "hoi")]
+                    },
+
+                    {
+                        key: "ngon-qua", vi: "Ngon quá!", en: "So delicious!",
+                        syllables: [A("ngon.mp3", "Ngon", "khong"), A("quá.mp3", "quá", "sac")]
+                    },
+
+                    {
+                        key: "tinh-tien-oi", vi: "Tính tiền, ơi!", en: "The bill, please",
+                        syllables: [A("tính.mp3", "Tính", "sac"), A("tiền.mp3", "tiền", "huyen"), A("ơi.mp3", "ơi", "khong")]
+                    },
+                ]
+            },
+            {
+                id: "travel", name: "Travel",
+                phrases: [
+                    {
+                        key: "di-dau-vay", vi: "Đi đâu vậy?", en: "Where are you going?",
+                        syllables: [A("đi.mp3", "Đi", "khong"), A("đâu.mp3", "đâu", "khong"), A("vậy.mp3", "vậy", "nang")]
+                    },
+
+                    {
+                        key: "qua-mac", vi: "Quá mắc!", en: "Too expensive!",
+                        syllables: [A("quá.mp3", "Quá", "sac"), A("mắc.mp3", "mắc", "sac")]
+                    },
+
+                    {
+                        key: "toi-muon-di-toi", vi: "Tôi muốn đi tới…", en: "I want to go to…",
+                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("muốn.mp3", "muốn", "sac"), A("đi.mp3", "đi", "khong"), A("tới.mp3", "tới", "sac")]
+                    },
+                ]
+            },
+            {
+                id: "social", name: "Social",
+                phrases: [
+                    {
+                        key: "ban-ten-gi", vi: "Bạn tên gì?", en: "What’s your name?",
+                        syllables: [A("bạn.mp3", "Bạn", "nang"), A("tên.mp3", "tên", "khong"), A("gì.mp3", "gì", "huyen")]
+                    },
+
+                    {
+                        key: "toi-ten-la-john", vi: "Tôi tên là John", en: "My name is John",
+                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("tên.mp3", "tên", "khong"), A("là.mp3", "là", "huyen"), A("john.mp3", "John", "loan")]
+                    },
+
+                    {
+                        key: "toi-khong-hieu", vi: "Tôi không hiểu", en: "I don’t understand",
+                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("không.mp3", "không", "khong"), A("hiểu.mp3", "hiểu", "hoi")]
+                    },
+
+                    {
+                        key: "khong-sao-dau", vi: "Không sao đâu", en: "It’s okay / no problem",
+                        syllables: [A("không.mp3", "Không", "khong"), A("sao.mp3", "sao", "khong"), A("đâu.mp3", "đâu", "khong")]
+                    },
+
+                    {
+                        key: "toi-nho-ban", vi: "Tôi nhớ bạn", en: "I miss you",
+                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("nhớ.mp3", "nhớ", "sac"), A("bạn.mp3", "bạn", "nang")]
+                    },
+
+                    {
+                        key: "toi-thuong-ban", vi: "Tôi thương bạn", en: "I love you",
+                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("thương.mp3", "thương", "khong"), A("bạn.mp3", "bạn", "nang")]
+                    },
+                ]
+            },
+            {
+                id: "shopping", name: "Shopping & Money",
+                phrases: [
+                    {
+                        key: "giam-gia-duoc-khong", vi: "Giảm giá được không?", en: "Can you give a discount?",
+                        syllables: [A("giảm.mp3", "Giảm", "hoi"), A("giá.mp3", "giá", "sac"), A("được.mp3", "được", "nang"), A("không.mp3", "không", "khong")]
+                    },
+
+                    {
+                        key: "mac-qua", vi: "Mắc quá!", en: "Too expensive!",
+                        syllables: [A("mắc.mp3", "Mắc", "sac"), A("quá.mp3", "quá", "sac")]
+                    },
+
+                    {
+                        key: "co-size-lon-hon-khong", vi: "Có size lớn hơn không?", en: "Do you have a bigger size?",
+                        syllables: [A("có.mp3", "Có", "sac"), A("size.mp3", "size", "loan"), A("lớn.mp3", "lớn", "sac"), A("hơn.mp3", "hơn", "khong"), A("không.mp3", "không", "khong")]
+                    },
+                ]
+            }
+        ];
+        // ---------- DOM + RENDER ----------
+        const els = {};
+        const $ = s => document.querySelector(s);
+
+        function initEls() {
+            els.screenCategories = $("#screenCategories");
+            els.screenPhrases = $("#screenPhrases");
+            els.screenGuide = $("#screenGuide");
+            els.categoryGrid = $("#categoryGrid");
+            els.phrasesGrid = $("#phrasesGrid");
+            els.btnCategories = $("#btnCategories");
+            els.btnToneGuide = $("#btnToneGuide");
+            els.status = $("#status");
+            els.netStatus = $("#netStatus");
+            els.toneList = $("#toneList");
+        }
+
+        function setScreen(name) {
+            [els.screenCategories, els.screenPhrases, els.screenGuide].forEach(s => s.classList.remove("active"));
+            if (name === "categories") { els.screenCategories.classList.add("active"); els.btnCategories.style.display = "none"; setStatus("Select a category."); }
+            if (name === "phrases") { els.screenPhrases.classList.add("active"); els.btnCategories.style.display = "inline-block"; setStatus(""); }
+            if (name === "guide") { els.screenGuide.classList.add("active"); els.btnCategories.style.display = "inline-block"; setStatus(""); }
+        }
+
+        function renderCategories() {
+            els.categoryGrid.innerHTML = "";
+            CATS.forEach(cat => {
+                const div = document.createElement("div");
+                div.className = "card cat";
+                div.innerHTML = `<h3>${cat.name}</h3><p class="subtitle">${cat.phrases.length} phrases</p>`;
+                div.addEventListener("click", () => openCategory(cat.id));
+                els.categoryGrid.appendChild(div);
+            });
+        }
+
+        function openCategory(catId) {
+            const cat = CATS.find(c => c.id === catId);
+            if (!cat) return;
+            els.phrasesGrid.innerHTML = "";
+            cat.phrases.forEach(p => els.phrasesGrid.appendChild(renderPhraseCard(p)));
+            setScreen("phrases");
+        }
+
+        function renderPhraseCard(p) {
+            const card = document.createElement("div");
+            card.className = "card phrase-card";
+            card.innerHTML = `
+        <h2>${p.vi}</h2>
+        <p class="subtitle">${p.en}</p>
+        <div class="row">
+          <button class="primary" data-role="play-phrase">▶︎ Play phrase</button>
+          <button class="ghost" data-role="record" data-key="${p.key}">● Record</button>
+          <button class="warn"  data-role="stop" data-key="${p.key}" disabled>■ Stop</button>
+          <button class="ghost" data-role="play-user" data-key="${p.key}" disabled>▶︎ Play My Recording</button>
+          <span class="badge" title="ToneChecker placeholder"><strong>Check Tone</strong> (coming soon)</span>
         </div>
-    </header>
-
-    <main id="app" class="container mt-16">
-        <!-- Categories -->
-        <section id="categories" class="grid cols-2" aria-label="Categories">
-            <a href="#" class="card cat-link" data-target="essentials">
-                <div class="card-title">Essentials</div>
-            </a>
-            <a href="#" class="card cat-link" data-target="food">
-                <div class="card-title">Food &amp; Drink</div>
-            </a>
-            <a href="#" class="card cat-link" data-target="travel">
-                <div class="card-title">Travel</div>
-            </a>
-            <a href="#" class="card cat-link" data-target="social">
-                <div class="card-title">Social</div>
-            </a>
-            <a href="#" class="card cat-link" data-target="shopping">
-                <div class="card-title">Shopping &amp; Money</div>
-            </a>
-        </section>
-
-        <!-- Essentials -->
-        <section id="essentials" class="screen hidden">
-            <h2>Essentials</h2>
-            <div class="screen-head">
-                <div></div>
-                <button class="btn back-home">← Back to Categories</button>
+        <div class="syllables">
+          ${p.syllables.map(syl => `
+            <div class="syll-row">
+              <button class="primary" data-role="play-syll" data-audio="${syl.audio}">▶︎</button>
+              <div class="syll-txt">${syl.text}</div>
+              <div class="tone-chip">${toneName(syl.tone)}</div>
             </div>
+          `).join("")}
+        </div>
+        <audio preload="none" controls playsinline style="margin-top:8px;display:none"></audio>
+      `;
 
-            <!-- Xin chào — Hello -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/xin.mp3">▶︎</button>
-                        <span class="syllable-text">Xin</span><span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/chào.mp3">▶︎</button>
-                        <span class="syllable-text">chào</span><span class="tone">huyền</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/essentials_xin-chao.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="xin-chao">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="xin-chao">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="xin-chao">Play App Audio</button>
-                </div>
-                <div class="english">Hello</div>
-            </div>
+            // Bind: play full phrase (sequential syllables)
+            const btnPlayPhrase = card.querySelector('[data-role="play-phrase"]');
+            btnPlayPhrase.addEventListener("click", () => playPhraseSequence(p.syllables.map(s => s.audio), card));
 
-            <!-- Tạm biệt — Goodbye -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tạm.mp3">▶︎</button>
-                        <span class="syllable-text">Tạm</span><span class="tone">nặng</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/biệt.mp3">▶︎</button>
-                        <span class="syllable-text">biệt</span><span class="tone">sắc</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/essentials_tam-biet.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="tam-biet">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="tam-biet">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="tam-biet">Play App Audio</button>
-                </div>
-                <div class="english">Goodbye</div>
-            </div>
-
-            <!-- Khỏe không? — How are you? -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/khỏe.mp3">▶︎</button>
-                        <span class="syllable-text">Khỏe</span><span class="tone">hỏi</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/không.mp3">▶︎</button>
-                        <span class="syllable-text">không</span><span class="tone">không</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/essentials_khoe-khong.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="khoe-khong">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="khoe-khong">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="khoe-khong">Play App Audio</button>
-                </div>
-                <div class="english">How are you?</div>
-            </div>
-
-            <!-- Tôi khỏe — I’m fine -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button>
-                        <span class="syllable-text">Tôi</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/khỏe.mp3">▶︎</button>
-                        <span class="syllable-text">khỏe</span><span class="tone">hỏi</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/essentials_toi-khoe.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="toi-khoe">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="toi-khoe">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="toi-khoe">Play App Audio</button>
-                </div>
-                <div class="english">I’m fine</div>
-            </div>
-
-            <!-- Cảm ơn — Thank you -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/cảm.mp3">▶︎</button>
-                        <span class="syllable-text">Cảm</span><span class="tone">hỏi</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/ơn.mp3">▶︎</button>
-                        <span class="syllable-text">ơn</span><span class="tone">không</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/essentials_cam-on.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="cam-on">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="cam-on">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="cam-on">Play App Audio</button>
-                </div>
-                <div class="english">Thank you</div>
-            </div>
-
-            <!-- Tôi chỉ nói được một chút tiếng Việt — I only speak a little Vietnamese -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button><span
-                            class="syllable-text">Tôi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/chỉ.mp3">▶︎</button><span
-                            class="syllable-text">chỉ</span><span class="tone">hỏi</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/nói.mp3">▶︎</button><span
-                            class="syllable-text">nói</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/được.mp3">▶︎</button><span class="syllable-text">được</span><span
-                            class="tone">nặng</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/một.mp3">▶︎</button><span
-                            class="syllable-text">một</span><span class="tone">nặng</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/chút.mp3">▶︎</button><span class="syllable-text">chút</span><span
-                            class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/tiếng.mp3">▶︎</button><span class="syllable-text">tiếng</span><span
-                            class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/việt.mp3">▶︎</button><span class="syllable-text">Việt</span><span
-                            class="tone">nặng</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary"
-                        data-audio="assets/audio/essentials_toi-chi-noi-duoc-mot-chut-tieng-viet.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record"
-                        data-phrase-id="toi-chi-noi-duoc-mot-chut-tieng-viet">Record</button>
-                    <button class="btn" data-action="play-mine"
-                        data-phrase-id="toi-chi-noi-duoc-mot-chut-tieng-viet">Play My Recording</button>
-                    <button class="btn" data-action="play-app"
-                        data-phrase-id="toi-chi-noi-duoc-mot-chut-tieng-viet">Play App Audio</button>
-                </div>
-                <div class="english">I only speak a little Vietnamese</div>
-            </div>
-
-            <!-- Không có gì — You’re welcome / no problem -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/không.mp3">▶︎</button><span class="syllable-text">Không</span><span
-                            class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/có.mp3">▶︎</button><span
-                            class="syllable-text">có</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/gì.mp3">▶︎</button><span
-                            class="syllable-text">gì</span><span class="tone">không</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/essentials_khong-co-gi.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="khong-co-gi">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="khong-co-gi">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="khong-co-gi">Play App Audio</button>
-                </div>
-                <div class="english">You’re welcome / no problem</div>
-            </div>
-
-            <!-- Rất vui được gặp bạn — Nice to meet you -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/rất.mp3">▶︎</button><span
-                            class="syllable-text">Rất</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/vui.mp3">▶︎</button><span
-                            class="syllable-text">vui</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/được.mp3">▶︎</button><span class="syllable-text">được</span><span
-                            class="tone">nặng</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/gặp.mp3">▶︎</button><span
-                            class="syllable-text">gặp</span><span class="tone">nặng</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/bạn.mp3">▶︎</button><span
-                            class="syllable-text">bạn</span><span class="tone">nặng</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/essentials_rat-vui-duoc-gap-ban.mp3">▶︎
-                        Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="rat-vui-duoc-gap-ban">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="rat-vui-duoc-gap-ban">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="rat-vui-duoc-gap-ban">Play App
-                        Audio</button>
-                </div>
-                <div class="english">Nice to meet you</div>
-            </div>
-
-        </section>
-        <!-- Food & Drink -->
-        <section id="food" class="screen hidden">
-            <h2>Food &amp; Drink</h2>
-            <div class="screen-head">
-                <div></div>
-                <button class="btn back-home">← Back to Categories</button>
-            </div>
-
-            <!-- Cà phê sữa đá — Iced coffee with milk -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/cà.mp3">▶︎</button>
-                        <span class="syllable-text">Cà</span><span class="tone">huyền</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/phê.mp3">▶︎</button>
-                        <span class="syllable-text">phê</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/sữa.mp3">▶︎</button>
-                        <span class="syllable-text">sữa</span><span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/đá.mp3">▶︎</button>
-                        <span class="syllable-text">đá</span><span class="tone">sắc</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/food_ca-phe-sua-da.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="ca-phe-sua-da">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="ca-phe-sua-da">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="ca-phe-sua-da">Play App Audio</button>
-                </div>
-                <div class="english">Iced coffee with milk</div>
-            </div>
-
-            <!-- Cho tôi một ly bia — Give me a beer -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/cho.mp3">▶︎</button>
-                        <span class="syllable-text">Cho</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button>
-                        <span class="syllable-text">tôi</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/một.mp3">▶︎</button>
-                        <span class="syllable-text">một</span><span class="tone">nặng</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/ly.mp3">▶︎</button>
-                        <span class="syllable-text">ly</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/bia.mp3">▶︎</button>
-                        <span class="syllable-text">bia</span><span class="tone">không</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/food_cho-toi-mot-ly-bia.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="cho-toi-mot-ly-bia">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="cho-toi-mot-ly-bia">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="cho-toi-mot-ly-bia">Play App
-                        Audio</button>
-                </div>
-                <div class="english">Give me a beer</div>
-            </div>
-
-            <!-- Nước lọc — Water (plain) -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/nước.mp3">▶︎</button>
-                        <span class="syllable-text">Nước</span><span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/lọc.mp3">▶︎</button>
-                        <span class="syllable-text">lọc</span><span class="tone">nặng</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/food_nuoc-loc.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="nuoc-loc">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="nuoc-loc">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="nuoc-loc">Play App Audio</button>
-                </div>
-                <div class="english">Water (plain)</div>
-            </div>
-
-            <!-- Tô phở — A bowl of phở -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tô.mp3">▶︎</button>
-                        <span class="syllable-text">Tô</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/phở.mp3">▶︎</button>
-                        <span class="syllable-text">phở</span><span class="tone">hỏi</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/food_to-pho.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="to-pho">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="to-pho">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="to-pho">Play App Audio</button>
-                </div>
-                <div class="english">A bowl of phở</div>
-            </div>
-
-            <!-- Ngon quá! — So delicious! -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/ngon.mp3">▶︎</button>
-                        <span class="syllable-text">Ngon</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/quá.mp3">▶︎</button>
-                        <span class="syllable-text">quá</span><span class="tone">sắc</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/food_ngon-qua.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="ngon-qua">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="ngon-qua">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="ngon-qua">Play App Audio</button>
-                </div>
-                <div class="english">So delicious!</div>
-            </div>
-
-            <!-- Tính tiền, ơi! — The bill, please -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tính.mp3">▶︎</button>
-                        <span class="syllable-text">Tính</span><span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tiền.mp3">▶︎</button>
-                        <span class="syllable-text">tiền</span><span class="tone">huyền</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/ơi.mp3">▶︎</button>
-                        <span class="syllable-text">ơi</span><span class="tone">không</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/food_tinh-tien-oi.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="tinh-tien-oi">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="tinh-tien-oi">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="tinh-tien-oi">Play App Audio</button>
-                </div>
-                <div class="english">The bill, please</div>
-            </div>
-        </section>
-
-        <!-- Travel -->
-        <section id="travel" class="screen hidden">
-            <h2>Travel</h2>
-            <div class="screen-head">
-                <div></div>
-                <button class="btn back-home">← Back to Categories</button>
-            </div>
-
-            <!-- Đi đâu vậy? — Where are you going? -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/đi.mp3">▶︎</button>
-                        <span class="syllable-text">Đi</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/đâu.mp3">▶︎</button>
-                        <span class="syllable-text">đâu</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/vậy.mp3">▶︎</button>
-                        <span class="syllable-text">vậy</span><span class="tone">nặng</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/travel_di-dau-vay.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="di-dau-vay">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="di-dau-vay">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="di-dau-vay">Play App Audio</button>
-                </div>
-                <div class="english">Where are you going?</div>
-            </div>
-
-            <!-- Bao nhiêu tiền? — How much? -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/bao.mp3">▶︎</button>
-                        <span class="syllable-text">Bao</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/nhiêu.mp3">▶︎</button>
-                        <span class="syllable-text">nhiêu</span><span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tiền.mp3">▶︎</button>
-                        <span class="syllable-text">tiền</span><span class="tone">không</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/travel_bao-nhieu-tien.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="bao-nhieu-tien">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="bao-nhieu-tien">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="bao-nhieu-tien">Play App Audio</button>
-                </div>
-                <div class="english">How much?</div>
-            </div>
-
-            <!-- Quá mắc! — Too expensive! -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/quá.mp3">▶︎</button>
-                        <span class="syllable-text">Quá</span><span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/mắc.mp3">▶︎</button>
-                        <span class="syllable-text">mắc</span><span class="tone">sắc</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/travel_qua-mac.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="qua-mac">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="qua-mac">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="qua-mac">Play App Audio</button>
-                </div>
-                <div class="english">Too expensive!</div>
-            </div>
-
-            <!-- Cho tôi xuống đây — Let me get off here -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/cho.mp3">▶︎</button>
-                        <span class="syllable-text">Cho</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button>
-                        <span class="syllable-text">tôi</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/xuống.mp3">▶︎</button>
-                        <span class="syllable-text">xuống</span><span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/đây.mp3">▶︎</button>
-                        <span class="syllable-text">đây</span><span class="tone">không</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/travel_cho-toi-xuong-day.mp3">▶︎
-                        Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="cho-toi-xuong-day">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="cho-toi-xuong-day">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="cho-toi-xuong-day">Play App
-                        Audio</button>
-                </div>
-                <div class="english">Let me get off here</div>
-            </div>
-
-            <!-- Xe buýt ở đâu? — Where is the bus? -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/xe.mp3">▶︎</button>
-                        <span class="syllable-text">Xe</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/buýt.mp3">▶︎</button>
-                        <span class="syllable-text">buýt</span><span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/ở.mp3">▶︎</button>
-                        <span class="syllable-text">ở</span><span class="tone">hỏi</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/đâu.mp3">▶︎</button>
-                        <span class="syllable-text">đâu</span><span class="tone">không</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/travel_xe-buyt-o-dau.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="xe-buyt-o-dau">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="xe-buyt-o-dau">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="xe-buyt-o-dau">Play App Audio</button>
-                </div>
-                <div class="english">Where is the bus?</div>
-            </div>
-
-            <!-- Tôi muốn đi tới… — I want to go to… -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button>
-                        <span class="syllable-text">Tôi</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/muốn.mp3">▶︎</button>
-                        <span class="syllable-text">muốn</span><span class="tone">sắc</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/đi.mp3">▶︎</button>
-                        <span class="syllable-text">đi</span><span class="tone">không</span>
-                    </div>
-                    <div class="syllable">
-                        <button class="btn primary" data-audio="assets/audio/tới.mp3">▶︎</button>
-                        <span class="syllable-text">tới</span><span class="tone">sắc</span>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/travel_toi-muon-di-toi.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="toi-muon-di-toi">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="toi-muon-di-toi">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="toi-muon-di-toi">Play App Audio</button>
-                </div>
-                <div class="english">I want to go to…</div>
-            </div>
-        </section>
-        <!-- Social -->
-        <section id="social" class="screen hidden">
-            <h2>Social</h2>
-            <div class="screen-head">
-                <div></div>
-                <button class="btn back-home">← Back to Categories</button>
-            </div>
-
-            <!-- Bạn tên gì? — What’s your name? -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/bạn.mp3">▶︎</button><span
-                            class="syllable-text">Bạn</span><span class="tone">nặng</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tên.mp3">▶︎</button><span
-                            class="syllable-text">tên</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/gì.mp3">▶︎</button><span
-                            class="syllable-text">gì</span><span class="tone">huyền</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/social_ban-ten-gi.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="ban-ten-gi">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="ban-ten-gi">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="ban-ten-gi">Play App Audio</button>
-                </div>
-                <div class="english">What’s your name?</div>
-            </div>
-
-            <!-- Tôi tên là John — My name is John -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button><span
-                            class="syllable-text">Tôi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tên.mp3">▶︎</button><span
-                            class="syllable-text">tên</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/là.mp3">▶︎</button><span
-                            class="syllable-text">là</span><span class="tone">huyền</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/john.mp3">▶︎</button><span class="syllable-text">John</span><span
-                            class="tone">loan</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/social_toi-ten-la-john.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="toi-ten-la-john">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="toi-ten-la-john">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="toi-ten-la-john">Play App Audio</button>
-                </div>
-                <div class="english">My name is John</div>
-            </div>
-
-            <!-- Bạn bao nhiêu tuổi? — How old are you? -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/bạn.mp3">▶︎</button><span
-                            class="syllable-text">Bạn</span><span class="tone">nặng</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/bao.mp3">▶︎</button><span
-                            class="syllable-text">bao</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/nhiêu.mp3">▶︎</button><span class="syllable-text">nhiêu</span><span
-                            class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/tuổi.mp3">▶︎</button><span class="syllable-text">tuổi</span><span
-                            class="tone">hỏi</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/social_ban-bao-nhieu-tuoi.mp3">▶︎
-                        Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="ban-bao-nhieu-tuoi">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="ban-bao-nhieu-tuoi">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="ban-bao-nhieu-tuoi">Play App
-                        Audio</button>
-                </div>
-                <div class="english">How old are you?</div>
-            </div>
-
-            <!-- Tôi không hiểu — I don’t understand -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button><span
-                            class="syllable-text">Tôi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/không.mp3">▶︎</button><span class="syllable-text">không</span><span
-                            class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/hiểu.mp3">▶︎</button><span class="syllable-text">hiểu</span><span
-                            class="tone">hỏi</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/social_toi-khong-hieu.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="toi-khong-hieu">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="toi-khong-hieu">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="toi-khong-hieu">Play App Audio</button>
-                </div>
-                <div class="english">I don’t understand</div>
-            </div>
-
-            <!-- Không sao đâu — It’s okay / no problem -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/không.mp3">▶︎</button><span class="syllable-text">Không</span><span
-                            class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/sao.mp3">▶︎</button><span
-                            class="syllable-text">sao</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/đâu.mp3">▶︎</button><span
-                            class="syllable-text">đâu</span><span class="tone">không</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/social_khong-sao-dau.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="khong-sao-dau">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="khong-sao-dau">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="khong-sao-dau">Play App Audio</button>
-                </div>
-                <div class="english">It’s okay / no problem</div>
-            </div>
-
-            <!-- Tôi nhớ bạn — I miss you -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button><span
-                            class="syllable-text">Tôi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/nhớ.mp3">▶︎</button><span
-                            class="syllable-text">nhớ</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/bạn.mp3">▶︎</button><span
-                            class="syllable-text">bạn</span><span class="tone">nặng</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/social_toi-nho-ban.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="toi-nho-ban">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="toi-nho-ban">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="toi-nho-ban">Play App Audio</button>
-                </div>
-                <div class="english">I miss you</div>
-            </div>
-
-            <!-- Tôi thương bạn — I love you -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button><span
-                            class="syllable-text">Tôi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/thương.mp3">▶︎</button><span
-                            class="syllable-text">thương</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/bạn.mp3">▶︎</button><span
-                            class="syllable-text">bạn</span><span class="tone">nặng</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/social_toi-thuong-ban.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="toi-thuong-ban">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="toi-thuong-ban">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="toi-thuong-ban">Play App Audio</button>
-                </div>
-                <div class="english">I love you</div>
-            </div>
-        </section>
-        <!-- Shopping & Money -->
-        <section id="shopping" class="screen hidden">
-            <h2>Shopping &amp; Money</h2>
-            <div class="screen-head">
-                <div></div>
-                <button class="btn back-home">← Back to Categories</button>
-            </div>
-
-            <!-- Bao nhiêu tiền? — How much? -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/bao.mp3">▶︎</button><span
-                            class="syllable-text">Bao</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/nhiêu.mp3">▶︎</button><span class="syllable-text">nhiêu</span><span
-                            class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/tiền.mp3">▶︎</button><span class="syllable-text">tiền</span><span
-                            class="tone">không</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/shopping_bao-nhieu-tien.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="shopping-bao-nhieu-tien">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="shopping-bao-nhieu-tien">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="shopping-bao-nhieu-tien">Play App
-                        Audio</button>
-                </div>
-                <div class="english">How much?</div>
-            </div>
-
-            <!-- Giảm giá được không? — Can you give a discount? -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/giảm.mp3">▶︎</button><span class="syllable-text">Giảm</span><span
-                            class="tone">hỏi</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/giá.mp3">▶︎</button><span
-                            class="syllable-text">giá</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/được.mp3">▶︎</button><span class="syllable-text">được</span><span
-                            class="tone">nặng</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/không.mp3">▶︎</button><span class="syllable-text">không</span><span
-                            class="tone">không</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/shopping_giam-gia-duoc-khong.mp3">▶︎
-                        Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="giam-gia-duoc-khong">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="giam-gia-duoc-khong">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="giam-gia-duoc-khong">Play App
-                        Audio</button>
-                </div>
-                <div class="english">Can you give a discount?</div>
-            </div>
-
-            <!-- Mắc quá! — Too expensive! -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/mắc.mp3">▶︎</button><span
-                            class="syllable-text">Mắc</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/quá.mp3">▶︎</button><span
-                            class="syllable-text">quá</span><span class="tone">sắc</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/shopping_mac-qua.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="mac-qua">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="mac-qua">Play My Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="mac-qua">Play App Audio</button>
-                </div>
-                <div class="english">Too expensive!</div>
-            </div>
-
-            <!-- Tôi muốn mua cái này — I want to buy this -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button><span
-                            class="syllable-text">Tôi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/muốn.mp3">▶︎</button><span class="syllable-text">muốn</span><span
-                            class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/mua.mp3">▶︎</button><span
-                            class="syllable-text">mua</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/cái.mp3">▶︎</button><span
-                            class="syllable-text">cái</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/này.mp3">▶︎</button><span
-                            class="syllable-text">này</span><span class="tone">không</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/shopping_toi-muon-mua-cai-nay.mp3">▶︎
-                        Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="toi-muon-mua-cai-nay">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="toi-muon-mua-cai-nay">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="toi-muon-mua-cai-nay">Play App
-                        Audio</button>
-                </div>
-                <div class="english">I want to buy this</div>
-            </div>
-
-            <!-- Có size lớn hơn không? — Do you have a bigger size? -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/có.mp3">▶︎</button><span
-                            class="syllable-text">Có</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/size.mp3">▶︎</button><span class="syllable-text">size</span><span
-                            class="tone">loan</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/lớn.mp3">▶︎</button><span
-                            class="syllable-text">lớn</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/hơn.mp3">▶︎</button><span
-                            class="syllable-text">hơn</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/không.mp3">▶︎</button><span class="syllable-text">không</span><span
-                            class="tone">không</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/shopping_co-size-lon-hon-khong.mp3">▶︎
-                        Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="co-size-lon-hon-khong">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="co-size-lon-hon-khong">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="co-size-lon-hon-khong">Play App
-                        Audio</button>
-                </div>
-                <div class="english">Do you have a bigger size?</div>
-            </div>
-
-            <!-- Cho tôi xem cái khác — Let me see another one -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/cho.mp3">▶︎</button><span
-                            class="syllable-text">Cho</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/tôi.mp3">▶︎</button><span
-                            class="syllable-text">tôi</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/xem.mp3">▶︎</button><span
-                            class="syllable-text">xem</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/cái.mp3">▶︎</button><span
-                            class="syllable-text">cái</span><span class="tone">sắc</span></div>
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/khác.mp3">▶︎</button><span class="syllable-text">khác</span><span
-                            class="tone">sắc</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/shopping_cho-toi-xem-cai-khac.mp3">▶︎
-                        Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="cho-toi-xem-cai-khac">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="cho-toi-xem-cai-khac">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="cho-toi-xem-cai-khac">Play App
-                        Audio</button>
-                </div>
-                <div class="english">Let me see another one</div>
-            </div>
-
-            <!-- Không mua đâu — I won’t buy it -->
-            <div class="phrase">
-                <div class="syllables">
-                    <div class="syllable"><button class="btn primary"
-                            data-audio="assets/audio/không.mp3">▶︎</button><span class="syllable-text">Không</span><span
-                            class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/mua.mp3">▶︎</button><span
-                            class="syllable-text">mua</span><span class="tone">không</span></div>
-                    <div class="syllable"><button class="btn primary" data-audio="assets/audio/đâu.mp3">▶︎</button><span
-                            class="syllable-text">đâu</span><span class="tone">không</span></div>
-                </div>
-                <div class="controls">
-                    <button class="btn primary" data-audio="assets/audio/shopping_khong-mua-dau.mp3">▶︎ Phrase</button>
-                    <button class="btn" disabled>Check Tone</button>
-                    <button class="btn" data-action="record" data-phrase-id="khong-mua-dau">Record</button>
-                    <button class="btn" data-action="play-mine" data-phrase-id="khong-mua-dau">Play My
-                        Recording</button>
-                    <button class="btn" data-action="play-app" data-phrase-id="khong-mua-dau">Play App Audio</button>
-                </div>
-                <div class="english">I won’t buy it</div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Southern tone legend -->
-    <dialog id="infoModal" class="card">
-        <h2 class="card-title">Southern Tone Legend</h2>
-        <ul class="list mt-12">
-            <li><span class="badge">không</span> mid level</li>
-            <li><span class="badge">sắc</span> high rising ˊ</li>
-            <li><span class="badge">huyền</span> low falling ˋ</li>
-            <li><span class="badge">hỏi</span> dipping ˇ</li>
-            <li><span class="badge">nặng</span> creaky/low ˍ</li>
-        </ul>
-        <button id="closeInfo" class="btn mt-16">Close</button>
-    </dialog>
-
-    <noscript>This app needs JavaScript to load phrases and audio.</noscript>
-    <script defer src="./assets/js/app.js"></script>
-
-    <!-- Category navigation -->
-    <script>
-        const categories = document.getElementById("categories");
-        const links = document.querySelectorAll(".cat-link");
-        const screens = document.querySelectorAll(".screen");
-
-        function showOnly(el) {
-            screens.forEach(s => s.classList.add("hidden"));
-            if (el) el.classList.remove("hidden");
-        }
-        function showHome() {
-            categories.classList.remove("hidden");
-            showOnly(null);
-            links.forEach(l => l.classList.remove("selected"));
-            window.scrollTo({ top: 0, behavior: 'instant' });
-        }
-        function showScreenById(id, linkEl) {
-            categories.classList.add("hidden");
-            const el = document.getElementById(id);
-            showOnly(el);
-            links.forEach(l => l.classList.remove("selected"));
-            if (linkEl) linkEl.classList.add("selected");
-            window.scrollTo({ top: 0, behavior: 'instant' });
-        }
-
-        links.forEach(link => {
-            link.addEventListener("click", (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute("data-target");
-                showScreenById(targetId, link);
+            // Bind: play individual syllables
+            card.querySelectorAll('[data-role="play-syll"]').forEach(b => {
+                b.addEventListener("click", () => playSingle(b.getAttribute("data-audio"), card));
             });
-        });
-        document.querySelectorAll(".back-home").forEach(btn => {
-            btn.addEventListener("click", () => showHome());
-        });
-        showHome();
-    </script>
 
-    <!-- Audio playback -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const buttons = document.querySelectorAll("button[data-audio]");
-            const player = new Audio();
-            let currentBtn = null;
+            // Bind: record controls
+            const btnRec = card.querySelector('[data-role="record"]');
+            const btnStop = card.querySelector('[data-role="stop"]');
+            const btnUser = card.querySelector('[data-role="play-user"]');
+            btnRec.addEventListener("click", () => startRecording(p.key, btnRec, btnStop, btnUser));
+            btnStop.addEventListener("click", () => stopIfRecording());
+            btnUser.addEventListener("click", () => playUserRecording(p.key, card));
 
-            function clearPlaying() {
-                if (currentBtn) currentBtn.classList.remove("playing");
-                currentBtn = null;
+            return card;
+        }
+
+        function toneName(key) {
+            if (key === "loan") return "loan/foreign";
+            const t = TONES.find(t => t.key === key);
+            return t ? t.name : key;
+        }
+
+        function renderToneGuide() {
+            els.toneList.innerHTML = "";
+            TONES.forEach(t => {
+                const li = document.createElement("li");
+                li.textContent = `${t.name} ${t.shape ? `— ${t.shape}` : ""}`;
+                els.toneList.appendChild(li);
+            });
+        }
+        // ---------- STATUS + NET ----------
+        function setStatus(text, isWarn = false) {
+            els.status.textContent = text || " ";
+            els.status.style.color = isWarn ? "var(--danger)" : "var(--muted)";
+        }
+        function setupNetBadge() {
+            const update = () => {
+                const online = navigator.onLine;
+                els.netStatus.textContent = online ? "Online" : "Offline";
+                els.netStatus.style.color = online ? "var(--accent)" : "var(--danger)";
+            };
+            window.addEventListener("online", update);
+            window.addEventListener("offline", update);
+            update();
+        }
+        function enc(u) { try { return encodeURI(u) } catch { return u } }
+
+        // ---------- PLAYBACK ----------
+        function cardPlayer(card) {
+            const a = card.querySelector("audio");
+            a.style.display = "block";
+            return a;
+        }
+
+        function playSingle(src, card) {
+            const a = cardPlayer(card);
+            a.onended = null;
+            a.onerror = () => setStatus("Audio error. Check file path.", true);
+            a.src = enc(src);
+            a.currentTime = 0;
+            a.play().catch(() => setStatus("Tap again to allow audio.", true));
+        }
+
+        // Sequential phrase playback (plays syllable files in order)
+        let seqToken = 0;
+        function playPhraseSequence(srcs, card) {
+            const a = cardPlayer(card);
+            const my = ++seqToken;
+            let i = 0;
+            const next = () => {
+                if (my !== seqToken) return; // cancelled by a new sequence
+                if (i >= srcs.length) { a.onended = null; return; }
+                a.onerror = () => { setStatus("Audio error. Skipping item.", true); i++; next(); };
+                a.src = enc(srcs[i++]);
+                a.currentTime = 0;
+                a.play().catch(() => setStatus("Tap again to allow audio.", true));
+            };
+            a.onended = next;
+            next();
+        }
+
+        // ---------- RECORD / COMPARE (PHRASE LEVEL) ----------
+        let activeStream = null, mediaRecorder = null, chunks = [], currentRecordingKey = null;
+        const userObjectURLs = new Map(); // phraseKey -> blob URL
+
+        function bestMime() {
+            const list = ["audio/webm;codecs=opus", "audio/webm", "audio/ogg;codecs=opus", "audio/ogg"];
+            for (const m of list) { if (MediaRecorder.isTypeSupported?.(m)) return m; }
+            return "";
+        }
+
+        async function startRecording(phraseKey, btnRec, btnStop, btnUser) {
+            try {
+                activeStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(activeStream, { mimeType: bestMime() });
+            } catch (err) {
+                console.error("Mic init failed:", err);
+                setStatus("Microphone not available / permission denied.", true);
+                return;
             }
+            chunks = []; currentRecordingKey = phraseKey;
+            mediaRecorder.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(chunks, { type: mediaRecorder.mimeType || "audio/webm" });
+                const old = userObjectURLs.get(phraseKey); if (old) URL.revokeObjectURL(old);
+                const url = URL.createObjectURL(blob);
+                userObjectURLs.set(phraseKey, url);
+                btnUser.disabled = false;
+                btnStop.disabled = true;
+                btnRec.disabled = false;
+                setStatus("Recording saved (temporary). You can play or re-record.");
+                teardownStream();
+            };
+            mediaRecorder.start();
+            btnRec.disabled = true; btnStop.disabled = false;
+            setStatus("Recording… Speak now. Press Stop to finish.");
+        }
 
-            buttons.forEach(btn => {
-                btn.addEventListener("click", () => {
-                    const src = btn.getAttribute("data-audio");
-                    if (!src) return;
-                    clearPlaying();
-                    currentBtn = btn;
-                    btn.classList.add("playing");
-                    player.src = src;
-                    player.play().catch(() => clearPlaying());
-                });
+        function stopIfRecording() {
+            try {
+                if (mediaRecorder && mediaRecorder.state !== "inactive") { mediaRecorder.stop(); }
+                else { teardownStream(); }
+            } catch { teardownStream(); }
+        }
+
+        function teardownStream() {
+            if (activeStream) { try { activeStream.getTracks().forEach(t => t.stop()); } catch { } }
+            activeStream = null; mediaRecorder = null; chunks = [];
+        }
+
+        function playUserRecording(phraseKey, card) {
+            const url = userObjectURLs.get(phraseKey);
+            if (!url) { setStatus("No recording yet for this phrase.", true); return; }
+            const a = cardPlayer(card);
+            a.onended = null;
+            a.onerror = () => setStatus("Could not play your recording.", true);
+            a.src = url;
+            a.currentTime = 0;
+            a.play().catch(() => setStatus("Tap again to allow audio.", true));
+        }
+        // ---------- NAV + INIT ----------
+        function bindNav() {
+            els.btnCategories.addEventListener("click", () => setScreen("categories"));
+            els.btnToneGuide.addEventListener("click", () => {
+                renderToneGuide();
+                setScreen("guide");
             });
+        }
 
-            player.addEventListener("ended", clearPlaying);
-            player.addEventListener("pause", () => {
-                if (player.currentTime === 0 || player.currentTime === player.duration) clearPlaying();
-            });
-            player.addEventListener("error", clearPlaying);
-        });
-    </script>
+        function init() {
+            initEls();
+            setupNetBadge();
+            renderCategories();
+            bindNav();
+            setScreen("categories");
+        }
 
-    <!-- Record & Compare -->
-    <script>
-        (() => {
-            const recordBtns = document.querySelectorAll('button[data-action="record"]');
-            const playAppBtns = document.querySelectorAll('button[data-action="play-app"]');
-            const playMineBtns = document.querySelectorAll('button[data-action="play-mine"]');
-            const myClips = new Map();
-            let mediaStream = null, mediaRecorder = null, chunks = [];
-
-            async function ensureRecorder() {
-                if (mediaRecorder && mediaRecorder.state !== 'inactive') return mediaRecorder;
-                if (!mediaStream) {
-                    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                }
-                const mime = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : '';
-                mediaRecorder = new MediaRecorder(mediaStream, mime ? { mimeType: mime } : undefined);
-                mediaRecorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
-                mediaRecorder.onstop = () => { };
-                return mediaRecorder;
-            }
-
-            recordBtns.forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    const id = btn.getAttribute('data-phrase-id');
-                    try {
-                        const mr = await ensureRecorder();
-                        chunks = [];
-                        mr.onstop = () => {
-                            const blob = new Blob(chunks, { type: chunks[0]?.type || 'audio/webm' });
-                            const url = URL.createObjectURL(blob);
-                            const prev = myClips.get(id);
-                            if (prev) URL.revokeObjectURL(prev);
-                            myClips.set(id, url);
-                        };
-                        mr.start();
-                        btn.disabled = true;
-                        const prevText = btn.textContent;
-                        btn.textContent = 'Recording…';
-                        setTimeout(() => {
-                            if (mr.state === 'recording') mr.stop();
-                            btn.disabled = false;
-                            btn.textContent = prevText || 'Record';
-                        }, 5000);
-                    } catch (e) {
-                        console.warn('Recording failed', e);
-                        btn.textContent = 'Record';
-                        btn.disabled = false;
-                    }
-                });
-            });
-
-            const player = new Audio();
-
-            playAppBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const row = btn.closest('.phrase');
-                    const phraseBtn = row?.querySelector('button[data-audio].primary');
-                    const src = phraseBtn?.getAttribute('data-audio');
-                    if (!src) return;
-                    player.src = src;
-                    player.play().catch(() => { });
-                });
-            });
-
-            playMineBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const id = btn.getAttribute('data-phrase-id');
-                    const url = myClips.get(id);
-                    if (!url) return;
-                    player.src = url;
-                    player.play().catch(() => { });
-                });
-            });
-        })();
+        window.addEventListener("DOMContentLoaded", init);
     </script>
 </body>
 
