@@ -220,6 +220,13 @@
             pointer-events: none;
         }
 
+        /* Colour feedback when a button is actively playing */
+        .audio-btn.playing {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
         .syllable-row {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -361,9 +368,49 @@
         }
 
         // Simple ID player — filenames are exact: assets/audio/<ID>.mp3
-        function playById(id) {
+        // Adds colour feedback by toggling .playing on the clicked button while audio is playing.
+        let CURRENT_AUDIO = null;
+        let CURRENT_BTN = null;
+
+        function playById(id, btn) {
             try {
+                // Stop any previous audio and clear state
+                if (CURRENT_AUDIO) {
+                    CURRENT_AUDIO.pause();
+                    CURRENT_AUDIO.currentTime = 0;
+                }
+                if (CURRENT_BTN) {
+                    CURRENT_BTN.classList.remove('playing');
+                    CURRENT_BTN.removeAttribute('aria-busy');
+                }
+
                 const audio = new Audio(`assets/audio/${id}.mp3`);
+                CURRENT_AUDIO = audio;
+                CURRENT_BTN = btn || null;
+
+                if (CURRENT_BTN) {
+                    CURRENT_BTN.classList.add('playing');
+                    CURRENT_BTN.setAttribute('aria-busy', 'true');
+                }
+
+                audio.addEventListener('ended', () => {
+                    if (CURRENT_BTN) {
+                        CURRENT_BTN.classList.remove('playing');
+                        CURRENT_BTN.removeAttribute('aria-busy');
+                    }
+                    CURRENT_AUDIO = null;
+                    CURRENT_BTN = null;
+                });
+
+                audio.addEventListener('error', () => {
+                    if (CURRENT_BTN) {
+                        CURRENT_BTN.classList.remove('playing');
+                        CURRENT_BTN.removeAttribute('aria-busy');
+                    }
+                    CURRENT_AUDIO = null;
+                    CURRENT_BTN = null;
+                });
+
                 audio.play();
             } catch (e) {
                 console.warn('Audio failed for id:', id, e);
@@ -419,7 +466,7 @@
                 btnPhrase.className = 'audio-btn primary';
                 btnPhrase.textContent = "▶︎";
                 btnPhrase.setAttribute('data-id', item.id);
-                btnPhrase.addEventListener('click', () => playById(item.id));
+                btnPhrase.addEventListener('click', () => playById(item.id, btnPhrase));
 
                 const phraseText = document.createElement('div');
                 phraseText.innerHTML = `<strong>${item.vi}</strong>`;
@@ -438,7 +485,7 @@
                     btnSyl.className = 'audio-btn';
                     btnSyl.textContent = "▶︎";
                     btnSyl.setAttribute('data-id', syl.id);
-                    btnSyl.addEventListener('click', () => playById(syl.id));
+                    btnSyl.addEventListener('click', () => playById(syl.id, btnSyl));
 
                     const sylText = document.createElement('div');
                     sylText.className = 'syllable-text';
