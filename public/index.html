@@ -9,13 +9,17 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
         .app-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             font-family: 'Pacifico', cursive;
-            text-align: center;
-            display: block;
-            margin: 0 auto;
             font-size: 1.8em;
+            white-space: nowrap;
         }
+
 
         :root {
             --bg: #0b0c0f;
@@ -263,13 +267,9 @@
     <div class="app">
         <header class="topbar">
             <div class="title">
-                - <span
-                    style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;margin-right:8px;"></span>
-                - John’s Vietnamese Phrases
-                + <span
-                    style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;margin-right:8px;"></span>
-                + <span class="app-title">John’s Vietnamese Phrases</span>
+                <span class="app-title">John’s Vietnamese Phrases</span>
             </div>
+
 
     </div>
     <div class="toolbar">
