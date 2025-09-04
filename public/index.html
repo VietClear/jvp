@@ -14,6 +14,7 @@
             --accent: #0f766e;
             --card: #f7f7f7;
             --border: #e5e5e5;
+            --pressed: #e9f4f3;
         }
 
         * {
@@ -30,7 +31,7 @@
             font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
             color: var(--fg);
             background: var(--bg);
-            line-height: 1.45
+            line-height: 1.45;
         }
 
         .app-header {
@@ -39,57 +40,56 @@
             z-index: 20;
             background: var(--bg);
             border-bottom: 1px solid var(--border);
-            padding: 8px 12px
+            padding: 8px 12px;
         }
 
         .app-title {
             font-family: 'Handlee', cursive;
             font-size: 22px;
             margin: 0;
-            text-align: center
+            text-align: center;
         }
 
         .top-nav {
             display: flex;
             justify-content: center;
             gap: 16px;
-            padding-top: 4px
+            padding-top: 4px;
         }
 
         .tone-link {
             font-size: 14px;
             color: var(--accent);
-            text-decoration: none
+            text-decoration: none;
         }
 
         .tone-link:hover {
-            text-decoration: underline
+            text-decoration: underline;
         }
 
         main#app {
             max-width: 960px;
             margin: 0 auto;
-            padding: 12px
+            padding: 12px;
         }
 
         .view {
-            display: none
+            display: none;
         }
 
         .view.active {
-            display: block
+            display: block;
         }
 
         .view-header {
             display: flex;
             justify-content: center;
-            gap: 12px;
             padding: 8px 0 12px;
             position: sticky;
             top: 56px;
             background: var(--bg);
             z-index: 15;
-            border-bottom: 1px solid var(--border)
+            border-bottom: 1px solid var(--border);
         }
 
         .btn {
@@ -98,26 +98,32 @@
             padding: 8px 12px;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 14px
+            font-size: 14px;
+            transition: background-color .12s ease, filter .12s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn:hover {
-            filter: brightness(.97)
+            filter: brightness(.98)
+        }
+
+        .btn:active {
+            background: var(--pressed);
         }
 
         .btn.primary {
             background: var(--accent);
             color: #fff;
-            border-color: var(--accent)
+            border-color: var(--accent);
         }
 
         .btn.back {
-            min-width: 120px;
-            font-weight: 600
+            min-width: 140px;
+            font-weight: 600;
         }
 
         .btn.ghost {
-            background: transparent
+            background: transparent;
         }
 
         .category-list {
@@ -126,7 +132,7 @@
             margin: 10px 0 0;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-            gap: 12px
+            gap: 12px;
         }
 
         .category-list li {
@@ -134,48 +140,53 @@
             background: var(--card);
             border-radius: 14px;
             padding: 16px;
-            cursor: pointer
+            cursor: pointer;
+            transition: filter .12s ease;
         }
 
         .category-list li:hover {
             filter: brightness(.98)
         }
 
+        .category-list li:active {
+            background: var(--pressed);
+        }
+
         .category-name {
             display: block;
             font-weight: 700;
-            margin-bottom: 4px
+            margin-bottom: 4px;
         }
 
         .category-count {
             color: var(--muted);
-            font-size: 13px
+            font-size: 13px;
         }
 
         .category-title {
             text-align: center;
             margin: 14px 0;
-            font-size: 18px
+            font-size: 18px;
         }
 
         .phrases-container {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px
+            gap: 12px;
         }
 
         .phrase-card {
             border: 1px solid var(--border);
             background: var(--bg);
             border-radius: 14px;
-            padding: 12px
+            padding: 12px;
         }
 
         .phrase-top {
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: wrap
+            flex-wrap: wrap;
         }
 
         .audio-btn {
@@ -185,20 +196,35 @@
             border-radius: 8px;
             padding: 6px 10px;
             font-size: 14px;
-            cursor: pointer
+            cursor: pointer;
+            transition: background-color .12s ease, filter .12s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .audio-btn:hover {
+            filter: brightness(.98)
+        }
+
+        .audio-btn:active {
+            background: var(--pressed);
         }
 
         .audio-btn.primary {
             background: var(--accent);
             color: #fff;
-            border-color: var(--accent)
+            border-color: var(--accent);
+        }
+
+        .audio-btn[aria-busy="true"] {
+            opacity: .7;
+            pointer-events: none;
         }
 
         .syllable-row {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 8px;
-            margin-top: 8px
+            margin-top: 8px;
         }
 
         .syllable {
@@ -207,35 +233,35 @@
             padding: 8px;
             display: grid;
             grid-template-rows: auto auto auto;
-            gap: 4px
+            gap: 4px;
         }
 
         .syllable .syllable-text {
             font-size: 18px;
-            font-weight: 700
+            font-weight: 700;
         }
 
         .syllable .tone-name {
             font-size: 12px;
-            color: var(--muted)
+            color: var(--muted);
         }
 
         .translation {
             margin-top: 8px;
             color: var(--muted);
-            font-size: 14px
+            font-size: 14px;
         }
 
         .controls {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 8px
+            margin-top: 8px;
         }
 
         .note {
             color: var(--muted);
-            font-size: 13px
+            font-size: 13px;
         }
 
         .app-footer {
@@ -244,7 +270,7 @@
             margin-top: 18px;
             text-align: center;
             color: var(--muted);
-            font-size: 12px
+            font-size: 12px;
         }
 
         .visually-hidden {
@@ -256,7 +282,7 @@
             white-space: nowrap;
             border: 0;
             padding: 0;
-            margin: -1px
+            margin: -1px;
         }
 
         @media (max-width:480px) {
@@ -286,7 +312,6 @@
         <section id="view-phrases" class="view" aria-label="Phrases" hidden>
             <div class="view-header">
                 <button id="btnBackToCategories" class="btn back">Categories</button>
-                <button id="btnOpenToneGuideFromPhrases" class="btn ghost">Tone Guide</button>
             </div>
             <h2 id="phrasesCategoryTitle" class="category-title"></h2>
             <div id="phrasesContainer" class="phrases-container"></div>
@@ -316,65 +341,51 @@
             placeholders.</small>
     </footer>
     <script>
-        // ===== Utilities: diacritics handling + slugging =====
-        const VN_DIACRITIC_MAP = Object.freeze({
-            'à': 'a', 'á': 'a', 'ả': 'a', 'ã': 'a', 'ạ': 'a', 'ă': 'a', 'ằ': 'a', 'ắ': 'a', 'ẳ': 'a', 'ẵ': 'a', 'ặ': 'a', 'â': 'a', 'ầ': 'a', 'ấ': 'a', 'ẩ': 'a', 'ẫ': 'a', 'ậ': 'a',
-            'è': 'e', 'é': 'e', 'ẻ': 'e', 'ẽ': 'e', 'ẹ': 'e', 'ê': 'e', 'ề': 'e', 'ế': 'e', 'ể': 'e', 'ễ': 'e', 'ệ': 'e',
-            'ì': 'i', 'í': 'i', 'ỉ': 'i', 'ĩ': 'i', 'ị': 'i',
-            'ò': 'o', 'ó': 'o', 'ỏ': 'o', 'õ': 'o', 'ọ': 'o', 'ô': 'o', 'ồ': 'o', 'ố': 'o', 'ổ': 'o', 'ỗ': 'o', 'ộ': 'o', 'ơ': 'o', 'ờ': 'o', 'ớ': 'o', 'ở': 'o', 'ỡ': 'o', 'ợ': 'o',
-            'ù': 'u', 'ú': 'u', 'ủ': 'u', 'ũ': 'u', 'ụ': 'u', 'ư': 'u', 'ừ': 'u', 'ứ': 'u', 'ử': 'u', 'ữ': 'u', 'ự': 'u',
-            'ỳ': 'y', 'ý': 'y', 'ỷ': 'y', 'ỹ': 'y', 'ỵ': 'y',
-            'đ': 'd',
-            'À': 'a', 'Á': 'a', 'Ả': 'a', 'Ã': 'a', 'Ạ': 'a', 'Ă': 'a', 'Ằ': 'a', 'Ắ': 'a', 'Ẳ': 'a', 'Ẵ': 'a', 'Ặ': 'a', 'Â': 'a', 'Ầ': 'a', 'Ấ': 'a', 'Ẩ': 'a', 'Ẫ': 'a', 'Ậ': 'a',
-            'È': 'e', 'É': 'e', 'Ẻ': 'e', 'Ẽ': 'e', 'Ẹ': 'e', 'Ê': 'e', 'Ề': 'e', 'Ế': 'e', 'Ể': 'e', 'Ễ': 'e', 'Ệ': 'e',
-            'Ì': 'i', 'Í': 'i', 'Ỉ': 'i', 'Ĩ': 'i', 'Ị': 'i',
-            'Ò': 'o', 'Ó': 'o', 'Ỏ': 'o', 'Õ': 'o', 'Ọ': 'o', 'Ô': 'o', 'Ồ': 'o', 'Ố': 'o', 'Ổ': 'o', 'Ỗ': 'o', 'Ộ': 'o', 'Ơ': 'o', 'Ờ': 'o', 'Ớ': 'o', 'Ở': 'o', 'Ỡ': 'o', 'Ợ': 'o',
-            'Ù': 'u', 'Ú': 'u', 'Ủ': 'u', 'Ũ': 'u', 'Ụ': 'u', 'Ư': 'u', 'Ừ': 'u', 'Ứ': 'u', 'Ử': 'u', 'Ữ': 'u', 'Ự': 'u',
-            'Ỳ': 'y', 'Ý': 'y', 'Ỷ': 'y', 'Ỹ': 'y', 'Ỵ': 'y',
-            'Đ': 'd'
-        });
-        function stripDiacritics(s) { return (s || '').split('').map(ch => VN_DIACRITIC_MAP[ch] ?? ch).join(''); }
-        function slugifyWords(s) {
-            const noTrim = (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
-            const noDia = stripDiacritics(noTrim);
-            return noDia.replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
-        }
-        function fileVariantsForPhrase(phraseText) {
-            // Try multiple plausible variants
-            const t = (phraseText || '').trim();
-            const lo = t.toLowerCase();
-            const loStrip = stripDiacritics(lo);
-            const hy = lo.replace(/\s+/g, '-');
-            const hyStrip = loStrip.replace(/\s+/g, '-');
-            return [hy, hyStrip, lo.replace(/\s+/g, ' '), loStrip.replace(/\s+/g, ' ')];
-        }
-        function fileVariantsForSyllable(sylText) {
-            const t = (sylText || '').trim();
-            const lo = t.toLowerCase();
-            const loStrip = stripDiacritics(lo);
-            return [lo, loStrip];
-        }
+        // All audio lives in assets/audio/
+        const AUDIO_BASE = 'assets/audio/';
 
-        async function playWithFallback(candidates) {
-            // candidates = array of bare filenames, we prepend assets/audio/
-            for (const base of candidates) {
-                const url = base.startsWith('assets/') ? base : `assets/audio/${base.replace(/\s+/g, '-')}`;
-                try {
-                    const audio = new Audio(url.endsWith('.mp3') ? url : `${url}.mp3`);
-                    await audio.play();
-                    return true;
-                } catch (e) {
-                    // continue to next candidate
-                }
-            }
-            console.warn('Audio not found for candidates:', candidates);
-            return false;
-        }
-    </script>
-    <script>
-        // ===== Data from Build Plan v2 (southern) =====
-        // Where an explicit filename is known, set phraseAudio/syllables[i].audio = "exact-name.mp3".
-        // If omitted, the player will try robust fallbacks based on the text.
+        // Explicit syllable→filename map (no guessing)
+        // Includes every syllable used in DATA; add any missing MP3s to make those buttons work.
+        const SYL_AUDIO = {
+            // Essentials & shared
+            "Xin": "xin.mp3", "chào": "chào.mp3", "Tạm": "tạm.mp3", "biệt": "biệt.mp3", "Khỏe": "khỏe.mp3", "khỏe": "khỏe.mp3",
+            "không": "không.mp3", "Tôi": "tôi.mp3", "Cảm": "cảm.mp3", "ơn": "ơn.mp3",        // ← ensure ơn.mp3 exists
+            "chỉ": "chỉ.mp3", "nói": "nói.mp3", "được": "được.mp3", "một": "một.mp3", "chút": "chút.mp3", "tiếng": "tiếng.mp3", "Việt": "việt.mp3",
+            "Không": "không.mp3", "có": "có.mp3", "gì": "gì.mp3", "Rất": "rất.mp3", "vui": "vui.mp3", "gặp": "gặp.mp3", "bạn": "bạn.mp3",
+
+            // Food & Drink
+            "Cà": "cà.mp3", "phê": "phê.mp3", "sữa": "sữa.mp3", "đá": "đá.mp3",
+            "Cho": "cho.mp3",      // ← ensure cho.mp3 exists
+            "tôi": "tôi.mp3", "ly": "ly.mp3", "bia": "bia.mp3",
+            "Nước": "nước.mp3", "lọc": "lọc.mp3",
+            "Tô": "tô.mp3", "phở": "phở.mp3",
+            "Ngon": "ngon.mp3", "quá": "quá.mp3",
+            "Tính": "tính.mp3", "tiền": "tiền.mp3", "ơi": "ơi.mp3",
+
+            // Travel
+            "Đi": "đi.mp3", "đâu": "đâu.mp3", "vậy": "vậy.mp3",
+            "Bao": "bao.mp3", "nhiêu": "nhiêu.mp3",
+            "Quá": "quá.mp3", "mắc": "mắc.mp3",
+            "xuống": "xuống.mp3", "đây": "đây.mp3",
+            "Xe": "xe.mp3", "buýt": "buýt.mp3", "ở": "ở.mp3", // ← ensure ở.mp3 exists
+
+            // Social
+            "Bạn": "bạn.mp3", "tên": "tên.mp3", "gì": "gì.mp3",
+            "là": "là.mp3", "John": "john.mp3",
+            "tuổi": "tuổi.mp3", "hiểu": "hiểu.mp3",
+            "sao": "sao.mp3", "đâu": "đâu.mp3",
+            "nhớ": "nhớ.mp3", "thương": "thương.mp3",
+
+            // Shopping & Money
+            "Giảm": "giảm.mp3", "giá": "giá.mp3",
+            "mua": "mua.mp3", "cái": "cái.mp3", "này": "này.mp3",
+            "Có": "có.mp3", "size": "size.mp3", "lớn": "lớn.mp3", "hơn": "hơn.mp3",
+            "xem": "xem.mp3", "khác": "khác.mp3",
+            "Mắc": "mắc.mp3", "Không": "không.mp3"
+        };
+
+        function audioUrl(file) { return AUDIO_BASE + file; }
+        // Categories + Phrases with explicit phraseAudio filenames (no guessing)
         const DATA = {
             categories: [
                 { id: "essentials", name: "Essentials" },
@@ -386,158 +397,159 @@
             phrases: {
                 "essentials": [
                     {
-                        vi: "Xin chào", en: "Hello",
+                        vi: "Xin chào", en: "Hello", phraseAudio: "essentials_xin-chao.mp3",
                         syllables: [{ text: "Xin", tone: "sắc" }, { text: "chào", tone: "huyền" }]
                     },
                     {
-                        vi: "Tạm biệt", en: "Goodbye",
+                        vi: "Tạm biệt", en: "Goodbye", phraseAudio: "essentials_tam-biet.mp3",
                         syllables: [{ text: "Tạm", tone: "nặng" }, { text: "biệt", tone: "sắc" }]
                     },
                     {
-                        vi: "Khỏe không?", en: "How are you?",
+                        vi: "Khỏe không?", en: "How are you?", phraseAudio: "essentials_khoe-khong.mp3",
                         syllables: [{ text: "Khỏe", tone: "hỏi" }, { text: "không", tone: "không" }]
                     },
                     {
-                        vi: "Tôi khỏe", en: "I’m fine",
+                        vi: "Tôi khỏe", en: "I’m fine", phraseAudio: "essentials_toi-khoe.mp3",
                         syllables: [{ text: "Tôi", tone: "không" }, { text: "khỏe", tone: "hỏi" }]
                     },
                     {
-                        vi: "Cảm ơn", en: "Thank you",
+                        vi: "Cảm ơn", en: "Thank you", phraseAudio: "essentials_cam-on.mp3",
                         syllables: [{ text: "Cảm", tone: "hỏi" }, { text: "ơn", tone: "không" }]
                     },
                     {
                         vi: "Tôi chỉ nói được một chút tiếng Việt", en: "I only speak a little Vietnamese",
+                        phraseAudio: "essentials_toi-chi-noi-duoc-mot-chut-tieng-viet.mp3",
                         syllables: [
                             { text: "Tôi", tone: "không" }, { text: "chỉ", tone: "hỏi" }, { text: "nói", tone: "sắc" }, { text: "được", tone: "nặng" },
                             { text: "một", tone: "nặng" }, { text: "chút", tone: "sắc" }, { text: "tiếng", tone: "sắc" }, { text: "Việt", tone: "nặng" }
                         ]
                     },
                     {
-                        vi: "Không có gì", en: "You’re welcome / no problem",
+                        vi: "Không có gì", en: "You’re welcome / no problem", phraseAudio: "essentials_khong-co-gi.mp3",
                         syllables: [{ text: "Không", tone: "không" }, { text: "có", tone: "sắc" }, { text: "gì", tone: "không" }]
                     },
                     {
-                        vi: "Rất vui được gặp bạn", en: "Nice to meet you",
+                        vi: "Rất vui được gặp bạn", en: "Nice to meet you", phraseAudio: "essentials_rat-vui-duoc-gap-ban.mp3",
                         syllables: [{ text: "Rất", tone: "sắc" }, { text: "vui", tone: "không" }, { text: "được", tone: "nặng" }, { text: "gặp", tone: "nặng" }, { text: "bạn", tone: "nặng" }]
                     },
                 ],
                 "food-drink": [
                     {
-                        vi: "Cà phê sữa đá", en: "Iced coffee with milk",
+                        vi: "Cà phê sữa đá", en: "Iced coffee with milk", phraseAudio: "food_ca-phe-sua-da.mp3",
                         syllables: [{ text: "Cà", tone: "huyền" }, { text: "phê", tone: "không" }, { text: "sữa", tone: "sắc" }, { text: "đá", tone: "sắc" }]
                     },
                     {
-                        vi: "Cho tôi một ly bia", en: "Give me a beer",
+                        vi: "Cho tôi một ly bia", en: "Give me a beer", phraseAudio: "food_cho-toi-mot-ly-bia.mp3",
                         syllables: [{ text: "Cho", tone: "không" }, { text: "tôi", tone: "không" }, { text: "một", tone: "nặng" }, { text: "ly", tone: "không" }, { text: "bia", tone: "không" }]
                     },
                     {
-                        vi: "Nước lọc", en: "Water",
+                        vi: "Nước lọc", en: "Water", phraseAudio: "food_nuoc-loc.mp3",
                         syllables: [{ text: "Nước", tone: "sắc" }, { text: "lọc", tone: "nặng" }]
                     },
                     {
-                        vi: "Tô phở", en: "A bowl of phở",
+                        vi: "Tô phở", en: "A bowl of phở", phraseAudio: "food_to-pho.mp3",
                         syllables: [{ text: "Tô", tone: "không" }, { text: "phở", tone: "hỏi" }]
                     },
                     {
-                        vi: "Ngon quá!", en: "So delicious!",
+                        vi: "Ngon quá!", en: "So delicious!", phraseAudio: "food_ngon-qua.mp3",
                         syllables: [{ text: "Ngon", tone: "không" }, { text: "quá", tone: "sắc" }]
                     },
                     {
-                        vi: "Tính tiền, ơi!", en: "The bill, please",
+                        vi: "Tính tiền, ơi!", en: "The bill, please", phraseAudio: "food_tinh-tien-oi.mp3",
                         syllables: [{ text: "Tính", tone: "sắc" }, { text: "tiền", tone: "huyền" }, { text: "ơi", tone: "không" }]
                     },
                 ],
                 "travel": [
                     {
-                        vi: "Đi đâu vậy?", en: "Where are you going?",
+                        vi: "Đi đâu vậy?", en: "Where are you going?", phraseAudio: "travel_di-dau-vay.mp3",
                         syllables: [{ text: "Đi", tone: "không" }, { text: "đâu", tone: "không" }, { text: "vậy", tone: "nặng" }]
                     },
                     {
-                        vi: "Bao nhiêu tiền?", en: "How much?",
+                        vi: "Bao nhiêu tiền?", en: "How much?", phraseAudio: "travel_bao-nhieu-tien.mp3",
                         syllables: [{ text: "Bao", tone: "không" }, { text: "nhiêu", tone: "sắc" }, { text: "tiền", tone: "không" }]
                     },
                     {
-                        vi: "Quá mắc!", en: "Too expensive!",
+                        vi: "Quá mắc!", en: "Too expensive!", phraseAudio: "travel_qua-mac.mp3",
                         syllables: [{ text: "Quá", tone: "sắc" }, { text: "mắc", tone: "sắc" }]
                     },
                     {
-                        vi: "Cho tôi xuống đây", en: "Let me get off here",
+                        vi: "Cho tôi xuống đây", en: "Let me get off here", phraseAudio: "travel_cho-toi-xuong-day.mp3",
                         syllables: [{ text: "Cho", tone: "không" }, { text: "tôi", tone: "không" }, { text: "xuống", tone: "sắc" }, { text: "đây", tone: "không" }]
                     },
                     {
-                        vi: "Xe buýt ở đâu?", en: "Where is the bus?",
+                        vi: "Xe buýt ở đâu?", en: "Where is the bus?", phraseAudio: "travel_xe-buyt-o-dau.mp3",
                         syllables: [{ text: "Xe", tone: "không" }, { text: "buýt", tone: "sắc" }, { text: "ở", tone: "hỏi" }, { text: "đâu", tone: "không" }]
                     },
                     {
-                        vi: "Tôi muốn đi tới…", en: "I want to go to…",
+                        vi: "Tôi muốn đi tới…", en: "I want to go to…", phraseAudio: "travel_toi-muon-di-toi.mp3",
                         syllables: [{ text: "Tôi", tone: "không" }, { text: "muốn", tone: "sắc" }, { text: "đi", tone: "không" }, { text: "tới", tone: "sắc" }]
                     },
                 ],
                 "social": [
                     {
-                        vi: "Bạn tên gì?", en: "What’s your name?",
+                        vi: "Bạn tên gì?", en: "What’s your name?", phraseAudio: "social_ban-ten-gi.mp3",
                         syllables: [{ text: "Bạn", tone: "nặng" }, { text: "tên", tone: "không" }, { text: "gì", tone: "huyền" }]
                     },
                     {
-                        vi: "Tôi tên là John", en: "My name is John",
+                        vi: "Tôi tên là John", en: "My name is John", phraseAudio: "social_toi-ten-la-john.mp3",
                         syllables: [{ text: "Tôi", tone: "không" }, { text: "tên", tone: "không" }, { text: "là", tone: "huyền" }, { text: "John", tone: "foreign" }]
                     },
                     {
-                        vi: "Bạn bao nhiêu tuổi?", en: "How old are you?",
+                        vi: "Bạn bao nhiêu tuổi?", en: "How old are you?", phraseAudio: "social_ban-bao-nhieu-tuoi.mp3",
                         syllables: [{ text: "Bạn", tone: "nặng" }, { text: "bao", tone: "không" }, { text: "nhiêu", tone: "sắc" }, { text: "tuổi", tone: "hỏi" }]
                     },
                     {
-                        vi: "Tôi không hiểu", en: "I don’t understand",
+                        vi: "Tôi không hiểu", en: "I don’t understand", phraseAudio: "social_toi-khong-hieu.mp3",
                         syllables: [{ text: "Tôi", tone: "không" }, { text: "không", tone: "không" }, { text: "hiểu", tone: "hỏi" }]
                     },
                     {
-                        vi: "Không sao đâu", en: "It’s okay / no problem",
+                        vi: "Không sao đâu", en: "It’s okay / no problem", phraseAudio: "social_khong-sao-dau.mp3",
                         syllables: [{ text: "Không", tone: "không" }, { text: "sao", tone: "không" }, { text: "đâu", tone: "không" }]
                     },
                     {
-                        vi: "Tôi nhớ bạn", en: "I miss you",
+                        vi: "Tôi nhớ bạn", en: "I miss you", phraseAudio: "social_toi-nho-ban.mp3",
                         syllables: [{ text: "Tôi", tone: "không" }, { text: "nhớ", tone: "sắc" }, { text: "bạn", tone: "nặng" }]
                     },
                     {
-                        vi: "Tôi thương bạn", en: "I love you",
+                        vi: "Tôi thương bạn", en: "I love you", phraseAudio: "social_toi-thuong-ban.mp3",
                         syllables: [{ text: "Tôi", tone: "không" }, { text: "thương", tone: "không" }, { text: "bạn", tone: "nặng" }]
                     },
                 ],
                 "shopping-money": [
                     {
-                        vi: "Bao nhiêu tiền?", en: "How much?",
+                        vi: "Bao nhiêu tiền?", en: "How much?", phraseAudio: "shopping_bao-nhieu-tien.mp3",
                         syllables: [{ text: "Bao", tone: "không" }, { text: "nhiêu", tone: "sắc" }, { text: "tiền", tone: "không" }]
                     },
                     {
-                        vi: "Giảm giá được không?", en: "Can you give a discount?",
+                        vi: "Giảm giá được không?", en: "Can you give a discount?", phraseAudio: "shopping_giam-gia-duoc-khong.mp3",
                         syllables: [{ text: "Giảm", tone: "hỏi" }, { text: "giá", tone: "sắc" }, { text: "được", tone: "nặng" }, { text: "không", tone: "không" }]
                     },
                     {
-                        vi: "Mắc quá!", en: "Too expensive!",
+                        vi: "Mắc quá!", en: "Too expensive!", phraseAudio: "shopping_mac-qua.mp3",
                         syllables: [{ text: "Mắc", tone: "sắc" }, { text: "quá", tone: "sắc" }]
                     },
                     {
-                        vi: "Tôi muốn mua cái này", en: "I want to buy this",
+                        vi: "Tôi muốn mua cái này", en: "I want to buy this", phraseAudio: "shopping_toi-muon-mua-cai-nay.mp3",
                         syllables: [{ text: "Tôi", tone: "không" }, { text: "muốn", tone: "sắc" }, { text: "mua", tone: "không" }, { text: "cái", tone: "sắc" }, { text: "này", tone: "không" }]
                     },
                     {
-                        vi: "Có size lớn hơn không?", en: "Do you have a bigger size?",
+                        vi: "Có size lớn hơn không?", en: "Do you have a bigger size?", phraseAudio: "shopping_co-size-lon-hon-khong.mp3",
                         syllables: [{ text: "Có", tone: "sắc" }, { text: "size", tone: "loan" }, { text: "lớn", tone: "sắc" }, { text: "hơn", tone: "không" }, { text: "không", tone: "không" }]
                     },
                     {
-                        vi: "Cho tôi xem cái khác", en: "Let me see another one",
+                        vi: "Cho tôi xem cái khác", en: "Let me see another one", phraseAudio: "shopping_cho-toi-xem-cai-khac.mp3",
                         syllables: [{ text: "Cho", tone: "không" }, { text: "tôi", tone: "không" }, { text: "xem", tone: "sắc" }, { text: "cái", tone: "sắc" }, { text: "khác", tone: "sắc" }]
                     },
                     {
-                        vi: "Không mua đâu", en: "I won’t buy it",
+                        vi: "Không mua đâu", en: "I won’t buy it", phraseAudio: "shopping_khong-mua-dau.mp3",
                         syllables: [{ text: "Không", tone: "không" }, { text: "mua", tone: "không" }, { text: "đâu", tone: "không" }]
                     },
                 ],
             }
         };
-
-        // ===== DOM helpers =====
+        // ——— Rendering & playback ———
         const $ = sel => document.querySelector(sel);
+
         function showView(name) {
             const views = ["categories", "phrases", "tone"];
             views.forEach(v => {
@@ -550,7 +562,6 @@
             if (name === "categories") { window.scrollTo({ top: 0, behavior: 'instant' }); }
         }
 
-        // ===== Renderers =====
         function renderCategories() {
             const ul = $("#categoryList");
             ul.innerHTML = "";
@@ -564,20 +575,23 @@
             });
         }
 
-        function audioCandidatesForPhrase(item) {
-            // explicit filename wins; else try variants from text
-            if (item.phraseAudio) { return [item.phraseAudio]; }
-            return fileVariantsForPhrase(item.vi).map(b => `${b}.mp3`);
-        }
-        function audioCandidatesForSyllable(syl) {
-            if (syl.audio) { return [syl.audio]; }
-            return fileVariantsForSyllable(syl.text).map(b => `${b}.mp3`);
+        async function playFile(filename, btn) {
+            try {
+                btn?.setAttribute('aria-busy', 'true');
+                const audio = new Audio(audioUrl(filename));
+                await audio.play();
+            } catch (e) {
+                console.warn('Audio failed:', filename, e);
+            } finally {
+                btn?.removeAttribute('aria-busy');
+            }
         }
 
         function openCategory(catId, catName) {
             $("#phrasesCategoryTitle").textContent = catName;
             const container = $("#phrasesContainer");
             container.innerHTML = "";
+
             const items = DATA.phrases[catId] || [];
             items.forEach(item => {
                 const card = document.createElement('div');
@@ -590,11 +604,7 @@
                 const btnPhrase = document.createElement('button');
                 btnPhrase.className = 'audio-btn primary';
                 btnPhrase.textContent = "▶︎";
-                btnPhrase.addEventListener('click', async () => {
-                    btnPhrase.disabled = true;
-                    await playWithFallback(audioCandidatesForPhrase(item));
-                    btnPhrase.disabled = false;
-                });
+                btnPhrase.addEventListener('click', () => playFile(item.phraseAudio, btnPhrase));
 
                 const phraseText = document.createElement('div');
                 phraseText.innerHTML = `<strong>${item.vi}</strong>`;
@@ -608,14 +618,12 @@
                 (item.syllables || []).forEach(syl => {
                     const wrap = document.createElement('div');
                     wrap.className = 'syllable';
+
                     const btnSyl = document.createElement('button');
                     btnSyl.className = 'audio-btn';
                     btnSyl.textContent = "▶︎";
-                    btnSyl.addEventListener('click', async () => {
-                        btnSyl.disabled = true;
-                        await playWithFallback(audioCandidatesForSyllable(syl));
-                        btnSyl.disabled = false;
-                    });
+                    const sylFile = SYL_AUDIO[syl.text];
+                    btnSyl.addEventListener('click', () => sylFile ? playFile(sylFile, btnSyl) : console.warn('Missing audio for syllable:', syl.text));
 
                     const sylText = document.createElement('div');
                     sylText.className = 'syllable-text';
@@ -636,7 +644,7 @@
                 tr.className = 'translation';
                 tr.textContent = item.en;
 
-                // Controls: Record/Compare placeholders + Check Tone placeholder
+                // Controls: placeholders
                 const controls = document.createElement('div');
                 controls.className = 'controls';
                 const btnRecord = document.createElement('button');
@@ -670,17 +678,14 @@
 
             showView('phrases');
         }
-    </script>
-    <script>
-        // ===== Wiring: nav + init =====
+
+        // ——— Wiring: nav + init ———
         document.getElementById('toneGuideLink').addEventListener('click', (e) => { e.preventDefault(); showView('tone'); });
-        document.getElementById('btnOpenToneGuideFromPhrases').addEventListener('click', () => showView('tone'));
         document.getElementById('btnBackToCategories').addEventListener('click', () => showView('categories'));
         document.getElementById('btnBackFromTone').addEventListener('click', () => showView('categories'));
 
-        // Init
         renderCategories();
-        showView('categories'); // categories-first per plan
+        showView('categories'); // categories-first
     </script>
 </body>
 
