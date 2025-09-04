@@ -7,6 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+        .app-title {
+            font-family: 'Pacifico', cursive;
+            text-align: center;
+            display: block;
+            margin: 0 auto;
+            font-size: 1.8em;
+        }
+
         :root {
             --bg: #0b0c0f;
             --panel: #11141a;
@@ -253,43 +263,48 @@
     <div class="app">
         <header class="topbar">
             <div class="title">
-                <span
-                    style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block"></span>
-                John’s Vietnamese Phrases
+                - <span
+                    style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;margin-right:8px;"></span>
+                - John’s Vietnamese Phrases
+                + <span
+                    style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;margin-right:8px;"></span>
+                + <span class="app-title">John’s Vietnamese Phrases</span>
             </div>
-            <div class="toolbar">
-                <button id="btnCategories" class="linklike" title="Back to Categories" style="display:none">◀
-                    Categories</button>
-                <button id="btnToneGuide" class="linklike" title="Tone Guide">Tone Guide</button>
-                <span class="pill" id="netStatus"></span>
+
+    </div>
+    <div class="toolbar">
+        <button id="btnCategories" class="linklike" title="Back to Categories" style="display:none">◀
+            Categories</button>
+        <button id="btnToneGuide" class="linklike" title="Tone Guide">Tone Guide</button>
+        <span class="pill" id="netStatus"></span>
+    </div>
+    </header>
+
+    <main class="container">
+        <!-- Screen: Categories -->
+        <section id="screenCategories" class="screen active">
+            <div class="grid categories" id="categoryGrid"></div>
+        </section>
+
+        <!-- Screen: Phrase List within a Category -->
+        <section id="screenPhrases" class="screen">
+            <div class="grid phrases" id="phrasesGrid"></div>
+        </section>
+
+        <!-- Screen: Tone Guide (no audio files required) -->
+        <section id="screenGuide" class="screen">
+            <div class="card">
+                <h2>Tone Guide (Southern Vietnamese)</h2>
+                <p class="subtitle">Names and rough pitch shapes.</p>
+                <ul id="toneList" style="margin:10px 0 0 18px;line-height:1.6"></ul>
             </div>
-        </header>
+        </section>
+    </main>
 
-        <main class="container">
-            <!-- Screen: Categories -->
-            <section id="screenCategories" class="screen active">
-                <div class="grid categories" id="categoryGrid"></div>
-            </section>
-
-            <!-- Screen: Phrase List within a Category -->
-            <section id="screenPhrases" class="screen">
-                <div class="grid phrases" id="phrasesGrid"></div>
-            </section>
-
-            <!-- Screen: Tone Guide (no audio files required) -->
-            <section id="screenGuide" class="screen">
-                <div class="card">
-                    <h2>Tone Guide (Southern Vietnamese)</h2>
-                    <p class="subtitle">Names and rough pitch shapes.</p>
-                    <ul id="toneList" style="margin:10px 0 0 18px;line-height:1.6"></ul>
-                </div>
-            </section>
-        </main>
-
-        <footer class="footer">
-            <span id="status">Ready.</span>
-            <span>Build: 2025-09-04 • BP2-complete subset (uses your exact filenames).</span>
-        </footer>
+    <footer class="footer">
+        <span id="status">Ready.</span>
+        <span>Build: 2025-09-04 • BP2-complete subset (uses your exact filenames).</span>
+    </footer>
     </div>
     <script>
         // Tones (labels only; no tone audio files required)
