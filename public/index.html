@@ -5,13 +5,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>John’s Vietnamese Phrases</title>
+    <!-- Handwritten title font (English title only) -->
     <link href="https://fonts.googleapis.com/css2?family=Handlee&display=swap" rel="stylesheet">
     <style>
         :root {
             --fg: #111;
             --bg: #fff;
             --muted: #666;
-            --accent: #0f766e;
+            --accent: #0b7a70;
+            /* higher contrast teal */
+            --accent-hover: #096f66;
+            /* hover */
+            --accent-press: #085f58;
+            /* active */
             --card: #f7f7f7;
             --border: #e5e5e5;
             --pressed: #e9f4f3;
@@ -99,7 +105,7 @@
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            transition: background-color .12s ease, filter .12s ease;
+            transition: background-color .12s ease, filter .12s ease, transform .08s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -117,13 +123,40 @@
             border-color: var(--accent);
         }
 
+        .btn.primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+
+        .btn.primary:active {
+            background: var(--accent-press);
+            border-color: var(--accent-press);
+        }
+
         .btn.back {
-            min-width: 140px;
-            font-weight: 600;
+            min-width: 180px;
+            /* bigger touch target */
+            font-weight: 700;
+            /* clearer affordance */
+            padding: 12px 16px;
+            /* iPhone Safari friendly */
+            border-radius: 14px;
         }
 
         .btn.ghost {
             background: transparent;
+        }
+
+        .btn.is-pressed,
+        .audio-btn.is-pressed {
+            transform: scale(0.98);
+            box-shadow: 0 0 0 2px var(--pressed) inset;
+        }
+
+        .btn:focus-visible,
+        .audio-btn:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(11, 122, 112, 0.25);
         }
 
         .category-list {
@@ -197,7 +230,7 @@
             padding: 6px 10px;
             font-size: 14px;
             cursor: pointer;
-            transition: background-color .12s ease, filter .12s ease;
+            transition: background-color .12s ease, filter .12s ease, transform .08s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -215,12 +248,22 @@
             border-color: var(--accent);
         }
 
+        .audio-btn.primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+
+        .audio-btn.primary:active {
+            background: var(--accent-press);
+            border-color: var(--accent-press);
+        }
+
         .audio-btn[aria-busy="true"] {
             opacity: .7;
             pointer-events: none;
         }
 
-        /* Colour feedback when a button is actively playing */
+        /* Colour feedback while playing */
         .audio-btn.playing {
             background: var(--accent);
             color: #fff;
@@ -254,9 +297,11 @@
         }
 
         .translation {
-            margin-top: 8px;
+            margin-top: 4px;
             color: var(--muted);
             font-size: 14px;
+            font-style: italic;
+            /* clearer separation from Vietnamese */
         }
 
         .controls {
@@ -269,15 +314,6 @@
         .note {
             color: var(--muted);
             font-size: 13px;
-        }
-
-        .app-footer {
-            border-top: 1px solid var(--border);
-            padding: 10px 12px 24px;
-            margin-top: 18px;
-            text-align: center;
-            color: var(--muted);
-            font-size: 12px;
         }
 
         .visually-hidden {
@@ -343,11 +379,6 @@
         </section>
     </main>
 
-    <footer class="app-footer">
-        <small>Phase 1 — MVP (Syllable model, categories-first). Record/Compare &amp; Check Tone are
-            placeholders.</small>
-    </footer>
-
     <script>
         // =========================
         // ID-based mapping (no slugifying)
@@ -367,22 +398,25 @@
             }
         }
 
-        // Simple ID player — filenames are exact: assets/audio/<ID>.mp3
-        // Adds colour feedback by toggling .playing on the clicked button while audio is playing.
+        // Simple player with visual feedback.
         let CURRENT_AUDIO = null;
         let CURRENT_BTN = null;
 
+        function stopCurrentAudio() {
+            if (CURRENT_AUDIO) {
+                try { CURRENT_AUDIO.pause(); CURRENT_AUDIO.currentTime = 0; } catch { }
+                CURRENT_AUDIO = null;
+            }
+            if (CURRENT_BTN) {
+                CURRENT_BTN.classList.remove('playing');
+                CURRENT_BTN.removeAttribute('aria-busy');
+                CURRENT_BTN = null;
+            }
+        }
+
         function playById(id, btn) {
             try {
-                // Stop any previous audio and clear state
-                if (CURRENT_AUDIO) {
-                    CURRENT_AUDIO.pause();
-                    CURRENT_AUDIO.currentTime = 0;
-                }
-                if (CURRENT_BTN) {
-                    CURRENT_BTN.classList.remove('playing');
-                    CURRENT_BTN.removeAttribute('aria-busy');
-                }
+                stopCurrentAudio();
 
                 const audio = new Audio(`assets/audio/${id}.mp3`);
                 CURRENT_AUDIO = audio;
@@ -393,28 +427,96 @@
                     CURRENT_BTN.setAttribute('aria-busy', 'true');
                 }
 
-                audio.addEventListener('ended', () => {
-                    if (CURRENT_BTN) {
-                        CURRENT_BTN.classList.remove('playing');
-                        CURRENT_BTN.removeAttribute('aria-busy');
-                    }
-                    CURRENT_AUDIO = null;
-                    CURRENT_BTN = null;
-                });
-
-                audio.addEventListener('error', () => {
-                    if (CURRENT_BTN) {
-                        CURRENT_BTN.classList.remove('playing');
-                        CURRENT_BTN.removeAttribute('aria-busy');
-                    }
-                    CURRENT_AUDIO = null;
-                    CURRENT_BTN = null;
-                });
+                audio.addEventListener('ended', stopCurrentAudio, { once: true });
+                audio.addEventListener('error', stopCurrentAudio, { once: true });
 
                 audio.play();
             } catch (e) {
                 console.warn('Audio failed for id:', id, e);
+                stopCurrentAudio();
             }
+        }
+
+        // =========================
+        // Record & Compare (phrase-level, temporary)
+        // =========================
+        // In-memory map of phraseId -> { url, blob }
+        const RECORDINGS = new Map();
+        let ACTIVE_RECORD = null; // { phraseId, mediaRecorder, chunks, btnRecord, btnPlay }
+
+        async function getUserMediaStream() {
+            return navigator.mediaDevices?.getUserMedia
+                ? navigator.mediaDevices.getUserMedia({ audio: true })
+                : Promise.reject(new Error('getUserMedia not supported'));
+        }
+
+        async function startRecording(phraseId, btnRecord, btnPlay) {
+            if (ACTIVE_RECORD) await stopRecording(); // ensure only one at a time
+
+            let stream;
+            try {
+                stream = await getUserMediaStream();
+            } catch (e) {
+                alert('Microphone permission is needed for recording.');
+                return;
+            }
+
+            const chunks = [];
+            const mr = new MediaRecorder(stream);
+            ACTIVE_RECORD = { phraseId, mediaRecorder: mr, chunks, btnRecord, btnPlay };
+
+            btnRecord.textContent = 'Stop';
+            btnRecord.classList.add('primary');
+            btnRecord.setAttribute('aria-busy', 'true');
+
+            mr.addEventListener('dataavailable', e => { if (e.data && e.data.size) chunks.push(e.data); });
+            mr.addEventListener('stop', () => {
+                const blob = new Blob(chunks, { type: 'audio/webm' });
+                // Revoke old URL if exists
+                const prev = RECORDINGS.get(phraseId);
+                if (prev?.url) { try { URL.revokeObjectURL(prev.url); } catch { } }
+
+                const url = URL.createObjectURL(blob);
+                RECORDINGS.set(phraseId, { url, blob });
+
+                btnPlay.disabled = false;
+                btnRecord.textContent = 'Record';
+                btnRecord.classList.remove('primary');
+                btnRecord.removeAttribute('aria-busy');
+
+                // stop tracks
+                stream.getTracks().forEach(t => t.stop());
+                ACTIVE_RECORD = null;
+            });
+
+            mr.start();
+        }
+
+        async function stopRecording() {
+            if (!ACTIVE_RECORD) return;
+            try {
+                ACTIVE_RECORD.mediaRecorder.stop();
+            } catch { }
+        }
+
+        function playMyRecording(phraseId, btn) {
+            const rec = RECORDINGS.get(phraseId);
+            if (!rec?.url) return;
+
+            stopCurrentAudio();
+            const audio = new Audio(rec.url);
+            CURRENT_AUDIO = audio;
+            CURRENT_BTN = btn || null;
+
+            if (CURRENT_BTN) {
+                CURRENT_BTN.classList.add('playing');
+                CURRENT_BTN.setAttribute('aria-busy', 'true');
+            }
+
+            audio.addEventListener('ended', stopCurrentAudio, { once: true });
+            audio.addEventListener('error', stopCurrentAudio, { once: true });
+
+            audio.play();
         }
 
         // =========================
@@ -427,7 +529,7 @@
             views.forEach(v => {
                 const el = document.getElementById(`view-${v}`);
                 if (!el) return;
-                const on = v === name;
+                const on = (v === name);
                 el.hidden = !on;
                 el.classList.toggle('active', on);
             });
@@ -474,6 +576,11 @@
                 top.appendChild(btnPhrase);
                 top.appendChild(phraseText);
 
+                // Translation (moved directly under phrase text for clearer reading order)
+                const tr = document.createElement('div');
+                tr.className = 'translation';
+                tr.textContent = item.en;
+
                 // Syllables row
                 const row = document.createElement('div');
                 row.className = 'syllable-row';
@@ -501,44 +608,68 @@
                     row.appendChild(wrap);
                 });
 
-                // Translation
-                const tr = document.createElement('div');
-                tr.className = 'translation';
-                tr.textContent = item.en;
-
-                // Controls: placeholders (unchanged)
+                // Controls — Record & Compare (phrase-level)
                 const controls = document.createElement('div');
                 controls.className = 'controls';
+
                 const btnRecord = document.createElement('button');
                 btnRecord.className = 'btn';
-                btnRecord.textContent = 'Record (placeholder)';
-                btnRecord.title = 'Phase 1.5: temporary client-side recording';
-                btnRecord.disabled = true;
+                btnRecord.textContent = 'Record';
+                btnRecord.title = 'Record your attempt (temporary, not saved)';
 
                 const btnMy = document.createElement('button');
                 btnMy.className = 'btn';
                 btnMy.textContent = 'Play My Recording';
-                btnMy.title = 'Phase 1.5: toggle between app audio and user recording';
-                btnMy.disabled = true;
+                btnMy.title = 'Toggle to your last recording for this phrase';
+                btnMy.disabled = !RECORDINGS.get(item.id);
 
-                const btnCheck = document.createElement('button');
-                btnCheck.className = 'btn';
-                btnCheck.textContent = 'Check Tone';
-                btnCheck.title = 'Placeholder for ToneChecker integration';
-                btnCheck.disabled = true;
+                // Record toggle behavior
+                btnRecord.addEventListener('click', async () => {
+                    // If currently recording this phrase, stop. Else start.
+                    if (ACTIVE_RECORD && ACTIVE_RECORD.phraseId === item.id) {
+                        await stopRecording();
+                    } else {
+                        // If recording another phrase, stop it first
+                        if (ACTIVE_RECORD) await stopRecording();
+                        startRecording(item.id, btnRecord, btnMy);
+                    }
+                });
 
-                controls.append(btnRecord, btnMy, btnCheck);
+                // Play recorded attempt (if available)
+                btnMy.addEventListener('click', () => playMyRecording(item.id, btnMy));
+
+                controls.append(btnRecord, btnMy);
 
                 // Assemble card
                 card.appendChild(top);
-                card.appendChild(row);
                 card.appendChild(tr);
+                card.appendChild(row);
                 card.appendChild(controls);
 
                 container.appendChild(card);
             });
 
+            // After rendering a new list, reattach press feedback handlers
+            attachPressFeedback(container);
+
             showView('phrases');
+        }
+
+        // ——— Press feedback helper ———
+        function attachPressFeedback(root = document) {
+            const pressables = root.querySelectorAll('.btn, .audio-btn');
+            pressables.forEach(el => {
+                const onDown = () => el.classList.add('is-pressed');
+                const onUp = () => el.classList.remove('is-pressed');
+
+                el.addEventListener('mousedown', onDown);
+                el.addEventListener('mouseup', onUp);
+                el.addEventListener('mouseleave', onUp);
+
+                el.addEventListener('touchstart', onDown, { passive: true });
+                el.addEventListener('touchend', onUp, { passive: true });
+                el.addEventListener('touchcancel', onUp, { passive: true });
+            });
         }
 
         // ——— Wiring: nav + init ———
@@ -550,6 +681,7 @@
         (async function start() {
             await initMapping();
             renderCategories();
+            attachPressFeedback(document);
             showView('categories'); // categories-first
         })();
     </script>
