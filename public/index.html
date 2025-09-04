@@ -1,41 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
-    <title>John’s Vietnamese Phrases (JVP)</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>John’s Vietnamese Phrases</title>
+    <link href="https://fonts.googleapis.com/css2?family=Handlee&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-
-        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-
-        .app-title {
-            font-family: 'Handlee', cursive;
-            text-align: center;
-            margin: 10px 0;
-            /* tighten vertical space */
-            position: sticky;
-            /* keep visible if user scrolls */
-            top: 0;
-            background: #fff;
-            /* ensures title doesn’t overlap */
-            z-index: 1000;
-        }
-
-
         :root {
-            --bg: #0b0c0f;
-            --panel: #11141a;
-            --muted: #8b93a7;
-            --text: #e8ecf2;
-            --accent: #27c3a6;
-            --accent2: #ffb74a;
-            --danger: #ff6b6b;
-            --border: #1f2634;
-            --card: #0e1218;
-            --shadow: rgba(0, 0, 0, .35)
+            --fg: #111;
+            --bg: #fff;
+            --muted: #666;
+            --accent: #0f766e;
+            --card: #f7f7f7;
+            --border: #e5e5e5;
         }
 
         * {
@@ -44,677 +22,665 @@
 
         html,
         body {
-            height: 100%;
             margin: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial
+            padding: 0
         }
 
-        a {
-            color: inherit;
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            color: var(--fg);
+            background: var(--bg);
+            line-height: 1.45
+        }
+
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding: 8px 12px
+        }
+
+        .app-title {
+            font-family: 'Handlee', cursive;
+            font-size: 22px;
+            margin: 0;
+            text-align: center
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            padding-top: 4px
+        }
+
+        .tone-link {
+            font-size: 14px;
+            color: var(--accent);
             text-decoration: none
         }
 
-        button {
-            appearance: none;
-            border: 1px solid var(--border);
-            background: #121826;
-            color: var(--text);
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .15s border-color, .15s background, .02s transform
+        .tone-link:hover {
+            text-decoration: underline
         }
 
-        button:hover {
-            border-color: #2a3245
-        }
-
-        button:active {
-            transform: translateY(1px)
-        }
-
-        button[disabled] {
-            opacity: .6;
-            cursor: not-allowed
-        }
-
-        .primary {
-            background: #0f1918;
-            border-color: #1d3a37
-        }
-
-        .warn {
-            background: #191314;
-            border-color: #3a1d1f
-        }
-
-        .ghost {
-            background: #0f141d
-        }
-
-        .linklike {
-            background: transparent;
-            border-color: transparent;
-            padding: 8px 10px;
-            opacity: .9
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            border: 1px solid var(--border);
-            background: #0e1117;
-            border-radius: 999px;
-            padding: 6px 10px;
-            font-size: 12px
-        }
-
-        .app {
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            height: 100vh
-        }
-
-        .topbar {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
-            background: #0d1117;
-            position: sticky;
-            top: 0;
-            z-index: 3
-        }
-
-        .title {
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: .2px;
-            margin: 0;
-            display: flex;
-            gap: 10px;
-            align-items: center
-        }
-
-        .pill {
-            font-size: 12px;
-            color: var(--muted)
-        }
-
-        .container {
-            height: 100%;
-            overflow: auto
-        }
-
-        .screen {
-            max-width: 1100px;
+        main#app {
+            max-width: 960px;
             margin: 0 auto;
-            padding: 18px;
+            padding: 12px
+        }
+
+        .view {
             display: none
         }
 
-        .screen.active {
+        .view.active {
             display: block
         }
 
-        .grid {
-            display: grid;
-            gap: 14px
-        }
-
-        .categories {
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))
-        }
-
-        .card {
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            background: var(--card);
-            box-shadow: 0 6px 18px var(--shadow);
-            padding: 16px
-        }
-
-        .cat {
+        .view-header {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            justify-content: center;
+            gap: 12px;
+            padding: 8px 0 12px;
+            position: sticky;
+            top: 56px;
+            background: var(--bg);
+            z-index: 15;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .btn {
+            border: 1px solid var(--border);
+            background: var(--card);
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px
+        }
+
+        .btn:hover {
+            filter: brightness(.97)
+        }
+
+        .btn.primary {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent)
+        }
+
+        .btn.back {
+            min-width: 120px;
+            font-weight: 600
+        }
+
+        .btn.ghost {
+            background: transparent
+        }
+
+        .category-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 12px
+        }
+
+        .category-list li {
+            border: 1px solid var(--border);
+            background: var(--card);
+            border-radius: 14px;
+            padding: 16px;
             cursor: pointer
         }
 
-        .cat h3 {
-            margin: 0 0 4px 0
+        .category-list li:hover {
+            filter: brightness(.98)
         }
 
-        .phrases {
+        .category-name {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 4px
+        }
+
+        .category-count {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .category-title {
+            text-align: center;
+            margin: 14px 0;
+            font-size: 18px
+        }
+
+        .phrases-container {
             display: grid;
-            gap: 16px
+            grid-template-columns: 1fr;
+            gap: 12px
         }
 
-        .phrase-card h2 {
-            margin: 0 0 4px 0
+        .phrase-card {
+            border: 1px solid var(--border);
+            background: var(--bg);
+            border-radius: 14px;
+            padding: 12px
         }
 
-        .subtitle {
-            margin: 0;
-            color: var(--muted)
-        }
-
-        .row {
+        .phrase-top {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
             align-items: center;
-            margin-top: 10px
-        }
-
-        .syllables {
-            border-top: 1px dashed var(--border);
-            margin-top: 12px;
-            padding-top: 12px;
-            display: grid;
-            gap: 10px
-        }
-
-        .syll-row {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
             gap: 10px;
-            align-items: center
+            flex-wrap: wrap
         }
 
-        .syll-txt {
+        .audio-btn {
+            display: inline-block;
+            border: 1px solid var(--border);
+            background: var(--card);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 14px;
+            cursor: pointer
+        }
+
+        .audio-btn.primary {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent)
+        }
+
+        .syllable-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 8px;
+            margin-top: 8px
+        }
+
+        .syllable {
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            padding: 8px;
+            display: grid;
+            grid-template-rows: auto auto auto;
+            gap: 4px
+        }
+
+        .syllable .syllable-text {
             font-size: 18px;
             font-weight: 700
         }
 
-        .tone-chip {
+        .syllable .tone-name {
             font-size: 12px;
             color: var(--muted)
         }
 
-        .footer {
-            padding: 12px 16px;
-            border-top: 1px solid var(--border);
+        .translation {
+            margin-top: 8px;
             color: var(--muted);
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center
+            font-size: 14px
         }
 
-        .toolbar {
+        .controls {
             display: flex;
+            flex-wrap: wrap;
             gap: 8px;
-            align-items: center;
-            flex-wrap: wrap
+            margin-top: 8px
         }
 
-        audio {
-            width: 100%
+        .note {
+            color: var(--muted);
+            font-size: 13px
         }
 
-        @media (max-width:720px) {
-            .syll-row {
-                grid-template-columns: auto 1fr
+        .app-footer {
+            border-top: 1px solid var(--border);
+            padding: 10px 12px 24px;
+            margin-top: 18px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .visually-hidden {
+            position: absolute !important;
+            height: 1px;
+            width: 1px;
+            overflow: hidden;
+            clip: rect(1px, 1px, 1px, 1px);
+            white-space: nowrap;
+            border: 0;
+            padding: 0;
+            margin: -1px
+        }
+
+        @media (max-width:480px) {
+            .syllable-row {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="app">
-        <header class="topbar">
-            <div class="title">
-                <span class="app-title">John’s Vietnamese Phrases</span>
-            </div>
-
-
-    </div>
-    <div class="toolbar">
-        <button id="btnCategories" class="linklike" title="Back to Categories" style="display:none">◀
-            Categories</button>
-        <button id="btnToneGuide" class="linklike" title="Tone Guide">Tone Guide</button>
-        <span class="pill" id="netStatus"></span>
-    </div>
+    <header class="app-header">
+        <h1 class="app-title">John’s Vietnamese Phrases</h1>
+        <nav class="top-nav">
+            <a href="#tone-guide" id="toneGuideLink" class="tone-link">Tone Guide</a>
+        </nav>
     </header>
 
-    <main class="container">
-        <!-- Screen: Categories -->
-        <section id="screenCategories" class="screen active">
-            <div class="grid categories" id="categoryGrid"></div>
+    <main id="app">
+        <!-- View: Categories (DEFAULT) -->
+        <section id="view-categories" class="view active" aria-label="Categories">
+            <h2 class="visually-hidden">Categories</h2>
+            <ul id="categoryList" class="category-list"></ul>
         </section>
 
-        <!-- Screen: Phrase List within a Category -->
-        <section id="screenPhrases" class="screen">
-            <div class="grid phrases" id="phrasesGrid"></div>
+        <!-- View: Phrases -->
+        <section id="view-phrases" class="view" aria-label="Phrases" hidden>
+            <div class="view-header">
+                <button id="btnBackToCategories" class="btn back">Categories</button>
+                <button id="btnOpenToneGuideFromPhrases" class="btn ghost">Tone Guide</button>
+            </div>
+            <h2 id="phrasesCategoryTitle" class="category-title"></h2>
+            <div id="phrasesContainer" class="phrases-container"></div>
         </section>
 
-        <!-- Screen: Tone Guide (no audio files required) -->
-        <section id="screenGuide" class="screen">
-            <div class="card">
-                <h2>Tone Guide (Southern Vietnamese)</h2>
-                <p class="subtitle">Names and rough pitch shapes.</p>
-                <ul id="toneList" style="margin:10px 0 0 18px;line-height:1.6"></ul>
+        <!-- View: Tone Guide -->
+        <section id="view-tone" class="view" aria-label="Tone Guide" hidden>
+            <div class="view-header">
+                <button id="btnBackFromTone" class="btn back">Categories</button>
+            </div>
+            <h2 class="category-title">Tone Guide</h2>
+            <div class="tone-guide">
+                <ul>
+                    <li><strong>sắc</strong> — rising ↗</li>
+                    <li><strong>huyền</strong> — falling ↘</li>
+                    <li><strong>hỏi</strong> — dipping ˇ</li>
+                    <li><strong>nặng</strong> — heavy/low (glottal stop)</li>
+                    <li><strong>không</strong> — level (no mark)</li>
+                </ul>
+                <p class="note">Micro-audio/visuals can be added later without changing layout.</p>
             </div>
         </section>
     </main>
 
-    <footer class="footer">
-        <span id="status">Ready.</span>
-        <span>Build: 2025-09-04 • BP2-complete subset (uses your exact filenames).</span>
+    <footer class="app-footer">
+        <small>Phase 1 — MVP (Syllable model, categories-first). Record/Compare &amp; Check Tone are
+            placeholders.</small>
     </footer>
-    </div>
     <script>
-        // Tones (labels only; no tone audio files required)
-        const TONES = [
-            { key: "khong", name: "không (level)", shape: "—" },
-            { key: "sac", name: "sắc (high rising)", shape: "↗" },
-            { key: "huyen", name: "huyền (low falling)", shape: "↘" },
-            { key: "hoi", name: "hỏi (dipping)", shape: "∨" },
-            { key: "nga", name: "ngã (creaky rising)", shape: "˷↗" },
-            { key: "nang", name: "nặng (glottal low)", shape: "•" },
-            { key: "loan", name: "loan/foreign", shape: "" }
-        ];
+        // ===== Utilities: diacritics handling + slugging =====
+        const VN_DIACRITIC_MAP = Object.freeze({
+            'à': 'a', 'á': 'a', 'ả': 'a', 'ã': 'a', 'ạ': 'a', 'ă': 'a', 'ằ': 'a', 'ắ': 'a', 'ẳ': 'a', 'ẵ': 'a', 'ặ': 'a', 'â': 'a', 'ầ': 'a', 'ấ': 'a', 'ẩ': 'a', 'ẫ': 'a', 'ậ': 'a',
+            'è': 'e', 'é': 'e', 'ẻ': 'e', 'ẽ': 'e', 'ẹ': 'e', 'ê': 'e', 'ề': 'e', 'ế': 'e', 'ể': 'e', 'ễ': 'e', 'ệ': 'e',
+            'ì': 'i', 'í': 'i', 'ỉ': 'i', 'ĩ': 'i', 'ị': 'i',
+            'ò': 'o', 'ó': 'o', 'ỏ': 'o', 'õ': 'o', 'ọ': 'o', 'ô': 'o', 'ồ': 'o', 'ố': 'o', 'ổ': 'o', 'ỗ': 'o', 'ộ': 'o', 'ơ': 'o', 'ờ': 'o', 'ớ': 'o', 'ở': 'o', 'ỡ': 'o', 'ợ': 'o',
+            'ù': 'u', 'ú': 'u', 'ủ': 'u', 'ũ': 'u', 'ụ': 'u', 'ư': 'u', 'ừ': 'u', 'ứ': 'u', 'ử': 'u', 'ữ': 'u', 'ự': 'u',
+            'ỳ': 'y', 'ý': 'y', 'ỷ': 'y', 'ỹ': 'y', 'ỵ': 'y',
+            'đ': 'd',
+            'À': 'a', 'Á': 'a', 'Ả': 'a', 'Ã': 'a', 'Ạ': 'a', 'Ă': 'a', 'Ằ': 'a', 'Ắ': 'a', 'Ẳ': 'a', 'Ẵ': 'a', 'Ặ': 'a', 'Â': 'a', 'Ầ': 'a', 'Ấ': 'a', 'Ẩ': 'a', 'Ẫ': 'a', 'Ậ': 'a',
+            'È': 'e', 'É': 'e', 'Ẻ': 'e', 'Ẽ': 'e', 'Ẹ': 'e', 'Ê': 'e', 'Ề': 'e', 'Ế': 'e', 'Ể': 'e', 'Ễ': 'e', 'Ệ': 'e',
+            'Ì': 'i', 'Í': 'i', 'Ỉ': 'i', 'Ĩ': 'i', 'Ị': 'i',
+            'Ò': 'o', 'Ó': 'o', 'Ỏ': 'o', 'Õ': 'o', 'Ọ': 'o', 'Ô': 'o', 'Ồ': 'o', 'Ố': 'o', 'Ổ': 'o', 'Ỗ': 'o', 'Ộ': 'o', 'Ơ': 'o', 'Ờ': 'o', 'Ớ': 'o', 'Ở': 'o', 'Ỡ': 'o', 'Ợ': 'o',
+            'Ù': 'u', 'Ú': 'u', 'Ủ': 'u', 'Ũ': 'u', 'Ụ': 'u', 'Ư': 'u', 'Ừ': 'u', 'Ứ': 'u', 'Ử': 'u', 'Ữ': 'u', 'Ự': 'u',
+            'Ỳ': 'y', 'Ý': 'y', 'Ỷ': 'y', 'Ỹ': 'y', 'Ỵ': 'y',
+            'Đ': 'd'
+        });
+        function stripDiacritics(s) { return (s || '').split('').map(ch => VN_DIACRITIC_MAP[ch] ?? ch).join(''); }
+        function slugifyWords(s) {
+            const noTrim = (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+            const noDia = stripDiacritics(noTrim);
+            return noDia.replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+        }
+        function fileVariantsForPhrase(phraseText) {
+            // Try multiple plausible variants
+            const t = (phraseText || '').trim();
+            const lo = t.toLowerCase();
+            const loStrip = stripDiacritics(lo);
+            const hy = lo.replace(/\s+/g, '-');
+            const hyStrip = loStrip.replace(/\s+/g, '-');
+            return [hy, hyStrip, lo.replace(/\s+/g, ' '), loStrip.replace(/\s+/g, ' ')];
+        }
+        function fileVariantsForSyllable(sylText) {
+            const t = (sylText || '').trim();
+            const lo = t.toLowerCase();
+            const loStrip = stripDiacritics(lo);
+            return [lo, loStrip];
+        }
 
-        // Helper to build a syllable object with your exact audio filename
-        const A = (file, text, tone) => ({ text, tone, audio: `assets/audio/${file}` });
-
-        // CATEGORIES with phrases limited to the syllables you actually provided (fully playable)
-        const CATS = [
-            {
-                id: "essentials", name: "Essentials",
-                phrases: [
-                    {
-                        key: "xin-chao", vi: "Xin chào", en: "Hello",
-                        syllables: [A("xin.mp3", "Xin", "sac"), A("chào.mp3", "chào", "huyen")]
-                    },
-
-                    {
-                        key: "tam-biet", vi: "Tạm biệt", en: "Goodbye",
-                        syllables: [A("tạm.mp3", "Tạm", "nang"), A("biệt.mp3", "biệt", "sac")]
-                    },
-
-                    {
-                        key: "khoe-khong", vi: "Khỏe không?", en: "How are you?",
-                        syllables: [A("khỏe.mp3", "Khỏe", "hoi"), A("không.mp3", "không", "khong")]
-                    },
-
-                    {
-                        key: "toi-khoe", vi: "Tôi khỏe", en: "I’m fine",
-                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("khỏe.mp3", "khỏe", "hoi")]
-                    },
-
-                    {
-                        key: "toi-chi-noi-duoc-mot-chut-tieng-viet",
-                        vi: "Tôi chỉ nói được một chút tiếng Việt",
-                        en: "I only speak a little Vietnamese",
-                        syllables: [
-                            A("tôi.mp3", "Tôi", "khong"),
-                            A("chỉ.mp3", "chỉ", "hoi"),
-                            A("nói.mp3", "nói", "sac"),
-                            A("được.mp3", "được", "nang"),
-                            A("một.mp3", "một", "nang"),
-                            A("chút.mp3", "chút", "sac"),
-                            A("tiếng.mp3", "tiếng", "sac"),
-                            A("việt.mp3", "Việt", "nang")
-                        ]
-                    },
-
-                    {
-                        key: "khong-co-gi", vi: "Không có gì", en: "You’re welcome / no problem",
-                        syllables: [A("không.mp3", "Không", "khong"), A("có.mp3", "có", "sac"), A("gì.mp3", "gì", "khong")]
-                    },
-
-                    {
-                        key: "rat-vui-duoc-gap-ban", vi: "Rất vui được gặp bạn", en: "Nice to meet you",
-                        syllables: [
-                            A("rất.mp3", "Rất", "sac"),
-                            A("vui.mp3", "vui", "khong"),
-                            A("được.mp3", "được", "nang"),
-                            A("gặp.mp3", "gặp", "nang"),
-                            A("bạn.mp3", "bạn", "nang")
-                        ]
-                    },
-                ]
-            },
-            {
-                id: "food", name: "Food & Drink",
-                phrases: [
-                    {
-                        key: "ca-phe-sua-da", vi: "Cà phê sữa đá", en: "Iced coffee with milk",
-                        syllables: [A("cà.mp3", "Cà", "huyen"), A("phê.mp3", "phê", "khong"), A("sữa.mp3", "sữa", "sac"), A("đá.mp3", "đá", "sac")]
-                    },
-
-                    {
-                        key: "nuoc-loc", vi: "Nước lọc", en: "Water",
-                        syllables: [A("nước.mp3", "Nước", "sac"), A("lọc.mp3", "lọc", "nang")]
-                    },
-
-                    {
-                        key: "to-pho", vi: "Tô phở", en: "A bowl of phở",
-                        syllables: [A("tô.mp3", "Tô", "khong"), A("phở.mp3", "phở", "hoi")]
-                    },
-
-                    {
-                        key: "ngon-qua", vi: "Ngon quá!", en: "So delicious!",
-                        syllables: [A("ngon.mp3", "Ngon", "khong"), A("quá.mp3", "quá", "sac")]
-                    },
-
-                    {
-                        key: "tinh-tien-oi", vi: "Tính tiền, ơi!", en: "The bill, please",
-                        syllables: [A("tính.mp3", "Tính", "sac"), A("tiền.mp3", "tiền", "huyen"), A("ơi.mp3", "ơi", "khong")]
-                    },
-                ]
-            },
-            {
-                id: "travel", name: "Travel",
-                phrases: [
-                    {
-                        key: "di-dau-vay", vi: "Đi đâu vậy?", en: "Where are you going?",
-                        syllables: [A("đi.mp3", "Đi", "khong"), A("đâu.mp3", "đâu", "khong"), A("vậy.mp3", "vậy", "nang")]
-                    },
-
-                    {
-                        key: "qua-mac", vi: "Quá mắc!", en: "Too expensive!",
-                        syllables: [A("quá.mp3", "Quá", "sac"), A("mắc.mp3", "mắc", "sac")]
-                    },
-
-                    {
-                        key: "toi-muon-di-toi", vi: "Tôi muốn đi tới…", en: "I want to go to…",
-                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("muốn.mp3", "muốn", "sac"), A("đi.mp3", "đi", "khong"), A("tới.mp3", "tới", "sac")]
-                    },
-                ]
-            },
-            {
-                id: "social", name: "Social",
-                phrases: [
-                    {
-                        key: "ban-ten-gi", vi: "Bạn tên gì?", en: "What’s your name?",
-                        syllables: [A("bạn.mp3", "Bạn", "nang"), A("tên.mp3", "tên", "khong"), A("gì.mp3", "gì", "huyen")]
-                    },
-
-                    {
-                        key: "toi-ten-la-john", vi: "Tôi tên là John", en: "My name is John",
-                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("tên.mp3", "tên", "khong"), A("là.mp3", "là", "huyen"), A("john.mp3", "John", "loan")]
-                    },
-
-                    {
-                        key: "toi-khong-hieu", vi: "Tôi không hiểu", en: "I don’t understand",
-                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("không.mp3", "không", "khong"), A("hiểu.mp3", "hiểu", "hoi")]
-                    },
-
-                    {
-                        key: "khong-sao-dau", vi: "Không sao đâu", en: "It’s okay / no problem",
-                        syllables: [A("không.mp3", "Không", "khong"), A("sao.mp3", "sao", "khong"), A("đâu.mp3", "đâu", "khong")]
-                    },
-
-                    {
-                        key: "toi-nho-ban", vi: "Tôi nhớ bạn", en: "I miss you",
-                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("nhớ.mp3", "nhớ", "sac"), A("bạn.mp3", "bạn", "nang")]
-                    },
-
-                    {
-                        key: "toi-thuong-ban", vi: "Tôi thương bạn", en: "I love you",
-                        syllables: [A("tôi.mp3", "Tôi", "khong"), A("thương.mp3", "thương", "khong"), A("bạn.mp3", "bạn", "nang")]
-                    },
-                ]
-            },
-            {
-                id: "shopping", name: "Shopping & Money",
-                phrases: [
-                    {
-                        key: "giam-gia-duoc-khong", vi: "Giảm giá được không?", en: "Can you give a discount?",
-                        syllables: [A("giảm.mp3", "Giảm", "hoi"), A("giá.mp3", "giá", "sac"), A("được.mp3", "được", "nang"), A("không.mp3", "không", "khong")]
-                    },
-
-                    {
-                        key: "mac-qua", vi: "Mắc quá!", en: "Too expensive!",
-                        syllables: [A("mắc.mp3", "Mắc", "sac"), A("quá.mp3", "quá", "sac")]
-                    },
-
-                    {
-                        key: "co-size-lon-hon-khong", vi: "Có size lớn hơn không?", en: "Do you have a bigger size?",
-                        syllables: [A("có.mp3", "Có", "sac"), A("size.mp3", "size", "loan"), A("lớn.mp3", "lớn", "sac"), A("hơn.mp3", "hơn", "khong"), A("không.mp3", "không", "khong")]
-                    },
-                ]
+        async function playWithFallback(candidates) {
+            // candidates = array of bare filenames, we prepend assets/audio/
+            for (const base of candidates) {
+                const url = base.startsWith('assets/') ? base : `assets/audio/${base.replace(/\s+/g, '-')}`;
+                try {
+                    const audio = new Audio(url.endsWith('.mp3') ? url : `${url}.mp3`);
+                    await audio.play();
+                    return true;
+                } catch (e) {
+                    // continue to next candidate
+                }
             }
-        ];
-        // ---------- DOM + RENDER ----------
-        const els = {};
-        const $ = s => document.querySelector(s);
+            console.warn('Audio not found for candidates:', candidates);
+            return false;
+        }
+    </script>
+    <script>
+        // ===== Data from Build Plan v2 (southern) =====
+        // Where an explicit filename is known, set phraseAudio/syllables[i].audio = "exact-name.mp3".
+        // If omitted, the player will try robust fallbacks based on the text.
+        const DATA = {
+            categories: [
+                { id: "essentials", name: "Essentials" },
+                { id: "food-drink", name: "Food & Drink" },
+                { id: "travel", name: "Travel" },
+                { id: "social", name: "Social" },
+                { id: "shopping-money", name: "Shopping & Money" },
+            ],
+            phrases: {
+                "essentials": [
+                    {
+                        vi: "Xin chào", en: "Hello",
+                        syllables: [{ text: "Xin", tone: "sắc" }, { text: "chào", tone: "huyền" }]
+                    },
+                    {
+                        vi: "Tạm biệt", en: "Goodbye",
+                        syllables: [{ text: "Tạm", tone: "nặng" }, { text: "biệt", tone: "sắc" }]
+                    },
+                    {
+                        vi: "Khỏe không?", en: "How are you?",
+                        syllables: [{ text: "Khỏe", tone: "hỏi" }, { text: "không", tone: "không" }]
+                    },
+                    {
+                        vi: "Tôi khỏe", en: "I’m fine",
+                        syllables: [{ text: "Tôi", tone: "không" }, { text: "khỏe", tone: "hỏi" }]
+                    },
+                    {
+                        vi: "Cảm ơn", en: "Thank you",
+                        syllables: [{ text: "Cảm", tone: "hỏi" }, { text: "ơn", tone: "không" }]
+                    },
+                    {
+                        vi: "Tôi chỉ nói được một chút tiếng Việt", en: "I only speak a little Vietnamese",
+                        syllables: [
+                            { text: "Tôi", tone: "không" }, { text: "chỉ", tone: "hỏi" }, { text: "nói", tone: "sắc" }, { text: "được", tone: "nặng" },
+                            { text: "một", tone: "nặng" }, { text: "chút", tone: "sắc" }, { text: "tiếng", tone: "sắc" }, { text: "Việt", tone: "nặng" }
+                        ]
+                    },
+                    {
+                        vi: "Không có gì", en: "You’re welcome / no problem",
+                        syllables: [{ text: "Không", tone: "không" }, { text: "có", tone: "sắc" }, { text: "gì", tone: "không" }]
+                    },
+                    {
+                        vi: "Rất vui được gặp bạn", en: "Nice to meet you",
+                        syllables: [{ text: "Rất", tone: "sắc" }, { text: "vui", tone: "không" }, { text: "được", tone: "nặng" }, { text: "gặp", tone: "nặng" }, { text: "bạn", tone: "nặng" }]
+                    },
+                ],
+                "food-drink": [
+                    {
+                        vi: "Cà phê sữa đá", en: "Iced coffee with milk",
+                        syllables: [{ text: "Cà", tone: "huyền" }, { text: "phê", tone: "không" }, { text: "sữa", tone: "sắc" }, { text: "đá", tone: "sắc" }]
+                    },
+                    {
+                        vi: "Cho tôi một ly bia", en: "Give me a beer",
+                        syllables: [{ text: "Cho", tone: "không" }, { text: "tôi", tone: "không" }, { text: "một", tone: "nặng" }, { text: "ly", tone: "không" }, { text: "bia", tone: "không" }]
+                    },
+                    {
+                        vi: "Nước lọc", en: "Water",
+                        syllables: [{ text: "Nước", tone: "sắc" }, { text: "lọc", tone: "nặng" }]
+                    },
+                    {
+                        vi: "Tô phở", en: "A bowl of phở",
+                        syllables: [{ text: "Tô", tone: "không" }, { text: "phở", tone: "hỏi" }]
+                    },
+                    {
+                        vi: "Ngon quá!", en: "So delicious!",
+                        syllables: [{ text: "Ngon", tone: "không" }, { text: "quá", tone: "sắc" }]
+                    },
+                    {
+                        vi: "Tính tiền, ơi!", en: "The bill, please",
+                        syllables: [{ text: "Tính", tone: "sắc" }, { text: "tiền", tone: "huyền" }, { text: "ơi", tone: "không" }]
+                    },
+                ],
+                "travel": [
+                    {
+                        vi: "Đi đâu vậy?", en: "Where are you going?",
+                        syllables: [{ text: "Đi", tone: "không" }, { text: "đâu", tone: "không" }, { text: "vậy", tone: "nặng" }]
+                    },
+                    {
+                        vi: "Bao nhiêu tiền?", en: "How much?",
+                        syllables: [{ text: "Bao", tone: "không" }, { text: "nhiêu", tone: "sắc" }, { text: "tiền", tone: "không" }]
+                    },
+                    {
+                        vi: "Quá mắc!", en: "Too expensive!",
+                        syllables: [{ text: "Quá", tone: "sắc" }, { text: "mắc", tone: "sắc" }]
+                    },
+                    {
+                        vi: "Cho tôi xuống đây", en: "Let me get off here",
+                        syllables: [{ text: "Cho", tone: "không" }, { text: "tôi", tone: "không" }, { text: "xuống", tone: "sắc" }, { text: "đây", tone: "không" }]
+                    },
+                    {
+                        vi: "Xe buýt ở đâu?", en: "Where is the bus?",
+                        syllables: [{ text: "Xe", tone: "không" }, { text: "buýt", tone: "sắc" }, { text: "ở", tone: "hỏi" }, { text: "đâu", tone: "không" }]
+                    },
+                    {
+                        vi: "Tôi muốn đi tới…", en: "I want to go to…",
+                        syllables: [{ text: "Tôi", tone: "không" }, { text: "muốn", tone: "sắc" }, { text: "đi", tone: "không" }, { text: "tới", tone: "sắc" }]
+                    },
+                ],
+                "social": [
+                    {
+                        vi: "Bạn tên gì?", en: "What’s your name?",
+                        syllables: [{ text: "Bạn", tone: "nặng" }, { text: "tên", tone: "không" }, { text: "gì", tone: "huyền" }]
+                    },
+                    {
+                        vi: "Tôi tên là John", en: "My name is John",
+                        syllables: [{ text: "Tôi", tone: "không" }, { text: "tên", tone: "không" }, { text: "là", tone: "huyền" }, { text: "John", tone: "foreign" }]
+                    },
+                    {
+                        vi: "Bạn bao nhiêu tuổi?", en: "How old are you?",
+                        syllables: [{ text: "Bạn", tone: "nặng" }, { text: "bao", tone: "không" }, { text: "nhiêu", tone: "sắc" }, { text: "tuổi", tone: "hỏi" }]
+                    },
+                    {
+                        vi: "Tôi không hiểu", en: "I don’t understand",
+                        syllables: [{ text: "Tôi", tone: "không" }, { text: "không", tone: "không" }, { text: "hiểu", tone: "hỏi" }]
+                    },
+                    {
+                        vi: "Không sao đâu", en: "It’s okay / no problem",
+                        syllables: [{ text: "Không", tone: "không" }, { text: "sao", tone: "không" }, { text: "đâu", tone: "không" }]
+                    },
+                    {
+                        vi: "Tôi nhớ bạn", en: "I miss you",
+                        syllables: [{ text: "Tôi", tone: "không" }, { text: "nhớ", tone: "sắc" }, { text: "bạn", tone: "nặng" }]
+                    },
+                    {
+                        vi: "Tôi thương bạn", en: "I love you",
+                        syllables: [{ text: "Tôi", tone: "không" }, { text: "thương", tone: "không" }, { text: "bạn", tone: "nặng" }]
+                    },
+                ],
+                "shopping-money": [
+                    {
+                        vi: "Bao nhiêu tiền?", en: "How much?",
+                        syllables: [{ text: "Bao", tone: "không" }, { text: "nhiêu", tone: "sắc" }, { text: "tiền", tone: "không" }]
+                    },
+                    {
+                        vi: "Giảm giá được không?", en: "Can you give a discount?",
+                        syllables: [{ text: "Giảm", tone: "hỏi" }, { text: "giá", tone: "sắc" }, { text: "được", tone: "nặng" }, { text: "không", tone: "không" }]
+                    },
+                    {
+                        vi: "Mắc quá!", en: "Too expensive!",
+                        syllables: [{ text: "Mắc", tone: "sắc" }, { text: "quá", tone: "sắc" }]
+                    },
+                    {
+                        vi: "Tôi muốn mua cái này", en: "I want to buy this",
+                        syllables: [{ text: "Tôi", tone: "không" }, { text: "muốn", tone: "sắc" }, { text: "mua", tone: "không" }, { text: "cái", tone: "sắc" }, { text: "này", tone: "không" }]
+                    },
+                    {
+                        vi: "Có size lớn hơn không?", en: "Do you have a bigger size?",
+                        syllables: [{ text: "Có", tone: "sắc" }, { text: "size", tone: "loan" }, { text: "lớn", tone: "sắc" }, { text: "hơn", tone: "không" }, { text: "không", tone: "không" }]
+                    },
+                    {
+                        vi: "Cho tôi xem cái khác", en: "Let me see another one",
+                        syllables: [{ text: "Cho", tone: "không" }, { text: "tôi", tone: "không" }, { text: "xem", tone: "sắc" }, { text: "cái", tone: "sắc" }, { text: "khác", tone: "sắc" }]
+                    },
+                    {
+                        vi: "Không mua đâu", en: "I won’t buy it",
+                        syllables: [{ text: "Không", tone: "không" }, { text: "mua", tone: "không" }, { text: "đâu", tone: "không" }]
+                    },
+                ],
+            }
+        };
 
-        function initEls() {
-            els.screenCategories = $("#screenCategories");
-            els.screenPhrases = $("#screenPhrases");
-            els.screenGuide = $("#screenGuide");
-            els.categoryGrid = $("#categoryGrid");
-            els.phrasesGrid = $("#phrasesGrid");
-            els.btnCategories = $("#btnCategories");
-            els.btnToneGuide = $("#btnToneGuide");
-            els.status = $("#status");
-            els.netStatus = $("#netStatus");
-            els.toneList = $("#toneList");
+        // ===== DOM helpers =====
+        const $ = sel => document.querySelector(sel);
+        function showView(name) {
+            const views = ["categories", "phrases", "tone"];
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if (!el) return;
+                const on = v === name;
+                el.hidden = !on;
+                el.classList.toggle('active', on);
+            });
+            if (name === "categories") { window.scrollTo({ top: 0, behavior: 'instant' }); }
         }
 
-        function setScreen(name) {
-            [els.screenCategories, els.screenPhrases, els.screenGuide].forEach(s => s.classList.remove("active"));
-            if (name === "categories") { els.screenCategories.classList.add("active"); els.btnCategories.style.display = "none"; setStatus("Select a category."); }
-            if (name === "phrases") { els.screenPhrases.classList.add("active"); els.btnCategories.style.display = "inline-block"; setStatus(""); }
-            if (name === "guide") { els.screenGuide.classList.add("active"); els.btnCategories.style.display = "inline-block"; setStatus(""); }
-        }
-
+        // ===== Renderers =====
         function renderCategories() {
-            els.categoryGrid.innerHTML = "";
-            CATS.forEach(cat => {
-                const div = document.createElement("div");
-                div.className = "card cat";
-                div.innerHTML = `<h3>${cat.name}</h3><p class="subtitle">${cat.phrases.length} phrases</p>`;
-                div.addEventListener("click", () => openCategory(cat.id));
-                els.categoryGrid.appendChild(div);
+            const ul = $("#categoryList");
+            ul.innerHTML = "";
+            DATA.categories.forEach(cat => {
+                const count = (DATA.phrases[cat.id] || []).length;
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="category-name">${cat.name}</span>
+                        <span class="category-count">${count} phrase${count === 1 ? "" : "s"}</span>`;
+                li.addEventListener('click', () => openCategory(cat.id, cat.name));
+                ul.appendChild(li);
             });
         }
 
-        function openCategory(catId) {
-            const cat = CATS.find(c => c.id === catId);
-            if (!cat) return;
-            els.phrasesGrid.innerHTML = "";
-            cat.phrases.forEach(p => els.phrasesGrid.appendChild(renderPhraseCard(p)));
-            setScreen("phrases");
+        function audioCandidatesForPhrase(item) {
+            // explicit filename wins; else try variants from text
+            if (item.phraseAudio) { return [item.phraseAudio]; }
+            return fileVariantsForPhrase(item.vi).map(b => `${b}.mp3`);
+        }
+        function audioCandidatesForSyllable(syl) {
+            if (syl.audio) { return [syl.audio]; }
+            return fileVariantsForSyllable(syl.text).map(b => `${b}.mp3`);
         }
 
-        function renderPhraseCard(p) {
-            const card = document.createElement("div");
-            card.className = "card phrase-card";
-            card.innerHTML = `
-        <h2>${p.vi}</h2>
-        <p class="subtitle">${p.en}</p>
-        <div class="row">
-          <button class="primary" data-role="play-phrase">▶︎ Play phrase</button>
-          <button class="ghost" data-role="record" data-key="${p.key}">● Record</button>
-          <button class="warn"  data-role="stop" data-key="${p.key}" disabled>■ Stop</button>
-          <button class="ghost" data-role="play-user" data-key="${p.key}" disabled>▶︎ Play My Recording</button>
-          <span class="badge" title="ToneChecker placeholder"><strong>Check Tone</strong> (coming soon)</span>
-        </div>
-        <div class="syllables">
-          ${p.syllables.map(syl => `
-            <div class="syll-row">
-              <button class="primary" data-role="play-syll" data-audio="${syl.audio}">▶︎</button>
-              <div class="syll-txt">${syl.text}</div>
-              <div class="tone-chip">${toneName(syl.tone)}</div>
-            </div>
-          `).join("")}
-        </div>
-        <audio preload="none" controls playsinline style="margin-top:8px;display:none"></audio>
-      `;
+        function openCategory(catId, catName) {
+            $("#phrasesCategoryTitle").textContent = catName;
+            const container = $("#phrasesContainer");
+            container.innerHTML = "";
+            const items = DATA.phrases[catId] || [];
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'phrase-card';
 
-            // Bind: play full phrase (sequential syllables)
-            const btnPlayPhrase = card.querySelector('[data-role="play-phrase"]');
-            btnPlayPhrase.addEventListener("click", () => playPhraseSequence(p.syllables.map(s => s.audio), card));
+                // Top row: phrase play + text
+                const top = document.createElement('div');
+                top.className = 'phrase-top';
 
-            // Bind: play individual syllables
-            card.querySelectorAll('[data-role="play-syll"]').forEach(b => {
-                b.addEventListener("click", () => playSingle(b.getAttribute("data-audio"), card));
+                const btnPhrase = document.createElement('button');
+                btnPhrase.className = 'audio-btn primary';
+                btnPhrase.textContent = "▶︎";
+                btnPhrase.addEventListener('click', async () => {
+                    btnPhrase.disabled = true;
+                    await playWithFallback(audioCandidatesForPhrase(item));
+                    btnPhrase.disabled = false;
+                });
+
+                const phraseText = document.createElement('div');
+                phraseText.innerHTML = `<strong>${item.vi}</strong>`;
+
+                top.appendChild(btnPhrase);
+                top.appendChild(phraseText);
+
+                // Syllables row
+                const row = document.createElement('div');
+                row.className = 'syllable-row';
+                (item.syllables || []).forEach(syl => {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'syllable';
+                    const btnSyl = document.createElement('button');
+                    btnSyl.className = 'audio-btn';
+                    btnSyl.textContent = "▶︎";
+                    btnSyl.addEventListener('click', async () => {
+                        btnSyl.disabled = true;
+                        await playWithFallback(audioCandidatesForSyllable(syl));
+                        btnSyl.disabled = false;
+                    });
+
+                    const sylText = document.createElement('div');
+                    sylText.className = 'syllable-text';
+                    sylText.textContent = syl.text;
+
+                    const tone = document.createElement('div');
+                    tone.className = 'tone-name';
+                    tone.textContent = syl.tone;
+
+                    wrap.appendChild(btnSyl);
+                    wrap.appendChild(sylText);
+                    wrap.appendChild(tone);
+                    row.appendChild(wrap);
+                });
+
+                // Translation
+                const tr = document.createElement('div');
+                tr.className = 'translation';
+                tr.textContent = item.en;
+
+                // Controls: Record/Compare placeholders + Check Tone placeholder
+                const controls = document.createElement('div');
+                controls.className = 'controls';
+                const btnRecord = document.createElement('button');
+                btnRecord.className = 'btn';
+                btnRecord.textContent = 'Record (placeholder)';
+                btnRecord.title = 'Phase 1.5: temporary client-side recording';
+                btnRecord.disabled = true;
+
+                const btnMy = document.createElement('button');
+                btnMy.className = 'btn';
+                btnMy.textContent = 'Play My Recording';
+                btnMy.title = 'Phase 1.5: toggle between app audio and user recording';
+                btnMy.disabled = true;
+
+                const btnCheck = document.createElement('button');
+                btnCheck.className = 'btn';
+                btnCheck.textContent = 'Check Tone';
+                btnCheck.title = 'Placeholder for ToneChecker integration';
+                btnCheck.disabled = true;
+
+                controls.append(btnRecord, btnMy, btnCheck);
+
+                // Assemble card
+                card.appendChild(top);
+                card.appendChild(row);
+                card.appendChild(tr);
+                card.appendChild(controls);
+
+                container.appendChild(card);
             });
 
-            // Bind: record controls
-            const btnRec = card.querySelector('[data-role="record"]');
-            const btnStop = card.querySelector('[data-role="stop"]');
-            const btnUser = card.querySelector('[data-role="play-user"]');
-            btnRec.addEventListener("click", () => startRecording(p.key, btnRec, btnStop, btnUser));
-            btnStop.addEventListener("click", () => stopIfRecording());
-            btnUser.addEventListener("click", () => playUserRecording(p.key, card));
+            showView('phrases');
+        }
+    </script>
+    <script>
+        // ===== Wiring: nav + init =====
+        document.getElementById('toneGuideLink').addEventListener('click', (e) => { e.preventDefault(); showView('tone'); });
+        document.getElementById('btnOpenToneGuideFromPhrases').addEventListener('click', () => showView('tone'));
+        document.getElementById('btnBackToCategories').addEventListener('click', () => showView('categories'));
+        document.getElementById('btnBackFromTone').addEventListener('click', () => showView('categories'));
 
-            return card;
-        }
-
-        function toneName(key) {
-            if (key === "loan") return "loan/foreign";
-            const t = TONES.find(t => t.key === key);
-            return t ? t.name : key;
-        }
-
-        function renderToneGuide() {
-            els.toneList.innerHTML = "";
-            TONES.forEach(t => {
-                const li = document.createElement("li");
-                li.textContent = `${t.name} ${t.shape ? `— ${t.shape}` : ""}`;
-                els.toneList.appendChild(li);
-            });
-        }
-        // ---------- STATUS + NET ----------
-        function setStatus(text, isWarn = false) {
-            els.status.textContent = text || " ";
-            els.status.style.color = isWarn ? "var(--danger)" : "var(--muted)";
-        }
-        function setupNetBadge() {
-            const update = () => {
-                const online = navigator.onLine;
-                els.netStatus.textContent = online ? "Online" : "Offline";
-                els.netStatus.style.color = online ? "var(--accent)" : "var(--danger)";
-            };
-            window.addEventListener("online", update);
-            window.addEventListener("offline", update);
-            update();
-        }
-        function enc(u) { try { return encodeURI(u) } catch { return u } }
-
-        // ---------- PLAYBACK ----------
-        function cardPlayer(card) {
-            const a = card.querySelector("audio");
-            a.style.display = "block";
-            return a;
-        }
-
-        function playSingle(src, card) {
-            const a = cardPlayer(card);
-            a.onended = null;
-            a.onerror = () => setStatus("Audio error. Check file path.", true);
-            a.src = enc(src);
-            a.currentTime = 0;
-            a.play().catch(() => setStatus("Tap again to allow audio.", true));
-        }
-
-        // Sequential phrase playback (plays syllable files in order)
-        let seqToken = 0;
-        function playPhraseSequence(srcs, card) {
-            const a = cardPlayer(card);
-            const my = ++seqToken;
-            let i = 0;
-            const next = () => {
-                if (my !== seqToken) return; // cancelled by a new sequence
-                if (i >= srcs.length) { a.onended = null; return; }
-                a.onerror = () => { setStatus("Audio error. Skipping item.", true); i++; next(); };
-                a.src = enc(srcs[i++]);
-                a.currentTime = 0;
-                a.play().catch(() => setStatus("Tap again to allow audio.", true));
-            };
-            a.onended = next;
-            next();
-        }
-
-        // ---------- RECORD / COMPARE (PHRASE LEVEL) ----------
-        let activeStream = null, mediaRecorder = null, chunks = [], currentRecordingKey = null;
-        const userObjectURLs = new Map(); // phraseKey -> blob URL
-
-        function bestMime() {
-            const list = ["audio/webm;codecs=opus", "audio/webm", "audio/ogg;codecs=opus", "audio/ogg"];
-            for (const m of list) { if (MediaRecorder.isTypeSupported?.(m)) return m; }
-            return "";
-        }
-
-        async function startRecording(phraseKey, btnRec, btnStop, btnUser) {
-            try {
-                activeStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(activeStream, { mimeType: bestMime() });
-            } catch (err) {
-                console.error("Mic init failed:", err);
-                setStatus("Microphone not available / permission denied.", true);
-                return;
-            }
-            chunks = []; currentRecordingKey = phraseKey;
-            mediaRecorder.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
-            mediaRecorder.onstop = () => {
-                const blob = new Blob(chunks, { type: mediaRecorder.mimeType || "audio/webm" });
-                const old = userObjectURLs.get(phraseKey); if (old) URL.revokeObjectURL(old);
-                const url = URL.createObjectURL(blob);
-                userObjectURLs.set(phraseKey, url);
-                btnUser.disabled = false;
-                btnStop.disabled = true;
-                btnRec.disabled = false;
-                setStatus("Recording saved (temporary). You can play or re-record.");
-                teardownStream();
-            };
-            mediaRecorder.start();
-            btnRec.disabled = true; btnStop.disabled = false;
-            setStatus("Recording… Speak now. Press Stop to finish.");
-        }
-
-        function stopIfRecording() {
-            try {
-                if (mediaRecorder && mediaRecorder.state !== "inactive") { mediaRecorder.stop(); }
-                else { teardownStream(); }
-            } catch { teardownStream(); }
-        }
-
-        function teardownStream() {
-            if (activeStream) { try { activeStream.getTracks().forEach(t => t.stop()); } catch { } }
-            activeStream = null; mediaRecorder = null; chunks = [];
-        }
-
-        function playUserRecording(phraseKey, card) {
-            const url = userObjectURLs.get(phraseKey);
-            if (!url) { setStatus("No recording yet for this phrase.", true); return; }
-            const a = cardPlayer(card);
-            a.onended = null;
-            a.onerror = () => setStatus("Could not play your recording.", true);
-            a.src = url;
-            a.currentTime = 0;
-            a.play().catch(() => setStatus("Tap again to allow audio.", true));
-        }
-        // ---------- NAV + INIT ----------
-        function bindNav() {
-            els.btnCategories.addEventListener("click", () => setScreen("categories"));
-            els.btnToneGuide.addEventListener("click", () => {
-                renderToneGuide();
-                setScreen("guide");
-            });
-        }
-
-        function init() {
-            initEls();
-            setupNetBadge();
-            renderCategories();
-            bindNav();
-            setScreen("categories");
-        }
-
-        window.addEventListener("DOMContentLoaded", init);
+        // Init
+        renderCategories();
+        showView('categories'); // categories-first per plan
     </script>
 </body>
 
