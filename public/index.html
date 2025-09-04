@@ -12,12 +12,16 @@
         @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
         .app-title {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Pacifico', cursive;
-            font-size: 1.8em;
-            white-space: nowrap;
+            font-family: 'Handlee', cursive;
+            text-align: center;
+            margin: 10px 0;
+            /* tighten vertical space */
+            position: sticky;
+            /* keep visible if user scrolls */
+            top: 0;
+            background: #fff;
+            /* ensures title doesn’t overlap */
+            z-index: 1000;
         }
 
 
