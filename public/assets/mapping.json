@@ -1,0 +1,844 @@
+{
+    "categories": [
+        {
+            "id": "essentials",
+            "name": "Essentials"
+        },
+        {
+            "id": "food-drink",
+            "name": "Food & Drink"
+        },
+        {
+            "id": "travel",
+            "name": "Travel"
+        },
+        {
+            "id": "social",
+            "name": "Social"
+        },
+        {
+            "id": "shopping-money",
+            "name": "Shopping & Money"
+        }
+    ],
+    "phrases": {
+        "essentials": [
+            {
+                "id": "00001",
+                "vi": "Xin chào",
+                "en": "Hello",
+                "syllables": [
+                    {
+                        "id": "00035",
+                        "text": "Xin",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00036",
+                        "text": "chào",
+                        "tone": "huyền"
+                    }
+                ]
+            },
+            {
+                "id": "00002",
+                "vi": "Tạm biệt",
+                "en": "Goodbye",
+                "syllables": [
+                    {
+                        "id": "00037",
+                        "text": "Tạm",
+                        "tone": "nặng"
+                    },
+                    {
+                        "id": "00038",
+                        "text": "biệt",
+                        "tone": "sắc"
+                    }
+                ]
+            },
+            {
+                "id": "00003",
+                "vi": "Khỏe không?",
+                "en": "How are you?",
+                "syllables": [
+                    {
+                        "id": "00039",
+                        "text": "Khỏe",
+                        "tone": "hỏi"
+                    },
+                    {
+                        "id": "00040",
+                        "text": "không",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00004",
+                "vi": "Tôi khỏe",
+                "en": "I’m fine",
+                "syllables": [
+                    {
+                        "id": "00041",
+                        "text": "Tôi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00039",
+                        "text": "khỏe",
+                        "tone": "hỏi"
+                    }
+                ]
+            },
+            {
+                "id": "00005",
+                "vi": "Cảm ơn",
+                "en": "Thank you",
+                "syllables": [
+                    {
+                        "id": "00042",
+                        "text": "Cảm",
+                        "tone": "hỏi"
+                    },
+                    {
+                        "id": "00043",
+                        "text": "ơn",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00006",
+                "vi": "Tôi chỉ nói được một chút tiếng Việt",
+                "en": "I only speak a little Vietnamese",
+                "syllables": [
+                    {
+                        "id": "00041",
+                        "text": "Tôi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00044",
+                        "text": "chỉ",
+                        "tone": "hỏi"
+                    },
+                    {
+                        "id": "00045",
+                        "text": "nói",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00046",
+                        "text": "được",
+                        "tone": "nặng"
+                    },
+                    {
+                        "id": "00047",
+                        "text": "một",
+                        "tone": "nặng"
+                    },
+                    {
+                        "id": "00048",
+                        "text": "chút",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00049",
+                        "text": "tiếng",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00050",
+                        "text": "Việt",
+                        "tone": "nặng"
+                    }
+                ]
+            },
+            {
+                "id": "00007",
+                "vi": "Không có gì",
+                "en": "You’re welcome / no problem",
+                "syllables": [
+                    {
+                        "id": "00040",
+                        "text": "Không",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00051",
+                        "text": "có",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00052",
+                        "text": "gì",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00008",
+                "vi": "Rất vui được gặp bạn",
+                "en": "Nice to meet you",
+                "syllables": [
+                    {
+                        "id": "00053",
+                        "text": "Rất",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00054",
+                        "text": "vui",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00046",
+                        "text": "được",
+                        "tone": "nặng"
+                    },
+                    {
+                        "id": "00055",
+                        "text": "gặp",
+                        "tone": "nặng"
+                    },
+                    {
+                        "id": "00056",
+                        "text": "bạn",
+                        "tone": "nặng"
+                    }
+                ]
+            }
+        ],
+        "food-drink": [
+            {
+                "id": "00009",
+                "vi": "Cà phê sữa đá",
+                "en": "Iced coffee with milk",
+                "syllables": [
+                    {
+                        "id": "00057",
+                        "text": "Cà",
+                        "tone": "huyền"
+                    },
+                    {
+                        "id": "00058",
+                        "text": "phê",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00059",
+                        "text": "sữa",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00060",
+                        "text": "đá",
+                        "tone": "sắc"
+                    }
+                ]
+            },
+            {
+                "id": "00010",
+                "vi": "Cho tôi một ly bia",
+                "en": "Give me a beer",
+                "syllables": [
+                    {
+                        "id": "00061",
+                        "text": "Cho",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00041",
+                        "text": "tôi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00047",
+                        "text": "một",
+                        "tone": "nặng"
+                    },
+                    {
+                        "id": "00062",
+                        "text": "ly",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00063",
+                        "text": "bia",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00011",
+                "vi": "Nước lọc",
+                "en": "Water",
+                "syllables": [
+                    {
+                        "id": "00064",
+                        "text": "Nước",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00065",
+                        "text": "lọc",
+                        "tone": "nặng"
+                    }
+                ]
+            },
+            {
+                "id": "00012",
+                "vi": "Tô phở",
+                "en": "A bowl of phở",
+                "syllables": [
+                    {
+                        "id": "00066",
+                        "text": "Tô",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00067",
+                        "text": "phở",
+                        "tone": "hỏi"
+                    }
+                ]
+            },
+            {
+                "id": "00013",
+                "vi": "Ngon quá!",
+                "en": "So delicious!",
+                "syllables": [
+                    {
+                        "id": "00068",
+                        "text": "Ngon",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00069",
+                        "text": "quá",
+                        "tone": "sắc"
+                    }
+                ]
+            },
+            {
+                "id": "00014",
+                "vi": "Tính tiền, ơi!",
+                "en": "The bill, please",
+                "syllables": [
+                    {
+                        "id": "00070",
+                        "text": "Tính",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00071",
+                        "text": "tiền",
+                        "tone": "huyền"
+                    },
+                    {
+                        "id": "00072",
+                        "text": "ơi",
+                        "tone": "không"
+                    }
+                ]
+            }
+        ],
+        "travel": [
+            {
+                "id": "00015",
+                "vi": "Đi đâu vậy?",
+                "en": "Where are you going?",
+                "syllables": [
+                    {
+                        "id": "00073",
+                        "text": "Đi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00074",
+                        "text": "đâu",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00075",
+                        "text": "vậy",
+                        "tone": "nặng"
+                    }
+                ]
+            },
+            {
+                "id": "00016",
+                "vi": "Bao nhiêu tiền?",
+                "en": "How much?",
+                "syllables": [
+                    {
+                        "id": "00076",
+                        "text": "Bao",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00077",
+                        "text": "nhiêu",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00052",
+                        "text": "tiền",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00017",
+                "vi": "Quá mắc!",
+                "en": "Too expensive!",
+                "syllables": [
+                    {
+                        "id": "00069",
+                        "text": "Quá",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00078",
+                        "text": "mắc",
+                        "tone": "sắc"
+                    }
+                ]
+            },
+            {
+                "id": "00018",
+                "vi": "Cho tôi xuống đây",
+                "en": "Let me get off here",
+                "syllables": [
+                    {
+                        "id": "00061",
+                        "text": "Cho",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00041",
+                        "text": "tôi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00079",
+                        "text": "xuống",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00080",
+                        "text": "đây",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00019",
+                "vi": "Xe buýt ở đâu?",
+                "en": "Where is the bus?",
+                "syllables": [
+                    {
+                        "id": "00081",
+                        "text": "Xe",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00082",
+                        "text": "buýt",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00083",
+                        "text": "ở",
+                        "tone": "hỏi"
+                    },
+                    {
+                        "id": "00074",
+                        "text": "đâu",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00020",
+                "vi": "Tôi muốn đi tới…",
+                "en": "I want to go to…",
+                "syllables": [
+                    {
+                        "id": "00041",
+                        "text": "Tôi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00084",
+                        "text": "muốn",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00073",
+                        "text": "đi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00085",
+                        "text": "tới",
+                        "tone": "sắc"
+                    }
+                ]
+            }
+        ],
+        "social": [
+            {
+                "id": "00021",
+                "vi": "Bạn tên gì?",
+                "en": "What’s your name?",
+                "syllables": [
+                    {
+                        "id": "00056",
+                        "text": "Bạn",
+                        "tone": "nặng"
+                    },
+                    {
+                        "id": "00086",
+                        "text": "tên",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00087",
+                        "text": "gì",
+                        "tone": "huyền"
+                    }
+                ]
+            },
+            {
+                "id": "00022",
+                "vi": "Tôi tên là John",
+                "en": "My name is John",
+                "syllables": [
+                    {
+                        "id": "00041",
+                        "text": "Tôi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00086",
+                        "text": "tên",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00088",
+                        "text": "là",
+                        "tone": "huyền"
+                    },
+                    {
+                        "id": "00089",
+                        "text": "John",
+                        "tone": "foreign"
+                    }
+                ]
+            },
+            {
+                "id": "00023",
+                "vi": "Bạn bao nhiêu tuổi?",
+                "en": "How old are you?",
+                "syllables": [
+                    {
+                        "id": "00056",
+                        "text": "Bạn",
+                        "tone": "nặng"
+                    },
+                    {
+                        "id": "00076",
+                        "text": "bao",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00077",
+                        "text": "nhiêu",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00090",
+                        "text": "tuổi",
+                        "tone": "hỏi"
+                    }
+                ]
+            },
+            {
+                "id": "00024",
+                "vi": "Tôi không hiểu",
+                "en": "I don’t understand",
+                "syllables": [
+                    {
+                        "id": "00041",
+                        "text": "Tôi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00040",
+                        "text": "không",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00091",
+                        "text": "hiểu",
+                        "tone": "hỏi"
+                    }
+                ]
+            },
+            {
+                "id": "00025",
+                "vi": "Không sao đâu",
+                "en": "It’s okay / no problem",
+                "syllables": [
+                    {
+                        "id": "00040",
+                        "text": "Không",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00092",
+                        "text": "sao",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00074",
+                        "text": "đâu",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00026",
+                "vi": "Tôi nhớ bạn",
+                "en": "I miss you",
+                "syllables": [
+                    {
+                        "id": "00041",
+                        "text": "Tôi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00093",
+                        "text": "nhớ",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00056",
+                        "text": "bạn",
+                        "tone": "nặng"
+                    }
+                ]
+            },
+            {
+                "id": "00027",
+                "vi": "Tôi thương bạn",
+                "en": "I love you",
+                "syllables": [
+                    {
+                        "id": "00041",
+                        "text": "Tôi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00094",
+                        "text": "thương",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00056",
+                        "text": "bạn",
+                        "tone": "nặng"
+                    }
+                ]
+            }
+        ],
+        "shopping-money": [
+            {
+                "id": "00028",
+                "vi": "Bao nhiêu tiền?",
+                "en": "How much?",
+                "syllables": [
+                    {
+                        "id": "00076",
+                        "text": "Bao",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00077",
+                        "text": "nhiêu",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00052",
+                        "text": "tiền",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00029",
+                "vi": "Giảm giá được không?",
+                "en": "Can you give a discount?",
+                "syllables": [
+                    {
+                        "id": "00095",
+                        "text": "Giảm",
+                        "tone": "hỏi"
+                    },
+                    {
+                        "id": "00096",
+                        "text": "giá",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00046",
+                        "text": "được",
+                        "tone": "nặng"
+                    },
+                    {
+                        "id": "00040",
+                        "text": "không",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00030",
+                "vi": "Mắc quá!",
+                "en": "Too expensive!",
+                "syllables": [
+                    {
+                        "id": "00097",
+                        "text": "Mắc",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00069",
+                        "text": "quá",
+                        "tone": "sắc"
+                    }
+                ]
+            },
+            {
+                "id": "00031",
+                "vi": "Tôi muốn mua cái này",
+                "en": "I want to buy this",
+                "syllables": [
+                    {
+                        "id": "00041",
+                        "text": "Tôi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00084",
+                        "text": "muốn",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00098",
+                        "text": "mua",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00099",
+                        "text": "cái",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00100",
+                        "text": "này",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00032",
+                "vi": "Có size lớn hơn không?",
+                "en": "Do you have a bigger size?",
+                "syllables": [
+                    {
+                        "id": "00101",
+                        "text": "Có",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00102",
+                        "text": "size",
+                        "tone": "loan"
+                    },
+                    {
+                        "id": "00103",
+                        "text": "lớn",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00104",
+                        "text": "hơn",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00040",
+                        "text": "không",
+                        "tone": "không"
+                    }
+                ]
+            },
+            {
+                "id": "00033",
+                "vi": "Cho tôi xem cái khác",
+                "en": "Let me see another one",
+                "syllables": [
+                    {
+                        "id": "00061",
+                        "text": "Cho",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00041",
+                        "text": "tôi",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00105",
+                        "text": "xem",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00099",
+                        "text": "cái",
+                        "tone": "sắc"
+                    },
+                    {
+                        "id": "00106",
+                        "text": "khác",
+                        "tone": "sắc"
+                    }
+                ]
+            },
+            {
+                "id": "00034",
+                "vi": "Không mua đâu",
+                "en": "I won’t buy it",
+                "syllables": [
+                    {
+                        "id": "00040",
+                        "text": "Không",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00098",
+                        "text": "mua",
+                        "tone": "không"
+                    },
+                    {
+                        "id": "00074",
+                        "text": "đâu",
+                        "tone": "không"
+                    }
+                ]
+            }
+        ]
+    }
+}

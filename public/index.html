@@ -340,214 +340,39 @@
         <small>Phase 1 — MVP (Syllable model, categories-first). Record/Compare &amp; Check Tone are
             placeholders.</small>
     </footer>
+
     <script>
-        // All audio lives in assets/audio/
-        const AUDIO_BASE = 'assets/audio/';
+        // =========================
+        // ID-based mapping (no slugifying)
+        // =========================
 
-        // Explicit syllable→filename map (no guessing)
-        // Includes every syllable used in DATA; add any missing MP3s to make those buttons work.
-        const SYL_AUDIO = {
-            // Essentials & shared
-            "Xin": "xin.mp3", "chào": "chào.mp3", "Tạm": "tạm.mp3", "biệt": "biệt.mp3", "Khỏe": "khỏe.mp3", "khỏe": "khỏe.mp3",
-            "không": "không.mp3", "Tôi": "tôi.mp3", "Cảm": "cảm.mp3", "ơn": "ơn.mp3",        // ← ensure ơn.mp3 exists
-            "chỉ": "chỉ.mp3", "nói": "nói.mp3", "được": "được.mp3", "một": "một.mp3", "chút": "chút.mp3", "tiếng": "tiếng.mp3", "Việt": "việt.mp3",
-            "Không": "không.mp3", "có": "có.mp3", "gì": "gì.mp3", "Rất": "rất.mp3", "vui": "vui.mp3", "gặp": "gặp.mp3", "bạn": "bạn.mp3",
+        /** Global mapping loaded from /assets/mapping.json */
+        let MAPPING = null; // { categories:[{id,name}], phrases:{ [catId]: [{ id, vi, en, syllables:[{ id, text, tone }] }] } }
 
-            // Food & Drink
-            "Cà": "cà.mp3", "phê": "phê.mp3", "sữa": "sữa.mp3", "đá": "đá.mp3",
-            "Cho": "cho.mp3",      // ← ensure cho.mp3 exists
-            "tôi": "tôi.mp3", "ly": "ly.mp3", "bia": "bia.mp3",
-            "Nước": "nước.mp3", "lọc": "lọc.mp3",
-            "Tô": "tô.mp3", "phở": "phở.mp3",
-            "Ngon": "ngon.mp3", "quá": "quá.mp3",
-            "Tính": "tính.mp3", "tiền": "tiền.mp3", "ơi": "ơi.mp3",
-
-            // Travel
-            "Đi": "đi.mp3", "đâu": "đâu.mp3", "vậy": "vậy.mp3",
-            "Bao": "bao.mp3", "nhiêu": "nhiêu.mp3",
-            "Quá": "quá.mp3", "mắc": "mắc.mp3",
-            "xuống": "xuống.mp3", "đây": "đây.mp3",
-            "Xe": "xe.mp3", "buýt": "buýt.mp3", "ở": "ở.mp3", // ← ensure ở.mp3 exists
-
-            // Social
-            "Bạn": "bạn.mp3", "tên": "tên.mp3", "gì": "gì.mp3",
-            "là": "là.mp3", "John": "john.mp3",
-            "tuổi": "tuổi.mp3", "hiểu": "hiểu.mp3",
-            "sao": "sao.mp3", "đâu": "đâu.mp3",
-            "nhớ": "nhớ.mp3", "thương": "thương.mp3",
-
-            // Shopping & Money
-            "Giảm": "giảm.mp3", "giá": "giá.mp3",
-            "mua": "mua.mp3", "cái": "cái.mp3", "này": "này.mp3",
-            "Có": "có.mp3", "size": "size.mp3", "lớn": "lớn.mp3", "hơn": "hơn.mp3",
-            "xem": "xem.mp3", "khác": "khác.mp3",
-            "Mắc": "mắc.mp3", "Không": "không.mp3"
-        };
-
-        function audioUrl(file) { return AUDIO_BASE + file; }
-        // Categories + Phrases with explicit phraseAudio filenames (no guessing)
-        const DATA = {
-            categories: [
-                { id: "essentials", name: "Essentials" },
-                { id: "food-drink", name: "Food & Drink" },
-                { id: "travel", name: "Travel" },
-                { id: "social", name: "Social" },
-                { id: "shopping-money", name: "Shopping & Money" },
-            ],
-            phrases: {
-                "essentials": [
-                    {
-                        vi: "Xin chào", en: "Hello", phraseAudio: "essentials_xin-chao.mp3",
-                        syllables: [{ text: "Xin", tone: "sắc" }, { text: "chào", tone: "huyền" }]
-                    },
-                    {
-                        vi: "Tạm biệt", en: "Goodbye", phraseAudio: "essentials_tam-biet.mp3",
-                        syllables: [{ text: "Tạm", tone: "nặng" }, { text: "biệt", tone: "sắc" }]
-                    },
-                    {
-                        vi: "Khỏe không?", en: "How are you?", phraseAudio: "essentials_khoe-khong.mp3",
-                        syllables: [{ text: "Khỏe", tone: "hỏi" }, { text: "không", tone: "không" }]
-                    },
-                    {
-                        vi: "Tôi khỏe", en: "I’m fine", phraseAudio: "essentials_toi-khoe.mp3",
-                        syllables: [{ text: "Tôi", tone: "không" }, { text: "khỏe", tone: "hỏi" }]
-                    },
-                    {
-                        vi: "Cảm ơn", en: "Thank you", phraseAudio: "essentials_cam-on.mp3",
-                        syllables: [{ text: "Cảm", tone: "hỏi" }, { text: "ơn", tone: "không" }]
-                    },
-                    {
-                        vi: "Tôi chỉ nói được một chút tiếng Việt", en: "I only speak a little Vietnamese",
-                        phraseAudio: "essentials_toi-chi-noi-duoc-mot-chut-tieng-viet.mp3",
-                        syllables: [
-                            { text: "Tôi", tone: "không" }, { text: "chỉ", tone: "hỏi" }, { text: "nói", tone: "sắc" }, { text: "được", tone: "nặng" },
-                            { text: "một", tone: "nặng" }, { text: "chút", tone: "sắc" }, { text: "tiếng", tone: "sắc" }, { text: "Việt", tone: "nặng" }
-                        ]
-                    },
-                    {
-                        vi: "Không có gì", en: "You’re welcome / no problem", phraseAudio: "essentials_khong-co-gi.mp3",
-                        syllables: [{ text: "Không", tone: "không" }, { text: "có", tone: "sắc" }, { text: "gì", tone: "không" }]
-                    },
-                    {
-                        vi: "Rất vui được gặp bạn", en: "Nice to meet you", phraseAudio: "essentials_rat-vui-duoc-gap-ban.mp3",
-                        syllables: [{ text: "Rất", tone: "sắc" }, { text: "vui", tone: "không" }, { text: "được", tone: "nặng" }, { text: "gặp", tone: "nặng" }, { text: "bạn", tone: "nặng" }]
-                    },
-                ],
-                "food-drink": [
-                    {
-                        vi: "Cà phê sữa đá", en: "Iced coffee with milk", phraseAudio: "food_ca-phe-sua-da.mp3",
-                        syllables: [{ text: "Cà", tone: "huyền" }, { text: "phê", tone: "không" }, { text: "sữa", tone: "sắc" }, { text: "đá", tone: "sắc" }]
-                    },
-                    {
-                        vi: "Cho tôi một ly bia", en: "Give me a beer", phraseAudio: "food_cho-toi-mot-ly-bia.mp3",
-                        syllables: [{ text: "Cho", tone: "không" }, { text: "tôi", tone: "không" }, { text: "một", tone: "nặng" }, { text: "ly", tone: "không" }, { text: "bia", tone: "không" }]
-                    },
-                    {
-                        vi: "Nước lọc", en: "Water", phraseAudio: "food_nuoc-loc.mp3",
-                        syllables: [{ text: "Nước", tone: "sắc" }, { text: "lọc", tone: "nặng" }]
-                    },
-                    {
-                        vi: "Tô phở", en: "A bowl of phở", phraseAudio: "food_to-pho.mp3",
-                        syllables: [{ text: "Tô", tone: "không" }, { text: "phở", tone: "hỏi" }]
-                    },
-                    {
-                        vi: "Ngon quá!", en: "So delicious!", phraseAudio: "food_ngon-qua.mp3",
-                        syllables: [{ text: "Ngon", tone: "không" }, { text: "quá", tone: "sắc" }]
-                    },
-                    {
-                        vi: "Tính tiền, ơi!", en: "The bill, please", phraseAudio: "food_tinh-tien-oi.mp3",
-                        syllables: [{ text: "Tính", tone: "sắc" }, { text: "tiền", tone: "huyền" }, { text: "ơi", tone: "không" }]
-                    },
-                ],
-                "travel": [
-                    {
-                        vi: "Đi đâu vậy?", en: "Where are you going?", phraseAudio: "travel_di-dau-vay.mp3",
-                        syllables: [{ text: "Đi", tone: "không" }, { text: "đâu", tone: "không" }, { text: "vậy", tone: "nặng" }]
-                    },
-                    {
-                        vi: "Bao nhiêu tiền?", en: "How much?", phraseAudio: "travel_bao-nhieu-tien.mp3",
-                        syllables: [{ text: "Bao", tone: "không" }, { text: "nhiêu", tone: "sắc" }, { text: "tiền", tone: "không" }]
-                    },
-                    {
-                        vi: "Quá mắc!", en: "Too expensive!", phraseAudio: "travel_qua-mac.mp3",
-                        syllables: [{ text: "Quá", tone: "sắc" }, { text: "mắc", tone: "sắc" }]
-                    },
-                    {
-                        vi: "Cho tôi xuống đây", en: "Let me get off here", phraseAudio: "travel_cho-toi-xuong-day.mp3",
-                        syllables: [{ text: "Cho", tone: "không" }, { text: "tôi", tone: "không" }, { text: "xuống", tone: "sắc" }, { text: "đây", tone: "không" }]
-                    },
-                    {
-                        vi: "Xe buýt ở đâu?", en: "Where is the bus?", phraseAudio: "travel_xe-buyt-o-dau.mp3",
-                        syllables: [{ text: "Xe", tone: "không" }, { text: "buýt", tone: "sắc" }, { text: "ở", tone: "hỏi" }, { text: "đâu", tone: "không" }]
-                    },
-                    {
-                        vi: "Tôi muốn đi tới…", en: "I want to go to…", phraseAudio: "travel_toi-muon-di-toi.mp3",
-                        syllables: [{ text: "Tôi", tone: "không" }, { text: "muốn", tone: "sắc" }, { text: "đi", tone: "không" }, { text: "tới", tone: "sắc" }]
-                    },
-                ],
-                "social": [
-                    {
-                        vi: "Bạn tên gì?", en: "What’s your name?", phraseAudio: "social_ban-ten-gi.mp3",
-                        syllables: [{ text: "Bạn", tone: "nặng" }, { text: "tên", tone: "không" }, { text: "gì", tone: "huyền" }]
-                    },
-                    {
-                        vi: "Tôi tên là John", en: "My name is John", phraseAudio: "social_toi-ten-la-john.mp3",
-                        syllables: [{ text: "Tôi", tone: "không" }, { text: "tên", tone: "không" }, { text: "là", tone: "huyền" }, { text: "John", tone: "foreign" }]
-                    },
-                    {
-                        vi: "Bạn bao nhiêu tuổi?", en: "How old are you?", phraseAudio: "social_ban-bao-nhieu-tuoi.mp3",
-                        syllables: [{ text: "Bạn", tone: "nặng" }, { text: "bao", tone: "không" }, { text: "nhiêu", tone: "sắc" }, { text: "tuổi", tone: "hỏi" }]
-                    },
-                    {
-                        vi: "Tôi không hiểu", en: "I don’t understand", phraseAudio: "social_toi-khong-hieu.mp3",
-                        syllables: [{ text: "Tôi", tone: "không" }, { text: "không", tone: "không" }, { text: "hiểu", tone: "hỏi" }]
-                    },
-                    {
-                        vi: "Không sao đâu", en: "It’s okay / no problem", phraseAudio: "social_khong-sao-dau.mp3",
-                        syllables: [{ text: "Không", tone: "không" }, { text: "sao", tone: "không" }, { text: "đâu", tone: "không" }]
-                    },
-                    {
-                        vi: "Tôi nhớ bạn", en: "I miss you", phraseAudio: "social_toi-nho-ban.mp3",
-                        syllables: [{ text: "Tôi", tone: "không" }, { text: "nhớ", tone: "sắc" }, { text: "bạn", tone: "nặng" }]
-                    },
-                    {
-                        vi: "Tôi thương bạn", en: "I love you", phraseAudio: "social_toi-thuong-ban.mp3",
-                        syllables: [{ text: "Tôi", tone: "không" }, { text: "thương", tone: "không" }, { text: "bạn", tone: "nặng" }]
-                    },
-                ],
-                "shopping-money": [
-                    {
-                        vi: "Bao nhiêu tiền?", en: "How much?", phraseAudio: "shopping_bao-nhieu-tien.mp3",
-                        syllables: [{ text: "Bao", tone: "không" }, { text: "nhiêu", tone: "sắc" }, { text: "tiền", tone: "không" }]
-                    },
-                    {
-                        vi: "Giảm giá được không?", en: "Can you give a discount?", phraseAudio: "shopping_giam-gia-duoc-khong.mp3",
-                        syllables: [{ text: "Giảm", tone: "hỏi" }, { text: "giá", tone: "sắc" }, { text: "được", tone: "nặng" }, { text: "không", tone: "không" }]
-                    },
-                    {
-                        vi: "Mắc quá!", en: "Too expensive!", phraseAudio: "shopping_mac-qua.mp3",
-                        syllables: [{ text: "Mắc", tone: "sắc" }, { text: "quá", tone: "sắc" }]
-                    },
-                    {
-                        vi: "Tôi muốn mua cái này", en: "I want to buy this", phraseAudio: "shopping_toi-muon-mua-cai-nay.mp3",
-                        syllables: [{ text: "Tôi", tone: "không" }, { text: "muốn", tone: "sắc" }, { text: "mua", tone: "không" }, { text: "cái", tone: "sắc" }, { text: "này", tone: "không" }]
-                    },
-                    {
-                        vi: "Có size lớn hơn không?", en: "Do you have a bigger size?", phraseAudio: "shopping_co-size-lon-hon-khong.mp3",
-                        syllables: [{ text: "Có", tone: "sắc" }, { text: "size", tone: "loan" }, { text: "lớn", tone: "sắc" }, { text: "hơn", tone: "không" }, { text: "không", tone: "không" }]
-                    },
-                    {
-                        vi: "Cho tôi xem cái khác", en: "Let me see another one", phraseAudio: "shopping_cho-toi-xem-cai-khac.mp3",
-                        syllables: [{ text: "Cho", tone: "không" }, { text: "tôi", tone: "không" }, { text: "xem", tone: "sắc" }, { text: "cái", tone: "sắc" }, { text: "khác", tone: "sắc" }]
-                    },
-                    {
-                        vi: "Không mua đâu", en: "I won’t buy it", phraseAudio: "shopping_khong-mua-dau.mp3",
-                        syllables: [{ text: "Không", tone: "không" }, { text: "mua", tone: "không" }, { text: "đâu", tone: "không" }]
-                    },
-                ],
+        async function initMapping() {
+            try {
+                const res = await fetch('/assets/mapping.json', { cache: 'no-store' });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                MAPPING = await res.json();
+            } catch (err) {
+                console.error('Failed to load mapping.json', err);
+                MAPPING = { categories: [], phrases: {} };
             }
-        };
-        // ——— Rendering & playback ———
+        }
+
+        // Simple ID player — filenames are exact: assets/audio/<ID>.mp3
+        function playById(id) {
+            try {
+                const audio = new Audio(`assets/audio/${id}.mp3`);
+                audio.play();
+            } catch (e) {
+                console.warn('Audio failed for id:', id, e);
+            }
+        }
+
+        // =========================
+        // Views / Rendering
+        // =========================
         const $ = sel => document.querySelector(sel);
 
         function showView(name) {
@@ -565,8 +390,8 @@
         function renderCategories() {
             const ul = $("#categoryList");
             ul.innerHTML = "";
-            DATA.categories.forEach(cat => {
-                const count = (DATA.phrases[cat.id] || []).length;
+            (MAPPING.categories || []).forEach(cat => {
+                const count = (MAPPING.phrases?.[cat.id] || []).length;
                 const li = document.createElement('li');
                 li.innerHTML = `<span class="category-name">${cat.name}</span>
                         <span class="category-count">${count} phrase${count === 1 ? "" : "s"}</span>`;
@@ -575,25 +400,14 @@
             });
         }
 
-        async function playFile(filename, btn) {
-            try {
-                btn?.setAttribute('aria-busy', 'true');
-                const audio = new Audio(audioUrl(filename));
-                await audio.play();
-            } catch (e) {
-                console.warn('Audio failed:', filename, e);
-            } finally {
-                btn?.removeAttribute('aria-busy');
-            }
-        }
-
         function openCategory(catId, catName) {
             $("#phrasesCategoryTitle").textContent = catName;
             const container = $("#phrasesContainer");
             container.innerHTML = "";
 
-            const items = DATA.phrases[catId] || [];
+            const items = MAPPING.phrases?.[catId] || [];
             items.forEach(item => {
+                // item: { id: '00001', vi, en, syllables:[{ id:'00037', text, tone }] }
                 const card = document.createElement('div');
                 card.className = 'phrase-card';
 
@@ -604,7 +418,8 @@
                 const btnPhrase = document.createElement('button');
                 btnPhrase.className = 'audio-btn primary';
                 btnPhrase.textContent = "▶︎";
-                btnPhrase.addEventListener('click', () => playFile(item.phraseAudio, btnPhrase));
+                btnPhrase.setAttribute('data-id', item.id);
+                btnPhrase.addEventListener('click', () => playById(item.id));
 
                 const phraseText = document.createElement('div');
                 phraseText.innerHTML = `<strong>${item.vi}</strong>`;
@@ -622,8 +437,8 @@
                     const btnSyl = document.createElement('button');
                     btnSyl.className = 'audio-btn';
                     btnSyl.textContent = "▶︎";
-                    const sylFile = SYL_AUDIO[syl.text];
-                    btnSyl.addEventListener('click', () => sylFile ? playFile(sylFile, btnSyl) : console.warn('Missing audio for syllable:', syl.text));
+                    btnSyl.setAttribute('data-id', syl.id);
+                    btnSyl.addEventListener('click', () => playById(syl.id));
 
                     const sylText = document.createElement('div');
                     sylText.className = 'syllable-text';
@@ -644,7 +459,7 @@
                 tr.className = 'translation';
                 tr.textContent = item.en;
 
-                // Controls: placeholders
+                // Controls: placeholders (unchanged)
                 const controls = document.createElement('div');
                 controls.className = 'controls';
                 const btnRecord = document.createElement('button');
@@ -684,8 +499,12 @@
         document.getElementById('btnBackToCategories').addEventListener('click', () => showView('categories'));
         document.getElementById('btnBackFromTone').addEventListener('click', () => showView('categories'));
 
-        renderCategories();
-        showView('categories'); // categories-first
+        // Boot
+        (async function start() {
+            await initMapping();
+            renderCategories();
+            showView('categories'); // categories-first
+        })();
     </script>
 </body>
 
