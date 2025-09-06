@@ -1,26 +1,44 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>John’s Vietnamese Phrases</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>VietClear</title>
+
+    <!-- iOS PWA fullscreen support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="VietClear">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+
+    <!-- Manifest (needed for standalone launch on iOS/Android) -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#009688">
+
     <!-- Handwritten title font (English title only) -->
     <link href="https://fonts.googleapis.com/css2?family=Handlee&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --fg: #111;
-            --bg: #fff;
+            --bg: #FAFAFA;
             --muted: #666;
-            --accent: #0b7a70;
-            /* higher contrast teal */
-            --accent-hover: #096f66;
-            /* hover */
-            --accent-press: #085f58;
-            /* active */
-            --card: #f7f7f7;
+
+            /* Primary = App audio (teal) */
+            --accent: #009688;
+            --accent-hover: #00897B;
+            --accent-press: #00796B;
+
+            /* Secondary = My attempt (orange) */
+            --secondary: #FF7043;
+            --secondary-hover: #F7673C;
+            --secondary-press: #E85E30;
+
+            --card: #ffffff;
             --border: #e5e5e5;
-            --pressed: #e9f4f3;
+            --pressed: #eef6f5;
+            --focus: rgba(0, 150, 136, 0.28);
         }
 
         * {
@@ -38,8 +56,11 @@
             color: var(--fg);
             background: var(--bg);
             line-height: 1.45;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
+        /* Header */
         .app-header {
             position: sticky;
             top: 0;
@@ -47,6 +68,8 @@
             background: var(--bg);
             border-bottom: 1px solid var(--border);
             padding: 8px 12px;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .app-title {
@@ -56,29 +79,13 @@
             text-align: center;
         }
 
-        .top-nav {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            padding-top: 4px;
-        }
-
-        .tone-link {
-            font-size: 14px;
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .tone-link:hover {
-            text-decoration: underline;
-        }
-
         main#app {
             max-width: 960px;
             margin: 0 auto;
             padding: 12px;
         }
 
+        /* Views */
         .view {
             display: none;
         }
@@ -98,67 +105,109 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .btn {
+        /* Buttons */
+        .btn,
+        .audio-btn {
             border: 1px solid var(--border);
             background: var(--card);
             padding: 8px 12px;
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            transition: background-color .12s ease, filter .12s ease, transform .08s ease;
+            transition: background-color .12s ease, filter .12s ease, transform .08s ease, box-shadow .12s ease, border-color .12s ease, color .12s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
-        .btn:hover {
+        .btn:hover,
+        .audio-btn:hover {
             filter: brightness(.98)
         }
 
-        .btn:active {
-            background: var(--pressed);
-        }
-
-        .btn.primary {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-
-        .btn.primary:hover {
-            background: var(--accent-hover);
-            border-color: var(--accent-hover);
-        }
-
-        .btn.primary:active {
-            background: var(--accent-press);
-            border-color: var(--accent-press);
-        }
-
-        .btn.back {
-            min-width: 180px;
-            /* bigger touch target */
-            font-weight: 700;
-            /* clearer affordance */
-            padding: 12px 16px;
-            /* iPhone Safari friendly */
-            border-radius: 14px;
-        }
-
-        .btn.ghost {
-            background: transparent;
-        }
-
-        .btn.is-pressed,
-        .audio-btn.is-pressed {
-            transform: scale(0.98);
-            box-shadow: 0 0 0 2px var(--pressed) inset;
+        .btn:active,
+        .audio-btn:active {
+            background: var(--pressed)
         }
 
         .btn:focus-visible,
         .audio-btn:focus-visible {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(11, 122, 112, 0.25);
+            box-shadow: 0 0 0 3px var(--focus)
         }
 
+        /* Primary (App audio) */
+        .btn.primary,
+        .audio-btn.primary {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .btn.primary:hover,
+        .audio-btn.primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+
+        .btn.primary:active,
+        .audio-btn.primary:active {
+            background: var(--accent-press);
+            border-color: var(--accent-press);
+        }
+
+        .audio-btn[aria-busy="true"] {
+            opacity: .75;
+            pointer-events: none;
+        }
+
+        .audio-btn.primary.playing {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Secondary (My attempt) */
+        .btn.my-attempt.playing {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: #fff;
+        }
+
+        .btn.my-attempt.secondary {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: #fff;
+        }
+
+        .btn.my-attempt.secondary:hover {
+            background: var(--secondary-hover);
+            border-color: var(--secondary-hover);
+        }
+
+        .btn.my-attempt.secondary:active {
+            background: var(--secondary-press);
+            border-color: var(--secondary-press);
+        }
+
+        .btn.back {
+            min-width: 180px;
+            font-weight: 700;
+            padding: 12px 16px;
+            border-radius: 14px;
+        }
+
+        .btn.ghost {
+            background: transparent;
+            color: var(--muted)
+        }
+
+        .btn.is-pressed,
+        .audio-btn.is-pressed,
+        .syllable.is-pressed {
+            transform: scale(.98);
+            box-shadow: 0 0 0 2px var(--pressed) inset;
+        }
+
+        /* Categories grid */
         .category-list {
             list-style: none;
             padding: 0;
@@ -174,7 +223,7 @@
             border-radius: 14px;
             padding: 16px;
             cursor: pointer;
-            transition: filter .12s ease;
+            transition: filter .12s ease, background-color .12s ease;
         }
 
         .category-list li:hover {
@@ -182,7 +231,7 @@
         }
 
         .category-list li:active {
-            background: var(--pressed);
+            background: var(--pressed)
         }
 
         .category-name {
@@ -202,6 +251,13 @@
             font-size: 18px;
         }
 
+        /* Tone Guide card in Categories */
+        .tone-guide-card {
+            border: 1px dashed var(--accent);
+            background: #fff;
+        }
+
+        /* Phrases list */
         .phrases-container {
             display: grid;
             grid-template-columns: 1fr;
@@ -210,7 +266,7 @@
 
         .phrase-card {
             border: 1px solid var(--border);
-            background: var(--bg);
+            background: var(--card);
             border-radius: 14px;
             padding: 12px;
         }
@@ -230,46 +286,11 @@
             padding: 6px 10px;
             font-size: 14px;
             cursor: pointer;
-            transition: background-color .12s ease, filter .12s ease, transform .08s ease;
+            transition: background-color .12s ease, filter .12s ease, transform .08s ease, box-shadow .12s ease, border-color .12s ease, color .12s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
-        .audio-btn:hover {
-            filter: brightness(.98)
-        }
-
-        .audio-btn:active {
-            background: var(--pressed);
-        }
-
-        .audio-btn.primary {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-
-        .audio-btn.primary:hover {
-            background: var(--accent-hover);
-            border-color: var(--accent-hover);
-        }
-
-        .audio-btn.primary:active {
-            background: var(--accent-press);
-            border-color: var(--accent-press);
-        }
-
-        .audio-btn[aria-busy="true"] {
-            opacity: .7;
-            pointer-events: none;
-        }
-
-        /* Colour feedback while playing */
-        .audio-btn.playing {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-
+        /* Syllables */
         .syllable-row {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -282,8 +303,22 @@
             border-radius: 10px;
             padding: 8px;
             display: grid;
-            grid-template-rows: auto auto auto;
+            grid-template-rows: auto auto;
             gap: 4px;
+            background: #fff;
+            cursor: pointer;
+            transition: background-color .12s ease, filter .12s ease, transform .08s ease, box-shadow .12s ease, border-color .12s ease, color .12s ease;
+        }
+
+        .syllable:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--focus)
+        }
+
+        .syllable .syllable-head {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
         }
 
         .syllable .syllable-text {
@@ -291,17 +326,24 @@
             font-weight: 700;
         }
 
+        .syllable .play-hint {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1;
+            user-select: none;
+        }
+
         .syllable .tone-name {
             font-size: 12px;
             color: var(--muted);
         }
 
+        /* Translation (English) — moved ABOVE Vietnamese per spec */
         .translation {
-            margin-top: 4px;
+            margin: 2px 0 8px;
             color: var(--muted);
             font-size: 14px;
             font-style: italic;
-            /* clearer separation from Vietnamese */
         }
 
         .controls {
@@ -338,10 +380,7 @@
 
 <body>
     <header class="app-header">
-        <h1 class="app-title">John’s Vietnamese Phrases</h1>
-        <nav class="top-nav">
-            <a href="#tone-guide" id="toneGuideLink" class="tone-link">Tone Guide</a>
-        </nav>
+        <h1 class="app-title">VietClear</h1>
     </header>
 
     <main id="app">
@@ -359,24 +398,6 @@
             <h2 id="phrasesCategoryTitle" class="category-title"></h2>
             <div id="phrasesContainer" class="phrases-container"></div>
         </section>
-
-        <!-- View: Tone Guide -->
-        <section id="view-tone" class="view" aria-label="Tone Guide" hidden>
-            <div class="view-header">
-                <button id="btnBackFromTone" class="btn back">Categories</button>
-            </div>
-            <h2 class="category-title">Tone Guide</h2>
-            <div class="tone-guide">
-                <ul>
-                    <li><strong>sắc</strong> — rising ↗</li>
-                    <li><strong>huyền</strong> — falling ↘</li>
-                    <li><strong>hỏi</strong> — dipping ˇ</li>
-                    <li><strong>nặng</strong> — heavy/low (glottal stop)</li>
-                    <li><strong>không</strong> — level (no mark)</li>
-                </ul>
-                <p class="note">Micro-audio/visuals can be added later without changing layout.</p>
-            </div>
-        </section>
     </main>
 
     <script>
@@ -385,11 +406,11 @@
         // =========================
 
         /** Global mapping loaded from /assets/mapping.json */
-        let MAPPING = null; // { categories:[{id,name}], phrases:{ [catId]: [{ id, vi, en, syllables:[{ id, text, tone }] }] } }
+        let MAPPING = null;
 
         async function initMapping() {
             try {
-                const res = await fetch('/assets/mapping.json', { cache: 'no-store' });
+                const res = await fetch('assets/mapping.json', { cache: 'no-store' });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 MAPPING = await res.json();
             } catch (err) {
@@ -417,19 +438,15 @@
         function playById(id, btn) {
             try {
                 stopCurrentAudio();
-
                 const audio = new Audio(`assets/audio/${id}.mp3`);
                 CURRENT_AUDIO = audio;
                 CURRENT_BTN = btn || null;
-
                 if (CURRENT_BTN) {
                     CURRENT_BTN.classList.add('playing');
                     CURRENT_BTN.setAttribute('aria-busy', 'true');
                 }
-
                 audio.addEventListener('ended', stopCurrentAudio, { once: true });
                 audio.addEventListener('error', stopCurrentAudio, { once: true });
-
                 audio.play();
             } catch (e) {
                 console.warn('Audio failed for id:', id, e);
@@ -440,9 +457,8 @@
         // =========================
         // Record & Compare (phrase-level, temporary)
         // =========================
-        // In-memory map of phraseId -> { url, blob }
         const RECORDINGS = new Map();
-        let ACTIVE_RECORD = null; // { phraseId, mediaRecorder, chunks, btnRecord, btnPlay }
+        let ACTIVE_RECORD = null;
 
         async function getUserMediaStream() {
             return navigator.mediaDevices?.getUserMedia
@@ -451,18 +467,16 @@
         }
 
         async function startRecording(phraseId, btnRecord, btnPlay) {
-            if (ACTIVE_RECORD) await stopRecording(); // ensure only one at a time
-
+            if (ACTIVE_RECORD) await stopRecording();
             let stream;
-            try {
-                stream = await getUserMediaStream();
-            } catch (e) {
-                alert('Microphone permission is needed for recording.');
-                return;
-            }
+            try { stream = await getUserMediaStream(); }
+            catch (e) { alert('Microphone permission is needed for recording.'); return; }
 
             const chunks = [];
-            const mr = new MediaRecorder(stream);
+            const mimeCandidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
+            const selectedMime = mimeCandidates.find(t => { try { return MediaRecorder.isTypeSupported(t); } catch { return false; } }) || '';
+            const mr = selectedMime ? new MediaRecorder(stream, { mimeType: selectedMime }) : new MediaRecorder(stream);
+
             ACTIVE_RECORD = { phraseId, mediaRecorder: mr, chunks, btnRecord, btnPlay };
 
             btnRecord.textContent = 'Stop';
@@ -471,8 +485,8 @@
 
             mr.addEventListener('dataavailable', e => { if (e.data && e.data.size) chunks.push(e.data); });
             mr.addEventListener('stop', () => {
-                const blob = new Blob(chunks, { type: 'audio/webm' });
-                // Revoke old URL if exists
+                const blob = new Blob(chunks, { type: selectedMime || 'audio/webm' });
+
                 const prev = RECORDINGS.get(phraseId);
                 if (prev?.url) { try { URL.revokeObjectURL(prev.url); } catch { } }
 
@@ -480,11 +494,10 @@
                 RECORDINGS.set(phraseId, { url, blob });
 
                 btnPlay.disabled = false;
-                btnRecord.textContent = 'Record';
+                btnRecord.textContent = 'Record attempt';
                 btnRecord.classList.remove('primary');
                 btnRecord.removeAttribute('aria-busy');
 
-                // stop tracks
                 stream.getTracks().forEach(t => t.stop());
                 ACTIVE_RECORD = null;
             });
@@ -494,9 +507,7 @@
 
         async function stopRecording() {
             if (!ACTIVE_RECORD) return;
-            try {
-                ACTIVE_RECORD.mediaRecorder.stop();
-            } catch { }
+            try { ACTIVE_RECORD.mediaRecorder.stop(); } catch { }
         }
 
         function playMyRecording(phraseId, btn) {
@@ -525,7 +536,7 @@
         const $ = sel => document.querySelector(sel);
 
         function showView(name) {
-            const views = ["categories", "phrases", "tone"];
+            const views = ["categories", "phrases"];
             views.forEach(v => {
                 const el = document.getElementById(`view-${v}`);
                 if (!el) return;
@@ -539,6 +550,8 @@
         function renderCategories() {
             const ul = $("#categoryList");
             ul.innerHTML = "";
+
+            // Regular categories
             (MAPPING.categories || []).forEach(cat => {
                 const count = (MAPPING.phrases?.[cat.id] || []).length;
                 const li = document.createElement('li');
@@ -547,6 +560,32 @@
                 li.addEventListener('click', () => openCategory(cat.id, cat.name));
                 ul.appendChild(li);
             });
+
+            // Tone Guide card at bottom (whole tile clickable) — build with nodes (no innerHTML)
+            try {
+                const toneLi = document.createElement('li');
+                toneLi.className = 'tone-guide-card';
+
+                const name = document.createElement('span');
+                name.className = 'category-name';
+                name.textContent = 'Tone Guide';
+
+                const br = document.createElement('br');
+
+                const count = document.createElement('span');
+                count.className = 'category-count';
+                count.textContent = 'Quick refresher on Vietnamese tones';
+
+                toneLi.appendChild(name);
+                toneLi.appendChild(br);
+                toneLi.appendChild(count);
+
+                toneLi.addEventListener('click', () => { window.location.href = 'tone-guide.html'; });
+
+                ul.appendChild(toneLi);
+            } catch (e) {
+                console.error('Failed to append Tone Guide tile:', e);
+            }
         }
 
         function openCategory(catId, catName) {
@@ -554,19 +593,24 @@
             const container = $("#phrasesContainer");
             container.innerHTML = "";
 
-            const items = MAPPING.phrases?.[catId] || [];
+            const items = (MAPPING.phrases?.[catId] || []);
             items.forEach(item => {
-                // item: { id: '00001', vi, en, syllables:[{ id:'00037', text, tone }] }
+                // item: { id, vi, en, syllables:[{ id, text, tone }] }
                 const card = document.createElement('div');
                 card.className = 'phrase-card';
 
-                // Top row: phrase play + text
+                // Translation (EN) first
+                const tr = document.createElement('div');
+                tr.className = 'translation';
+                tr.textContent = item.en;
+
+                // Top row: phrase play + Vietnamese text
                 const top = document.createElement('div');
                 top.className = 'phrase-top';
 
                 const btnPhrase = document.createElement('button');
                 btnPhrase.className = 'audio-btn primary';
-                btnPhrase.textContent = "▶︎";
+                btnPhrase.textContent = '▶︎';
                 btnPhrase.setAttribute('data-id', item.id);
                 btnPhrase.addEventListener('click', () => playById(item.id, btnPhrase));
 
@@ -576,35 +620,45 @@
                 top.appendChild(btnPhrase);
                 top.appendChild(phraseText);
 
-                // Translation (moved directly under phrase text for clearer reading order)
-                const tr = document.createElement('div');
-                tr.className = 'translation';
-                tr.textContent = item.en;
-
-                // Syllables row
+                // Syllables row (entire tile is tappable; tiny ▶︎ hint)
                 const row = document.createElement('div');
                 row.className = 'syllable-row';
                 (item.syllables || []).forEach(syl => {
                     const wrap = document.createElement('div');
                     wrap.className = 'syllable';
+                    wrap.setAttribute('role', 'button');
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('data-id', syl.id);
 
-                    const btnSyl = document.createElement('button');
-                    btnSyl.className = 'audio-btn';
-                    btnSyl.textContent = "▶︎";
-                    btnSyl.setAttribute('data-id', syl.id);
-                    btnSyl.addEventListener('click', () => playById(syl.id, btnSyl));
+                    const head = document.createElement('div');
+                    head.className = 'syllable-head';
 
                     const sylText = document.createElement('div');
                     sylText.className = 'syllable-text';
                     sylText.textContent = syl.text;
 
+                    const hint = document.createElement('span');
+                    hint.className = 'play-hint';
+                    hint.textContent = '▶︎';
+
                     const tone = document.createElement('div');
                     tone.className = 'tone-name';
                     tone.textContent = syl.tone;
 
-                    wrap.appendChild(btnSyl);
-                    wrap.appendChild(sylText);
+                    head.appendChild(sylText);
+                    head.appendChild(hint);
+                    wrap.appendChild(head);
                     wrap.appendChild(tone);
+
+                    const playSyl = () => playById(syl.id, wrap);
+                    wrap.addEventListener('click', playSyl);
+                    wrap.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            playSyl();
+                        }
+                    });
+
                     row.appendChild(wrap);
                 });
 
@@ -614,35 +668,37 @@
 
                 const btnRecord = document.createElement('button');
                 btnRecord.className = 'btn';
-                btnRecord.textContent = 'Record';
-                btnRecord.title = 'Record your attempt (temporary, not saved)';
+                btnRecord.textContent = 'Record attempt';
+                btnRecord.title = 'Record attempt (temporary, not saved)';
 
                 const btnMy = document.createElement('button');
-                btnMy.className = 'btn';
-                btnMy.textContent = 'Play My Recording';
-                btnMy.title = 'Toggle to your last recording for this phrase';
+                btnMy.className = 'btn my-attempt';
+                btnMy.textContent = 'Play attempt';
+                btnMy.title = 'Play your last attempt for this phrase';
                 btnMy.disabled = !RECORDINGS.get(item.id);
 
-                // Record toggle behavior
                 btnRecord.addEventListener('click', async () => {
-                    // If currently recording this phrase, stop. Else start.
                     if (ACTIVE_RECORD && ACTIVE_RECORD.phraseId === item.id) {
                         await stopRecording();
                     } else {
-                        // If recording another phrase, stop it first
                         if (ACTIVE_RECORD) await stopRecording();
                         startRecording(item.id, btnRecord, btnMy);
                     }
                 });
 
-                // Play recorded attempt (if available)
                 btnMy.addEventListener('click', () => playMyRecording(item.id, btnMy));
 
-                controls.append(btnRecord, btnMy);
+                // “Check Tone” placeholder — show “Coming soon!”
+                const btnCheck = document.createElement('button');
+                btnCheck.className = 'btn ghost';
+                btnCheck.textContent = 'Check Tone';
+                btnCheck.addEventListener('click', () => alert('Coming soon!'));
+
+                controls.append(btnRecord, btnMy, btnCheck);
 
                 // Assemble card
-                card.appendChild(top);
                 card.appendChild(tr);
+                card.appendChild(top);
                 card.appendChild(row);
                 card.appendChild(controls);
 
@@ -657,7 +713,7 @@
 
         // ——— Press feedback helper ———
         function attachPressFeedback(root = document) {
-            const pressables = root.querySelectorAll('.btn, .audio-btn');
+            const pressables = root.querySelectorAll('.btn, .audio-btn, .syllable');
             pressables.forEach(el => {
                 const onDown = () => el.classList.add('is-pressed');
                 const onUp = () => el.classList.remove('is-pressed');
@@ -673,9 +729,7 @@
         }
 
         // ——— Wiring: nav + init ———
-        document.getElementById('toneGuideLink').addEventListener('click', (e) => { e.preventDefault(); showView('tone'); });
         document.getElementById('btnBackToCategories').addEventListener('click', () => showView('categories'));
-        document.getElementById('btnBackFromTone').addEventListener('click', () => showView('categories'));
 
         // Boot
         (async function start() {

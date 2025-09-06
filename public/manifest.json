@@ -1,21 +1,25 @@
 {
-    "name": "John’s Vietnamese Phrases",
-    "short_name": "JVP",
+    "id": "/",
+    "name": "VietClear",
+    "short_name": "VietClear",
+    "description": "Because in Vietnamese, tone is meaning.",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#06b6d4",
+    "orientation": "portrait",
+    "background_color": "#FAFAFA",
+    "theme_color": "#009688",
     "icons": [
         {
-            "src": "/assets/icons/icon-192.png",
+            "src": "assets/icons/vietclear-192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/assets/icons/icon-512.png",
+            "src": "assets/icons/vietclear-512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
-    ]
+    ],
+    "apple-mobile-web-app-title": "VietClear"
 }
